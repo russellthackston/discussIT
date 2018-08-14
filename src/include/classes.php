@@ -2610,7 +2610,7 @@ class Application {
 		}
 
 		// Construct a SQL statement to perform the select operation
-		$sql = "SELECT things.thingregistrationcode AS registrationcode, userid, addstodiscussion, COUNT(addstodiscussion) AS commentcount FROM critiques " .
+		$sql = "SELECT things.thingregistrationcode AS registrationcode, userid, addstodiscussion, COUNT(addstodiscussion) AS critiquecount FROM critiques " .
 			"LEFT JOIN users ON critiques.critiqueuserid = users.userid " .
             "LEFT JOIN comments on comments.commentid = critiques.critiquecommentid " .
             "LEFT JOIN things ON things.thingid = comments.commentthingid " .
@@ -2645,9 +2645,9 @@ class Application {
 				foreach ($progressReport['progress'] as &$user) {
 					if (strtolower($row['registrationcode']) == strtolower($user['registrationcode']) && $row['userid'] == $user['userid']) {
 						if ($row['addstodiscussion'] == 1) {
-							$user['positivecritiques'] += 1;
+							$user['positivecritiques'] += $row['critiquecount'];
 						} else {
-							$user['negativecritiques'] += 1;
+						    $user['negativecritiques'] += $row['critiquecount'];
 						}
 					}
 				}
