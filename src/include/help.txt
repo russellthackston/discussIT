@@ -1,0 +1,13 @@
+If the discussion is highlighted green on the Discussions page, that means that you have not commented yet.  If there are no highlighted discussions on the Discussions page, then you are up to date on your comments.
+<br>
+<br>
+You have until the Comments Close date to make a comment.  If you don't make a comment, you will not get credit for the Discussion. <b>This is a homework grade.</b>
+<br>
+<br>
+You have until the Critiques Close date to critique everyone else's comments. If you don't critique everyone's comments, <i>your homework grade will be penalized.</i>
+<br>
+<br>
+Neither Comments nor Critiques are editable/deletable, except by an administrator. No, I won't make you an administrator.
+<br>
+<br>
+Visit your <a href="editprofile.php">profile page</a> to see your progress and grades, or to edit your user information.
