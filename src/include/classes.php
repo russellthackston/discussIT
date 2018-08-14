@@ -1,5 +1,12 @@
 <?php
 
+/** Global variable or variable from include/require **/
+/** @var Type $debugMessages */
+/** @var Type $servername */
+/** @var Type $serverdb */
+/** @var Type $serverusername */
+/** @var Type $serverpassword */
+
 class Application {
 
 	protected function getAccessibilityCode() {
@@ -80,7 +87,7 @@ class Application {
 		$stmt->bindParam(":message", $message);
 		$stmt->bindParam(":ipaddress", $ipaddress);
 		$stmt->bindParam(":userid", $userid);
-		$result = $stmt->execute();
+		$stmt->execute();
 		$dbh = NULL;
 		
 	}
@@ -617,7 +624,7 @@ class Application {
 		// Run the SQL select and capture the result code
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":passwordresetid", $passwordresetid);
-		$result = $stmt->execute();
+		$stmt->execute();
 		
 		// Close the connection
 		$dbh = NULL;
