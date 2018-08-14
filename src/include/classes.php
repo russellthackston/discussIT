@@ -2937,8 +2937,8 @@ class Application {
 	
 			// Construct a SQL statement to perform the insert operation
 			$sql = "INSERT INTO rollcall (userid, callsubmitted) " .
-				"VALUES (:userid, NOW())";
-	
+				"VALUES (:userid, NOW()) ON DUPLICATE KEY UPDATE callsubmitted = NOW()";
+			
 			// Run the SQL select and capture the result code
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":userid", $userid);
@@ -2967,7 +2967,7 @@ class Application {
 		// Connect to the database
 		$dbh = $this->getConnection();
 		
-		// Construct a SQL statement to perform the insert operation
+		// Construct a SQL statement to get the roll
 		$sql = "SELECT users.userid, users.studentid AS studentid, students.studentname AS studentname, rollcall.callsubmitted > DATE_SUB(NOW(), INTERVAL 5 MINUTE) AS present " .
 			"FROM users  " .
 			"LEFT JOIN rollcall ON rollcall.userid = users.userid  " .
