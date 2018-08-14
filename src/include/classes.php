@@ -2655,7 +2655,7 @@ class Application {
 		}
 
 		// Construct a SQL statement to perform the select operation
-		$sql = "SELECT things.thingregistrationcode AS registrationcode, username, COUNT(*) AS critiquecount FROM critiques " . 
+		$sql = "SELECT things.thingregistrationcode AS registrationcode, userid, COUNT(*) AS critiquecount FROM critiques " . 
 			"LEFT JOIN users ON critiques.critiqueuserid = users.userid " .
             "LEFT JOIN comments on comments.commentid = critiques.critiquecommentid " .
             "LEFT JOIN things ON things.thingid = comments.commentthingid " .
