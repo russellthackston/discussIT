@@ -22,9 +22,10 @@ if (isset($_GET['regcode'])) {
 
 	$loggedinuser = $app->getSessionUser($errors);
 	$loggedinusersessionid = $loggedinuser["usersessionid"];
+	$loggedinuserid = $loggedinuser["userid"];
 	
 	// Update the reg code
-	$result = $app->updateSession($loggedinusersessionid, $regcode, $errors);
+	$result = $app->updateSession($loggedinuserid, $loggedinusersessionid, $regcode, $errors);
 
 }
 

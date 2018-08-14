@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		// Display message upon success.
 		if ($result == TRUE){
 	
-			$result = $app->updateSession($loggedinusersessionid, $registrationCode, $errors);
+		    $result = $app->updateSession($loggedinuserid, $loggedinusersessionid, $registrationCode, $errors);
 			
 			if ($result) {
 				$message = "User successfully updated.";

@@ -780,7 +780,7 @@ class Application {
 	}
 
 	// Creates a new session in the database for the specified user
-	public function updateSession($usersessionid, $registrationcode, &$errors) {
+	public function updateSession($userid, $usersessionid, $registrationcode, &$errors) {
 		
 		// Check for a valid userid
 		if (empty($usersessionid)) {
