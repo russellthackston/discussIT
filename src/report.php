@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				<input type="hidden" name="commentid" id="commentid" value="<?php echo $commentid; ?>">
 				<input type="hidden" name="thingid" id="thingid" value="<?php echo $thingid; ?>">
 				<?php foreach($codes as $code) { ?>
-					<input type="radio" name="reasonid" value="<?php echo $code['reportcodeid']; ?>" data-moreinfoneeded="<?php echo $code['moreinfoneeded']; ?>" <?php if ($reasonid == $code['reportcodeid']) { echo " checked='checked' "; } ?>><?php echo $code['reportcodename']; ?></option>
+					<input type="radio" name="reasonid" value="<?php echo $code['reportcodeid']; ?>" data-moreinfoneeded="<?php echo $code['moreinfoneeded']; ?>" <?php if ($reasonid == $code['reportcodeid']) { echo " checked='checked' "; } ?>><?php echo $code['reportcodename']; ?>
 					<?php if ($code['moreinfoneeded'] == 1) { ?>
 						<input type="text" placeholder="Describe the issue" maxlength="255" <?php if ($reasonid != $code['reportcodeid']) { echo ' disabled="disabled" '; } ?>name="moreinfo-<?php echo $code['reportcodeid']; ?>" id="moreinfoneeded-<?php echo $code['reportcodeid']; ?>">
 					<?php } ?>
