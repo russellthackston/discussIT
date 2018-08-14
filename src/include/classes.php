@@ -2688,7 +2688,7 @@ class Application {
 			foreach ($progressReport['numberofcritiquesmade'] as $row) {
 				foreach ($progressReport['progress'] as &$user) {
 					if (strtolower($row['registrationcode']) == strtolower($user['registrationcode']) && $row['userid'] == $user['userid']) {
-						$user['numberofcritiquesmade'] += 1;
+						$user['numberofcritiquesmade'] += $row['critiquecount'];
 					}
 				}
 			}
