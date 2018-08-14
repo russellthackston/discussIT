@@ -2885,25 +2885,35 @@ class Application {
 			$stmt->bindParam(":moreinfo", $moreinfo);
 			$result = $stmt->execute();
 			
-			$reportid = $dbh->lastInsertId();
+			// If the query did not run successfully, add an error message to the list
+			if ($result === FALSE) {
+			    
+			    $errors[] = "An unexpected error occurred submitting your report.";
+			    $this->debug($stmt->errorInfo());
+			    $this->auditlog("submitReport error", $stmt->errorInfo());
+			    
+		    // If the query ran successfully, then email the admin
+			} else {
+			    $reportid = $dbh->lastInsertId();
 			
-			$comment = $this->getComment($commentid, $errors);
-			$commentText = $comment['commenttext'];
-			
-			// Send email to admin
-			$to      = 'rthackston@georgiasouthern.edu';
-			$subject = 'New user report';
-			$message = "A user has reported a comment.\n\n".
-				"Report ID: $reportid\n".
-				"CommentID: $commentid\n".
-				"Comment Text: $commentText\n".
-				"Reason ID: $reasonid\n".
-				"More Info: $moreinfo\n";
-			$headers = 'From: webmaster@russellthackston.me' . "\r\n" .
-			    'Reply-To: webmaster@russellthackston.me' . "\r\n";
-	
-			mail($to, $subject, $message, $headers);
-
+    			$comment = $this->getComment($commentid, $errors);
+    			$commentText = $comment['commenttext'];
+    			
+    			// Send email to admin
+    			// TODO: Removed hardcode email
+    			$to      = 'rthackston@georgiasouthern.edu';
+    			$subject = 'New user report';
+    			$message = "A user has reported a comment.\n\n".
+    				"Report ID: $reportid\n".
+    				"CommentID: $commentid\n".
+    				"Comment Text: $commentText\n".
+    				"Reason ID: $reasonid\n".
+    				"More Info: $moreinfo\n";
+    			$headers = 'From: webmaster@russellthackston.me' . "\r\n" .
+    			    'Reply-To: webmaster@russellthackston.me' . "\r\n";
+    	
+    			mail($to, $subject, $message, $headers);
+			}
 		}
 		
 		$dbh = NULL;
@@ -2933,6 +2943,15 @@ class Application {
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":userid", $userid);
 			$result = $stmt->execute();
+
+			// If the query did not run successfully, add an error message to the list
+			if ($result === FALSE) {
+			    
+			    $errors[] = "An unexpected error occurred submitting to the roll.";
+			    $this->debug($stmt->errorInfo());
+			    $this->auditlog("submitRollcall error", $stmt->errorInfo());
+			    
+			}
 
 		}
 		
@@ -2965,7 +2984,18 @@ class Application {
 		$stmt->bindParam(":regcode", $registrationcode);
 		$result = $stmt->execute();
 		
-		$roll = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		// If the query did not run successfully, add an error message to the list
+		if ($result === FALSE) {
+		    
+		    $errors[] = "An unexpected error occurred getting the roll.";
+		    $this->debug($stmt->errorInfo());
+		    $this->auditlog("getRollcall error", $stmt->errorInfo());
+		    
+		} else {
+		    
+		    $roll = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		}
 
 		$dbh = NULL;
 		
