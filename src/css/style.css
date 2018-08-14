@@ -11,7 +11,7 @@ html{
 }
 
 body {
-	margin: 0px;
+	margin: 0;
 	font-family: sans-serif;
 	background-color: var(--springGreen);
 	background: linear-gradient(rgba(197,221,128, 0.9), rgba(237,244,217,0.9));
