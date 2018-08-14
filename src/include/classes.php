@@ -982,7 +982,7 @@ class Application {
 	
 					// Create a new session for this user ID in the database
 					$userid = $row['userid'];
-					$sessionid = $this->newSession($userid, $errors);
+					$this->newSession($userid, $errors);
 					$this->auditlog("login", "success: $username, $userid");
 					
 				}
@@ -1026,7 +1026,6 @@ class Application {
 			// If the query did not run successfully, add an error message to the list
 			if ($result === FALSE) {
 
-				$errors[] = "An unexpected error occurred";
 				$this->debug($stmt->errorInfo());
 				$this->auditlog("logout error", $stmt->errorInfo());
 
@@ -1067,7 +1066,7 @@ class Application {
 		if(empty($userid)) {
 
 			// Redirect the user to the login page
-			$this->auditlog("protect page", "no userid: $sessionid");
+			$this->auditlog("protect page", "no userid");
 			header("Location: login.php?page=protected");
 			exit();
 
@@ -1096,14 +1095,7 @@ class Application {
 
 		// Get the logged in user
 		$loggedinuser = $this->getSessionUser($errors);
-		$loggedinuserid = $loggedinuser["userid"];
 		$registrationcode = $loggedinuser["registrationcode"];
-		$isadmin = FALSE;
-	
-		// Check to see if the user really is logged in and really is an admin
-		if ($loggedinuserid != NULL) {
-			$isadmin = $this->isAdmin($errors, $loggedinuserid);
-		}
 
 		// Connect to the database
 		$dbh = $this->getConnection();
@@ -1158,14 +1150,7 @@ class Application {
 
 		// Get the logged in user
 		$loggedinuser = $this->getSessionUser($errors);
-		$loggedinuserid = $loggedinuser["userid"];
 		$registrationcode = $loggedinuser["registrationcode"];
-		$isadmin = FALSE;
-	
-		// Check to see if the user really is logged in and really is an admin
-		if ($loggedinuserid != NULL) {
-			$isadmin = $this->isAdmin($errors, $loggedinuserid);
-		}
 
 		// Connect to the database
 		$dbh = $this->getConnection();
@@ -2147,9 +2132,6 @@ class Application {
 	// Updates a single user in the database and will return the $errors array listing any errors encountered
 	public function updateUserPassword($userid, $password, &$errors) {
 
-		// Assume no user exists for this user id
-		$user = NULL;
-
 		// Validate the user input
 		if (empty($userid)) {
 			$errors[] = "Missing userid";
@@ -2720,7 +2702,6 @@ class Application {
 
 		// Run the SQL select and capture the result code
 		$stmt = $dbh->prepare($sql);
-		$stmt->bindParam(":registrationcode", $registrationcode);
 		$result = $stmt->execute();
 
 		// If the query did not run successfully, add an error message to the list
