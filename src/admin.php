@@ -1,5 +1,5 @@
 <?php
-	
+
 // Import the application classes
 require_once('include/classes.php');
 
@@ -21,30 +21,35 @@ $users = $app->getUsers($errors);
 $regcodes = $app->getRegistrationCodes($errors);
 
 if (isset($_GET['downloadprogress'])) {
-	$progressReports = $app->getAllProgressReports($errors);
-	
+    $progressReports = $app->getAllProgressReports($errors);
+    
     $app->outputCSV($progressReports['progress']);
+    
+    exit();
+    
+}
 
-	exit();
-
+if (isset($_GET['hijack'])) {
+    $userid = $_GET['hijack'];
+    $app->impersonate($userid, $errors);
 }
 
 // If someone is adding a new attachment type
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-	if ($_POST['attachmenttype'] == "add") {
-		
-		$name = $_POST['name'];;
-		$extension = $_POST['extension'];;
-	
-		$attachmenttypeid = $app->newAttachmentType($name, $extension, $errors);
-		
-		if ($attachmenttypeid != NULL) {
-			$messages[] = "New attachment type added";
-		}
-
-	}
-
+    
+    if ($_POST['attachmenttype'] == "add") {
+        
+        $name = $_POST['name'];;
+        $extension = $_POST['extension'];;
+        
+        $attachmenttypeid = $app->newAttachmentType($name, $extension, $errors);
+        
+        if ($attachmenttypeid != NULL) {
+            $messages[] = "New attachment type added";
+        }
+        
+    }
+    
 }
 
 // Attempt to obtain the list of users
