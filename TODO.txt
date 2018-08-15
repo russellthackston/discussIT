@@ -6,3 +6,4 @@
 * Roll call button shows when logged out
 * Add report a bug feature
 * Add maintenance mode
+* Anonymizing commenters should skip a number when labeling the current user
