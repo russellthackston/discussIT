@@ -21,14 +21,7 @@ $errors = array();
 // Check for logged in user since this page is protected
 $app->protectPage($errors);
 
-// Get the logged in user
-$loggedInUser = $app->getSessionUser($errors);
-$isAdmin = $app->isAdmin($errors, $loggedInUser['userid']);
-
 // Declare local variables
-$search = "";
-$name = "";
-$description = "";
 $commentsopendate = "";
 $commentsclosedate = "";
 $critiquesclosedate = "";
