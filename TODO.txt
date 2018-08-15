@@ -3,3 +3,6 @@
 * Fix grade calculation. Too many critiques expected.
 * Make logout not actually logout when impersonating.
 * Feature to nominate comment for "Best Comment" award.
+* Roll call button shows when logged out
+* Add report a bug feature
+* Add maintenance mode
