@@ -13,21 +13,23 @@ if ($user != null) {
 		You are logged in as <?php echo $loggedinusername; ?>.
 		<?php } ?>
 		<br>
-		<?php if ($isadmin) { ?>
-		<a href="rollcall.php">Rollcall</a>
-		<?php } else { ?>
-		<input type="submit" name="rollcall" value="Roll call" id="rollcall" onclick="rollcall(this);" />
-		<?php } ?>
-		<br>
-		<span id="rollcallresult"></span>
-		<?php if (sizeof($regs) > 1) { ?>
+		<?php if (isset($loggedinusername) && $loggedinusername != null) { ?>
+			<?php if ($isadmin) { ?>
+			<a href="rollcall.php">Rollcall</a>
+			<?php } else { ?>
+			<input type="submit" name="rollcall" value="Roll call" id="rollcall" onclick="rollcall(this);" />
+			<?php } ?>
 			<br>
-			<label for="switchregcode">Switch Course</label>
-			<select id="switchregcode" name="switchregcode" onchange="switchregcode()">
-				<?php foreach($regs as $code) { ?>
-				<option value="<?php echo $code; ?>" <?php if ($code == $loggedinuserregistrationcode) { echo "selected='selected'"; } ?> ><?php echo $code; ?></option>
-				<?php } ?>
-			</select>			
+			<span id="rollcallresult"></span>
+			<?php if (sizeof($regs) > 1) { ?>
+				<br>
+				<label for="switchregcode">Switch Course</label>
+				<select id="switchregcode" name="switchregcode" onchange="switchregcode()">
+					<?php foreach($regs as $code) { ?>
+					<option value="<?php echo $code; ?>" <?php if ($code == $loggedinuserregistrationcode) { echo "selected='selected'"; } ?> ><?php echo $code; ?></option>
+					<?php } ?>
+				</select>			
+			<?php } ?>
 		<?php } ?>
 	</p>
 	<?php
