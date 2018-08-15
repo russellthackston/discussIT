@@ -1,3 +1,4 @@
 * Exclude topic from grade calculation (admins only).
 * Override downvote (admins only).
 * Fix grade calculation. Too many critiques expected.
+* Make logout not actually logout when impersonating.
