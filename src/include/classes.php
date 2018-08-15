@@ -9,13 +9,6 @@
 
 class Application {
 
-	protected function getAccessibilityCode() {
-		return "1a4a32c2ea1780c455f0c5c9e1f9d0fc";
-		/*
-			https://russellthackston.me/it3234/list.php?accessibilitychecker=1a4a32c2ea1780c455f0c5c9e1f9d0fc&id=b94bddec928e33ddcec89f31cf154807
-			*/
-	}
-
 	public function setup() {
 
 		// Check to see if the client has a cookie called "debug" with a value of "true"
