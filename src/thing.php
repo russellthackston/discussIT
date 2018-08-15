@@ -215,7 +215,7 @@ foreach ($comments as $comment) {
 						<br/>
 						
 						<input type="hidden" name="thingid" value="<?php echo $thingid; ?>" />
-						<input type="submit" name="start" value="Add comment" id="submitcomment" disabled="true" />
+						<input type="submit" name="start" value="Add comment" id="submitcomment" disabled="disabled" />
 					</fieldset>
 				</form>
 			</div>
