@@ -13,9 +13,6 @@ $app->setup();
 // Check for logged in user since this page is protected
 $app->protectPage($errors);
 
-// Get a list of registration codes
-$allCodes = $app->getRegistrationCodes($errors);
-
 // Declare a set of variables to hold the details for the user
 $userid = "";
 $username = "";
@@ -25,8 +22,6 @@ $registrationCode = "";
 $loggedinuser = $app->getSessionUser($errors);
 $loggedinuserid = $loggedinuser["userid"];
 $loggedinusersessionid = $loggedinuser["usersessionid"];
-$loggedinusername = $loggedinuser["username"];
-$loggedinuserisadmin = $loggedinuser["isadmin"];
 $loggedinuserregistrationcode = $loggedinuser['registrationcode'];
 
 // If someone is accessing this page for the first time, try and grab the userid from the GET request
