@@ -872,6 +872,58 @@ class Application {
 
 	}
 
+	// Retrieves the most recent session from the database for the specified user
+	public function impersonate($userid, &$errors) {
+	    
+	    // Array of sessions
+	    $sessionid = null;
+	    
+	    // Connect to the database
+	    $dbh = $this->getConnection();
+	    
+	    // Construct a SQL statement to perform the insert operation
+	    $sql = "SELECT usersessionid " .
+	   	    "FROM usersessions " .
+	   	    "WHERE userid = :userid AND expires > now() " .
+	   	    "ORDER BY expires " .
+	   	    "LIMIT 1";
+	    
+	    // Run the SQL select and capture the result code
+	    $stmt = $dbh->prepare($sql);
+	    $stmt->bindParam(":userid", $userid);
+	    $result = $stmt->execute();
+	    
+	    // If the query did not run successfully, add an error message to the list
+	    if ($result === FALSE) {
+	        
+	        $errors[] = "An unexpected error occurred";
+	        $this->debug($stmt->errorInfo());
+	        
+	    } else {
+	        
+	        if ($stmt->rowCount() > 0) {
+	            
+	            $sessionid = $stmt->fetch(PDO::FETCH_ASSOC)['usersessionid'];
+	            
+	            // Hijack the session
+	            if ($sessionid != null) {
+	                
+	                setcookie('sessionid', $sessionid, time()+60*60*24*30);
+	                $this->auditlog("session", "session hijacked: $sessionid for user = $userid");
+	                header("Location: list.php");
+	                exit();
+	                
+	            }
+	            
+	        }
+	        
+	    }
+	    
+	    // Close the connection
+	    $dbh = NULL;
+	    
+	}
+	
 	// Retrieves an existing session from the database for the specified user
 	public function isAdmin(&$errors, $userid) {
 		

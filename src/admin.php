@@ -75,7 +75,10 @@ $reports = $app->getReports($errors);
 		
 		<ul class="users">
 			<?php foreach($users as $user) { ?>
-				<li class="user"><a href="editprofile.php?userid=<?php echo $user['userid']; ?>" data-regcodes="<?php echo $user['regcodes']; ?>"><?php echo $user['username']; ?></a></li>
+				<li class="user">
+					<a href="editprofile.php?userid=<?php echo $user['userid']; ?>" data-regcodes="<?php echo $user['regcodes']; ?>"><?php echo $user['username']; ?></a>
+					<a href="admin.php?hijack=<?php echo $user['userid']; ?>" class="commentdesc no-barba">[Impersonate]</a>
+				</li>
 			<?php } ?>
 		</ul>
 		<a href="admin.php?downloadprogress" class="no-barba">Download progress report</a>
