@@ -2,3 +2,4 @@
 * Override downvote (admins only).
 * Fix grade calculation. Too many critiques expected.
 * Make logout not actually logout when impersonating.
+* Feature to nominate comment for "Best Comment" award.
