@@ -62,3 +62,22 @@ Barba.Pjax.getTransition = function() {
 };
 
 Barba.Pjax.start();
+
+/**
+ * Handle special javascript events that should normally fire on page load
+ */
+Barba.Dispatcher.on('newPageReady', function(currentStatus, oldStatus, container) {
+	console.log(container);
+	if (container.hasAttribute("data-page")) {
+		if (container.getAttribute("data-page") == "report") {
+			setupMoreInfo();
+		}
+		if (container.getAttribute("data-page") == "thing") {
+			setupCommentForm();
+			activateNewCommentForm();
+		}
+	} else {
+		console.log("nothing to do");
+	}
+});
+

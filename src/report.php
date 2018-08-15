@@ -14,15 +14,15 @@ $app->setup();
 $app->protectPage($errors);
 
 if (isset($_GET['commentid'])) {
-
-	$commentid = $_GET['commentid'];
-	$thingid = $_GET['thingid'];
-
+    
+    $commentid = $_GET['commentid'];
+    $thingid = $_GET['thingid'];
+    
 } else if (isset($_POST['commentid'])) {
-
-	$commentid = $_POST['commentid'];
-	$thingid = $_POST['thingid'];
-
+    
+    $commentid = $_POST['commentid'];
+    $thingid = $_POST['thingid'];
+    
 }
 
 $moreinfo = "";
@@ -32,30 +32,30 @@ $reportid = NULL;
 $reasonid = -1;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	
-	if (isset($_POST['reasonid']) && $_POST['reasonid'] != "") {
-		$reasonid = $_POST['reasonid'];
-		
-		// Check for more info needed flag
-		$moreInfoNeeded = FALSE;
-		foreach($codes as $code) {
-			if ($code['reportcodeid'] == $reasonid && $code['moreinfoneeded'] == "1") {
-				$moreInfoNeeded = TRUE;
-			}
-		}
-		if ($moreInfoNeeded && (!isset($_POST['moreinfo-' . $reasonid]) || $_POST['moreinfo-' . $reasonid] == "")) {
-			$errors[] = "Please provide a brief description of the issue";
-		} else {
-			$moreinfo = $_POST['moreinfo-' . $reasonid];
-			$reportid = $app->submitReport($commentid, $reasonid, $moreinfo, $errors);
-			if ($reportid != NULL) {
-				header("Location: thing.php?thingid=$thingid&report=$commentid");
-			}
-		}
-	} else {
-		$errors[] = "Please select a reason for your report";
-	}
-
+    
+    if (isset($_POST['reasonid']) && $_POST['reasonid'] != "") {
+        $reasonid = $_POST['reasonid'];
+        
+        // Check for more info needed flag
+        $moreInfoNeeded = FALSE;
+        foreach($codes as $code) {
+            if ($code['reportcodeid'] == $reasonid && $code['moreinfoneeded'] == "1") {
+                $moreInfoNeeded = TRUE;
+            }
+        }
+        if ($moreInfoNeeded && (!isset($_POST['moreinfo-' . $reasonid]) || $_POST['moreinfo-' . $reasonid] == "")) {
+            $errors[] = "Please provide a brief description of the issue";
+        } else {
+            $moreinfo = $_POST['moreinfo-' . $reasonid];
+            $reportid = $app->submitReport($commentid, $reasonid, $moreinfo, $errors);
+            if ($reportid != NULL) {
+                header("Location: thing.php?thingid=$thingid&report=$commentid");
+            }
+        }
+    } else {
+        $errors[] = "Please select a reason for your report";
+    }
+    
 }
 
 ?>
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
 	<?php include 'include/header.php'; ?>
 	<div id="barba-wrapper">
-	<div class="barba-container">
+	<div class="barba-container" data-page="report">
 	<main id="wrapper">
 		<h2>Report comment</h2>
 		<?php include 'include/messages.php'; ?>

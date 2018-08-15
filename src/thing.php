@@ -24,85 +24,85 @@ $text = "";
 
 // Check to see if the user really is logged in and really is an admin
 if ($loggedinuserid != NULL) {
-	$isadmin = $app->isAdmin($errors, $loggedinuserid);
+    $isadmin = $app->isAdmin($errors, $loggedinuserid);
 }
 
 // If the page/thing is being loaded for display
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-
-	// Get the thing id from the URL
-	$thingid = $_GET['thingid'];
-	
-	// Attempt to obtain the thing
-	$thing = $app->getThing($thingid, $errors);
-	
-	// If there were no errors getting the thing, try to get the comments
-	if (sizeof($errors) == 0) {
-	
-		// Attempt to obtain the comments for this thing
-		$thing = $app->getThing($thingid, $errors);
-		
-		// If the thing loaded successfully, load the associated comments
-		if (isset($thing)) {
-			$comments = $app->getComments($thing['thingid'], $errors);
-			$commentingClosed = $app->isCommentingClosed($thing['thingid'], $errors);
-		}
-	
-	} else {
-		// Redirect the user to the things page on error
-		header("Location: list.php?error=nothing");
-		exit();
-	}
-	
-	// Check for url flag indicating that a new comment was created.
-	if (isset($_GET["newcomment"]) && $_GET["newcomment"] == "success") {
-		$message = "New comment successfully created.";
-	}
-
-	// Check for url flag indicating that a new comment was created.
-	if (isset($_GET["report"])) {
-		$message = "Report submitted.";
-		$commentid = $_GET["report"];
-	}
+    
+    // Get the thing id from the URL
+    $thingid = $_GET['thingid'];
+    
+    // Attempt to obtain the thing
+    $thing = $app->getThing($thingid, $errors);
+    
+    // If there were no errors getting the thing, try to get the comments
+    if (sizeof($errors) == 0) {
+        
+        // Attempt to obtain the comments for this thing
+        $thing = $app->getThing($thingid, $errors);
+        
+        // If the thing loaded successfully, load the associated comments
+        if (isset($thing)) {
+            $comments = $app->getComments($thing['thingid'], $errors);
+            $commentingClosed = $app->isCommentingClosed($thing['thingid'], $errors);
+        }
+        
+    } else {
+        // Redirect the user to the things page on error
+        header("Location: list.php?error=nothing");
+        exit();
+    }
+    
+    // Check for url flag indicating that a new comment was created.
+    if (isset($_GET["newcomment"]) && $_GET["newcomment"] == "success") {
+        $message = "New comment successfully created.";
+    }
+    
+    // Check for url flag indicating that a new comment was created.
+    if (isset($_GET["report"])) {
+        $message = "Report submitted.";
+        $commentid = $_GET["report"];
+    }
 }
 // If someone is attempting to create a new comment, process their request
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-	// Pull the comment text from the <form> POST
-	$text = $_POST['comment'];
-
-	// Pull the thing ID from the form
-	$thingid = $_POST['thingid'];
-	$attachment = $_FILES['attachment'];
-
-	// Get the details of the thing from the database
-	$thing = $app->getThing($thingid, $errors);
-
-	// Attempt to create the new comment and capture the result flag
-	$result = $app->addComment($text, $thingid, $attachment, $errors);
-
-	// Check to see if the new comment attempt succeeded
-	if ($result == TRUE) {
-
-		// Redirect the user to the login page on success
-	    header("Location: thing.php?newcomment=success&thingid=" . $thingid);
-		exit();
-
-	} else {
-		if (isset($thing)) {
-			$comments = $app->getComments($thing['thingid'], $errors);
-		}
-	}
-
+    
+    // Pull the comment text from the <form> POST
+    $text = $_POST['comment'];
+    
+    // Pull the thing ID from the form
+    $thingid = $_POST['thingid'];
+    $attachment = $_FILES['attachment'];
+    
+    // Get the details of the thing from the database
+    $thing = $app->getThing($thingid, $errors);
+    
+    // Attempt to create the new comment and capture the result flag
+    $result = $app->addComment($text, $thingid, $attachment, $errors);
+    
+    // Check to see if the new comment attempt succeeded
+    if ($result == TRUE) {
+        
+        // Redirect the user to the login page on success
+        header("Location: thing.php?newcomment=success&thingid=" . $thingid);
+        exit();
+        
+    } else {
+        if (isset($thing)) {
+            $comments = $app->getComments($thing['thingid'], $errors);
+        }
+    }
+    
 }
 
 $hasCommented = FALSE;
 $comments = $app->getComments($thingid, $errors);
 foreach ($comments as $comment) {
-	if ($comment['commentuserid'] == $loggedinuserid) {
-		$hasCommented = TRUE;
-		break;
-	}
+    if ($comment['commentuserid'] == $loggedinuserid) {
+        $hasCommented = TRUE;
+        break;
+    }
 }
 
 ?>
@@ -113,7 +113,7 @@ foreach ($comments as $comment) {
 <body>
 	<?php include 'include/header.php'; ?>
 	<div id="barba-wrapper">
-	<div class="barba-container">
+	<div class="barba-container" data-page="thing">
 	<main id="wrapper">
 		<?php include('include/messages.php'); ?>
 		
@@ -207,7 +207,7 @@ foreach ($comments as $comment) {
 					<fieldset>
 						<legend class="visuallyhidden">New Comment Form:</legend>
 						<label for="comment"class="visuallyhidden">Comment</label>
-						<textarea name="comment" id="comment" rows="6" placeholder="Add a comment" required="required"><?php echo $text; ?></textarea>
+						<textarea name="comment" id="comment" rows="6" placeholder="Critique all existing comments before adding your own" required="required"><?php echo $text; ?></textarea>
 						<br/>
 						
 						<label for="attachment">Add an image, PDF, etc.</label>
@@ -215,7 +215,7 @@ foreach ($comments as $comment) {
 						<br/>
 						
 						<input type="hidden" name="thingid" value="<?php echo $thingid; ?>" />
-						<input type="submit" name="start" value="Add comment" id="submitcomment"/>
+						<input type="submit" name="start" value="Add comment" id="submitcomment" disabled="true" />
 					</fieldset>
 				</form>
 			</div>
