@@ -908,6 +908,7 @@ class Application {
 	            // Hijack the session
 	            if ($sessionid != null) {
 	                
+	                setcookie('impersonate', '1', time()+60*60*24*30);
 	                setcookie('sessionid', $sessionid, time()+60*60*24*30);
 	                $this->auditlog("session", "session hijacked: $sessionid for user = $userid");
 	                header("Location: list.php");
@@ -1053,39 +1054,54 @@ class Application {
 	public function logout() {
 		
 		$sessionid = $_COOKIE['sessionid'];
+		$impersonate = FALSE;
+		if (isset($_COOKIE['impersonate']) && $_COOKIE['impersonate'] == '1') {
+			$impersonate = TRUE;
+		}
 
 		// Only try to query the data into the database if there are no validation errors
 		if (!empty($sessionid)) {
-	
-			// Connect to the database
-			$dbh = $this->getConnection();
+
+			if (!$impersonate) {
+				
+				// Connect to the database
+				$dbh = $this->getConnection();
+			
+				// Construct a SQL statement to perform the insert operation
+				$sql = "DELETE FROM usersessions WHERE usersessionid = :sessionid OR expires < now()";
 		
-			// Construct a SQL statement to perform the insert operation
-			$sql = "DELETE FROM usersessions WHERE usersessionid = :sessionid OR expires < now()";
+				// Run the SQL select and capture the result code
+				$stmt = $dbh->prepare($sql);
+				$stmt->bindParam(":sessionid", $sessionid);
+				$result = $stmt->execute();
 	
-			// Run the SQL select and capture the result code
-			$stmt = $dbh->prepare($sql);
-			$stmt->bindParam(":sessionid", $sessionid);
-			$result = $stmt->execute();
+				// If the query did not run successfully, add an error message to the list
+				if ($result === FALSE) {
+	
+					$this->debug($stmt->errorInfo());
+					$this->auditlog("logout error", $stmt->errorInfo());
+	
+	
+				// If the query ran successfully, then the logout succeeded
+				} else {
+	
+					// Clear the session ID cookie
+					setcookie('sessionid', '', time()-3600);
+					$this->auditlog("logout", "successful: $sessionid");
+	
+				}
+	
+				// Close the connection
+				$dbh = NULL;
 
-			// If the query did not run successfully, add an error message to the list
-			if ($result === FALSE) {
-
-				$this->debug($stmt->errorInfo());
-				$this->auditlog("logout error", $stmt->errorInfo());
-
-
-			// If the query ran successfully, then the logout succeeded
 			} else {
 
-				// Clear the session ID cookie
+				// Clear the cookie but do not actually delete the user's session, since we're not really the user
 				setcookie('sessionid', '', time()-3600);
-				$this->auditlog("logout", "successful: $sessionid");
+				setcookie('impersonate', '', time()-3600);
+				$this->auditlog("logout", "(impersonate) successful: $sessionid");
 
 			}
-
-			// Close the connection
-			$dbh = NULL;
 	
 		}
 	
