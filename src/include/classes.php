@@ -1478,13 +1478,14 @@ class Application {
 	
 							$comment['username'] = "Commenter #" . $counter;
 							$comment['anon'] = TRUE;
-							$counter += 1;
 	
 						} else {
 	
 							$comment['anon'] = FALSE;
 	
 						}
+
+						$counter += 1;
 	
 					}
 
