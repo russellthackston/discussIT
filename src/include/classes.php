@@ -2355,7 +2355,7 @@ class Application {
 		// Connect to the database
 		$dbh = $this->getConnection();
 
-		// Construct a SQL statement to perform the select operation
+		// Get number of topics for the current registration code
 		$sql = "SELECT COUNT(*) AS numberoftopics FROM things " . 
 		"WHERE LOWER(thingregistrationcode) = LOWER(:registrationcode) " . 
 		"AND commentsopendate < convert_tz(now(), @@session.time_zone, 'America/New_York')";
@@ -2382,8 +2382,7 @@ class Application {
 
 		}
 
-		// Construct a SQL statement to perform the select operation
-		//$sql = "SELECT COUNT(*) AS numberofcomments FROM comments WHERE commentuserid = :userid";
+		// Get the number of comments made by this user under this registration code
 		$sql = "SELECT COUNT(*) AS numberofcomments FROM comments " .
 			"LEFT JOIN things ON comments.commentthingid = things.thingid " .
 			"WHERE commentuserid = :userid " .
@@ -2411,12 +2410,23 @@ class Application {
 
 		}
 
-		// Construct a SQL statement to perform the select operation
+		// Get the number of critiques received on this user's comments under this registration code
 		$sql = "SELECT addstodiscussion, COUNT(addstodiscussion) AS cAdds FROM critiques " .
 			"WHERE critiquecommentid IN  " .
 			"(SELECT commentid FROM comments LEFT JOIN things ON comments.commentthingid = things.thingid  " .
              	"WHERE commentuserid = :commentuserid AND LOWER(things.thingregistrationcode) = LOWER(:regcode))  " .
 			"GROUP BY addstodiscussion";
+		/**
+		SELECT addstodiscussion, COUNT(addstodiscussion) AS cAdds 
+		FROM critiques WHERE critiquecommentid in (
+		    SELECT commentid FROM comments 
+			WHERE commentuserid = :commentuserid
+		    AND commentthingid IN (
+		    	SELECT thingid FROM things WHERE LOWER(things.thingregistrationcode) = LOWER(:regcode)
+		    )
+		)
+		GROUP BY addstodiscussion
+		**/
 
 		// Run the SQL select and capture the result code
 		$stmt = $dbh->prepare($sql);
@@ -2448,14 +2458,14 @@ class Application {
 			$progressReport['numberofcritiquesreceived'] = $progressReport['up'] + $progressReport['down'];
 		}
 
-		// Construct a SQL statement to perform the select operation
-		$sql = "SELECT COUNT(*) AS critiquecount FROM critiques WHERE critiqueuserid = :critiqueuserid";
-		$sql = "SELECT COUNT(*) AS critiquecount FROM critiques  " .
-			"LEFT JOIN comments ON critiques.critiquecommentid = comments.commentid " .
-			"LEFT JOIN things ON comments.commentthingid = things.thingid " .
-			"WHERE critiqueuserid = :critiqueuserid " .
-			"AND LOWER(things.thingregistrationcode) = LOWER(:regcode)" .
-			"GROUP BY addstodiscussion";
+		// Get the number of critiques made by this user for this registration code
+		$sql = "SELECT count(*) AS critiquecount " .
+			"FROM critiques  " .
+	        "WHERE critiqueuserid = :critiqueuserid " .
+	        "AND critiquecommentid IN ( " .
+	            "SELECT commentid FROM comments WHERE commentthingid IN ( " .
+		   	"SELECT thingid FROM things WHERE LOWER(things.thingregistrationcode) = LOWER(:regcode) " .
+			")) ";
 
 		// Run the SQL select and capture the result code
 		$stmt = $dbh->prepare($sql);
@@ -2478,7 +2488,7 @@ class Application {
 			$progressReport['critiques'] = $row['critiquecount'];
 		}
 
-		// Construct a SQL statement to perform the select operation
+		// Get the number of comments made (and therefore critiques expected) for this registration code
 		$sql = "SELECT COUNT(*) AS numberofcomments FROM comments WHERE commentuserid IN " . 
 			"(SELECT userid FROM userregistrations WHERE LOWER(registrationcode) = LOWER(:registrationcode))";
 
