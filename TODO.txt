@@ -1,6 +1,5 @@
 Bugs
 ----
-* Anonymizing commenters should skip a number when labeling the current user
 
 Enhancements
 ------------
