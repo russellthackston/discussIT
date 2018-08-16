@@ -2490,8 +2490,8 @@ class Application {
 		}
 
 		// Get the number of comments made (and therefore critiques expected) for this registration code
-		$sql = "SELECT COUNT(*) AS numberofcomments FROM comments WHERE commentuserid IN " . 
-			"(SELECT userid FROM userregistrations WHERE LOWER(registrationcode) = LOWER(:registrationcode))";
+		$sql = "SELECT * FROM comments WHERE commentthingid IN " .
+			"(SELECT thingid FROM things WHERE LOWER(thingregistrationcode) = LOWER('Fall2018IT3234A'))";
 
 		// Run the SQL select and capture the result code
 		$stmt = $dbh->prepare($sql);
