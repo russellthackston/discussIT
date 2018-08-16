@@ -14,6 +14,16 @@ $password = "";
 // Declare an empty array of error messages
 $errors = array();
 
+// If the user is already logged in, send them to the topic list
+$loggedinuser = $app->getSessionUser($errors);
+if ($loggedinuser != null) {
+
+	// Redirect the user to the topics page
+	header("Location: list.php");
+	exit();
+
+}
+
 // If someone has clicked their email validation link, then process the request
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
