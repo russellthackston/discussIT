@@ -2491,7 +2491,7 @@ class Application {
 
 		// Get the number of comments made (and therefore critiques expected) for this registration code
 		$sql = "SELECT * FROM comments WHERE commentthingid IN " .
-			"(SELECT thingid FROM things WHERE LOWER(thingregistrationcode) = LOWER('Fall2018IT3234A'))";
+			"(SELECT thingid FROM things WHERE LOWER(thingregistrationcode) = LOWER(:registrationcode))";
 
 		// Run the SQL select and capture the result code
 		$stmt = $dbh->prepare($sql);
