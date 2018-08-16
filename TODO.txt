@@ -1,8 +1,13 @@
+Bugs
+----
+* Fix grade calculation. Too many "critiques expected."
+* Anonymizing commenters should skip a number when labeling the current user
+* Make logout not actually logout when impersonating.
+
+Enhancements
+------------
 * Exclude topic from grade calculation (admins only).
 * Override downvote (admins only).
-* Fix grade calculation. Too many critiques expected.
-* Make logout not actually logout when impersonating.
 * Feature to nominate comment for "Best Comment" award.
-* Roll call button shows when logged out
 * Add report a bug feature
 * Add maintenance mode
