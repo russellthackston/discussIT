@@ -2490,7 +2490,7 @@ class Application {
 		}
 
 		// Get the number of comments made (and therefore critiques expected) for this registration code
-		$sql = "SELECT * FROM comments WHERE commentthingid IN " .
+		$sql = "SELECT count(*) AS numberofcomments FROM comments WHERE commentthingid IN " .
 			"(SELECT thingid FROM things WHERE LOWER(thingregistrationcode) = LOWER(:registrationcode))";
 
 		// Run the SQL select and capture the result code
