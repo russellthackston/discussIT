@@ -1,6 +1,5 @@
 Bugs
 ----
-* Fix grade calculation. Too many "critiques expected."
 * Anonymizing commenters should skip a number when labeling the current user
 
 Enhancements
