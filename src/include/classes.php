@@ -27,6 +27,7 @@ class Application {
 		$debugMessages[] = $message;
 	}
 
+  // Sets the website in maintenance mode (mode) or production mode (false)
 	public function setMaintenanceMode($mode) {
 		if ($mode == TRUE) {
 
@@ -35,6 +36,7 @@ class Application {
 		}
 	}
 
+  // Returns true or false depending on the current state of the maintenance mode flag in the database
 	function isMaintenanceMode() {
 		return FALSE;
 	}
