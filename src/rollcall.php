@@ -18,16 +18,16 @@ $isadmin = $loggedInUser['isadmin'] == 1;
 
 if (!$isadmin) {
 
-	// Submit the roll call 
+	// Submit the roll call
 	$app->submitRollcall($errors);
-	
+
 	// If there was an error, send to homepage to display
 	if (sizeof($errors) > 0) {
 		echo "Error!";
 	} else {
 		echo "Present!";
 	}
-	
+
 	exit();
 
 }
@@ -57,8 +57,8 @@ $message = $present . " student present and " . $notpresent . " absent.";
 		<?php include('include/messages.php'); ?>
 		<table id="rollcall">
 			<tr>
-				<th>Student ID</th>
-				<th>Name</th>
+				<th>Student ID</th>
+				<th>Name</th>
 			<?php foreach($roll as $student) { ?>
 				<tr class="<?php if ($student['present'] == 0) { echo "notpresent"; } ?>">
 					<td><?php echo $student['studentid']; ?></td>
