@@ -1739,17 +1739,8 @@ class Application {
 
 	}
 
-	// Adds a new thing to the database
-	public function addThing($name, $description, $registrationcode, $attachment, $commentsopendate, $commentsclosedate, $critiquesclosedate, &$errors) {
+	public function validateThing($name, $description, $commentsopendate, $commentsclosedate, $critiquesclosedate, &$errors) {
 
-		// Get the user id from the session
-		$user = $this->getSessionUser($errors);
-		$userid = $user["userid"];
-
-		// Validate the user input
-		if (empty($userid)) {
-			$errors[] = "Missing user ID. Not logged in?";
-		}
 		if (empty($name)) {
 			$errors[] = "Missing title";
 		}
@@ -1765,6 +1756,21 @@ class Application {
 		if (empty($critiquesclosedate)) {
 			$errors[] = "Missing critiques close date";
 		}
+
+	}
+
+	// Adds a new thing to the database
+	public function addThing($name, $description, $registrationcode, $attachment, $commentsopendate, $commentsclosedate, $critiquesclosedate, &$errors) {
+
+		// Get the user id from the session
+		$user = $this->getSessionUser($errors);
+		$userid = $user["userid"];
+
+		// Validate the user input
+		if (empty($userid)) {
+			$errors[] = "Missing user ID. Not logged in?";
+		}
+		$this->validateThing($name, $description, $commentsopendate, $commentsclosedate, $critiquesclosedate, $errors);
 
 		// Only try to insert the data into the database if there are no validation errors
 		if (sizeof($errors) == 0) {
@@ -1830,6 +1836,88 @@ class Application {
 		}
 	}
 
+	// Updates an existing thing in the database. Does not support changes to attachments.
+	public function updateThing($thingid, $name, $description, $registrationcode, $attachment, $commentsopendate, $commentsclosedate, $critiquesclosedate, &$errors) {
+
+		// Get the user id from the session
+		$user = $this->getSessionUser($errors);
+		$userid = $user["userid"];
+
+		// Validate the user input
+		if (empty($userid)) {
+			$errors[] = "Missing user ID. Not logged in?";
+		}
+		if (empty($thingid)) {
+			$errors[] = "Missing thing ID.";
+		}
+		$this->validateThing($name, $description, $commentsopendate, $commentsclosedate, $critiquesclosedate, $errors);
+
+		// Only try to insert the data into the database if there are no validation errors
+		if (sizeof($errors) == 0) {
+
+			// Connect to the database
+			$dbh = $this->getConnection();
+			//$attachmentid = $this->saveAttachment($dbh, $attachment, $errors);
+
+			// Only try to update the data in the database if the attachment successfully saved
+			if (sizeof($errors) == 0) {
+
+				// Update the record in the things table
+				// Construct a SQL statement to perform the insert operation
+				$sql = "UPDATE things " .
+					"SET thingname = :name, " .
+					"thingdescription = :thingdescription, " .
+					"thinguserid = :userid, " .
+					//"thingattachmentid = :attachmentid, " .
+					"thingregistrationcode = :registrationcode, " .
+					"commentsopendate = :commentsopendate, " .
+					"commentsclosedate = :commentsclosedate, " .
+					"critiquesclosedate = :critiquesclosedate " .
+					"WHERE thingid = :thingid";
+
+				// Run the SQL insert and capture the result code
+				$stmt = $dbh->prepare($sql);
+				$stmt->bindParam(":name", $name);
+				$stmt->bindParam(":thingdescription", $description);
+				$stmt->bindParam(":userid", $userid);
+				//$stmt->bindParam(":attachmentid", $attachmentid);
+				$stmt->bindParam(":registrationcode", $registrationcode);
+				$stmt->bindParam(":commentsopendate", $commentsopendate);
+				$stmt->bindParam(":commentsclosedate", $commentsclosedate);
+				$stmt->bindParam(":critiquesclosedate", $critiquesclosedate);
+				$stmt->bindParam(":thingid", $thingid);
+				$result = $stmt->execute();
+
+				// If the query did not run successfully, add an error message to the list
+				if ($result === FALSE) {
+
+					$errors[] = "An unexpected error occurred updating the thing in the database.";
+					$this->debug($stmt->errorInfo());
+					$this->auditlog("updateThing error", $stmt->errorInfo());
+
+				} else {
+
+					$this->auditlog("updateThing", "success: $name, id = $thingid");
+
+				}
+
+			}
+
+			// Close the connection
+			$dbh = NULL;
+
+		} else {
+			$this->auditlog("updateThing validation error", $errors);
+		}
+
+		// Return TRUE if there are no errors, otherwise return FALSE
+		if (sizeof($errors) == 0){
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
+
 	// Check to see if the comment period has closed for a discussion
 	public function isCommentingClosed($thingid, &$errors) {
 
@@ -1854,9 +1942,8 @@ class Application {
 
 		// Get the associated thing and closure date/times
 		$thing = $this->getThing($thingid, $errors);
-		$localtime = new DateTime();
-		$localtime->setTimezone(new DateTimeZone('America/New_York'));
-		if ($localtime > new DateTime($thing['commentsclosedate'])) {
+		$closed = $this->isCommentingClosed($thingid, $errors);
+		if ($closed) {
 			$errors[] = "Sorry. The period to comment has closed.";
 		}
 
