@@ -1923,9 +1923,11 @@ class Application {
 
 		// Get the associated thing and closure date/times
 		$thing = $this->getThing($thingid, $errors);
-		$localtime = new DateTime();
-		$localtime->setTimezone(new DateTimeZone('America/New_York'));
-	  $close = DateTime::createFromFormat('Y-m-d h:i:s', $thing['commentsclosedate'], new DateTimeZone('America/New_York'));
+		// Expected format: "2018-08-19 15:30:00"
+		$close = DateTime::createFromFormat('Y-m-d H:i:s', $thing['commentsclosedate'], new DateTimeZone('America/New_York'));
+
+		// Get local date/time
+		$localtime = new DateTime("now", new DateTimeZone('America/New_York') );
 		if ($localtime > $close) {
 			return TRUE;
 		}
