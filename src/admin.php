@@ -22,11 +22,11 @@ $regcodes = $app->getRegistrationCodes($errors);
 
 if (isset($_GET['downloadprogress'])) {
     $progressReports = $app->getAllProgressReports($errors);
-    
+
     $app->outputCSV($progressReports['progress']);
-    
+
     exit();
-    
+
 }
 
 if (isset($_GET['hijack'])) {
@@ -36,20 +36,20 @@ if (isset($_GET['hijack'])) {
 
 // If someone is adding a new attachment type
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    
+
     if ($_POST['attachmenttype'] == "add") {
-        
+
         $name = $_POST['name'];;
         $extension = $_POST['extension'];;
-        
+
         $attachmenttypeid = $app->newAttachmentType($name, $extension, $errors);
-        
+
         if ($attachmenttypeid != NULL) {
             $messages[] = "New attachment type added";
         }
-        
+
     }
-    
+
 }
 
 // Attempt to obtain the list of users
@@ -77,11 +77,16 @@ $reports = $app->getReports($errors);
 				<option value="<?php echo $regcode['registrationcode']; ?>"><?php echo $regcode['registrationcode']; ?></option>
 			<?php } ?>
 		</select>
-		
+
 		<ul class="users">
-			<?php foreach($users as $user) { ?>
+			<?php
+      foreach($users as $user) {
+        if ($user['studentname'] == NULL) {
+          $user['studentname'] = $user['username'];
+        }
+      ?>
 				<li class="user">
-					<a href="editprofile.php?userid=<?php echo $user['userid']; ?>" data-regcodes="<?php echo $user['regcodes']; ?>"><?php echo $user['username']; ?></a>
+					<a href="editprofile.php?userid=<?php echo $user['userid']; ?>" data-regcodes="<?php echo $user['regcodes']; ?>"><?php echo $user['studentname']; ?></a>
 					<a href="admin.php?hijack=<?php echo $user['userid']; ?>" class="commentdesc no-barba">[Impersonate]</a>
 				</li>
 			<?php } ?>
@@ -96,7 +101,7 @@ $reports = $app->getReports($errors);
 				<li>No attachment types found in the database</li>
 			<?php } ?>
 		</ul>
-		
+
 		<h4>Add Attachment Type</h4>
 		<div class="newattachmenttype">
 			<form enctype="multipart/form-data" method="post" action="admin.php">
