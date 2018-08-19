@@ -2093,9 +2093,10 @@ class Application {
 
 		// Construct a SQL statement to perform the select operation
 		//$sql = "SELECT userid, username, email, isadmin FROM users ORDER BY username";
-		$sql = "SELECT users.userid, username, email, isadmin, GROUP_CONCAT(registrationcode) AS regcodes " .
+		$sql = "SELECT users.userid, username, email, isadmin, GROUP_CONCAT(registrationcode) AS regcodes, students.studentname " .
 			"FROM users LEFT JOIN userregistrations ON users.userid = userregistrations.userid " .
-			"GROUP BY username";
+			"LEFT JOIN students ON users.studentid = students.studentid 	" .
+			"GROUP BY students.studentname";
 
 		// Run the SQL select and capture the result code
 		$stmt = $dbh->prepare($sql);
