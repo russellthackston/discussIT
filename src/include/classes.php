@@ -1837,7 +1837,8 @@ class Application {
 		$thing = $this->getThing($thingid, $errors);
 		$localtime = new DateTime();
 		$localtime->setTimezone(new DateTimeZone('America/New_York'));
-		if ($localtime > new DateTime($thing['commentsclosedate'])) {
+	  $close = DateTime::createFromFormat('Y-m-d h:i:s', $thing['commentsclosedate'], new DateTimeZone('America/New_York'));
+		if ($localtime > $close) {
 			return TRUE;
 		}
 		return FALSE;
