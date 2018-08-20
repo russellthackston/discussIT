@@ -8,3 +8,8 @@ Enhancements
 * Feature to nominate comment for "Best Comment" award.
 * Add report a bug feature
 * Add maintenance mode
+* Add a maintenance screen for students table
+* Add Edit Topic page
+* Add sub-tabs to Admin page
+* Add To Do list for students
+* Change Edit Profile page to display student name (and warning if missing)
