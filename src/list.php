@@ -171,8 +171,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<span class="note">Critiques close: <?php echo $thing['critiquesclosedate']; ?></span>
 					<?php if ($isAdmin) { ?>
 						<br>
-	          <a href="editthing.php?thingid=<?php echo $thing['thingid']; ?>">[Edit]</a>
-	        <?php } ?>
+						<span class="note">
+	          	<a href="editthing.php?thingid=<?php echo $thing['thingid']; ?>">[Edit]</a>
+						</span>
+					<?php } ?>
 
 				</li>
 			<?php } ?>
