@@ -129,7 +129,7 @@ foreach ($comments as $comment) {
 			<p class="thingtagline">
         <?php echo $thing['username']; ?> on <?php echo $thing['thingcreated']; ?>
         <?php if ($isadmin) { ?>
-          <a href="editthing?thingid=<?php echo $thingid; ?>">[Edit Topic]</a>
+          <a href="editthing.php?thingid=<?php echo $thingid; ?>">[Edit Topic]</a>
         <?php } ?>
       </p>
 			<?php if ($thing['filename'] != NULL) { ?>
