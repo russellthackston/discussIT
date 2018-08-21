@@ -128,7 +128,7 @@ foreach ($comments as $comment) {
 			<p class="thingdescription"><?php echo nl2br($thing['thingdescription']); ?></p>
 			<p class="thingtagline">
         <?php echo $thing['username']; ?> on <?php echo $thing['thingcreated']; ?>
-        <?php if ($isAdmin) { ?>
+        <?php if ($isadmin) { ?>
           <a href="editthing?thingid=<?php echo $thingid; ?>">[Edit Topic]</a>
         <?php } ?>
       </p>
