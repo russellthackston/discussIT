@@ -37,6 +37,23 @@ $justCodes = array_column($allCodes, 'registrationcode');
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   // Get the thing ID
 	$thingid = $_GET['thingid'];
+	$thing = $app->getThing($thingid, $errors);
+
+	// If there were no errors getting the thing, try to get the comments
+	if (sizeof($errors) == 0) {
+
+		$name = $thing['thingname'];
+		$description = $thing['thingdescription'];
+		$regCode = $thing['thingregistrationcode'];
+		//$attachment = $_FILES['attachment'];
+		$commentsopendate = $thing['commentsopendate'];
+		$commentsclosedate = $thing['commentsclosedate'];
+		$critiquesclosedate = $thing['critiquesclosedate'];
+
+	} else {
+		$errors[] = "Could not load thing";
+	}
+
 }
 
 // If someone is attempting to create a new thing, the process the request
