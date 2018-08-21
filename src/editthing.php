@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 		<?php include('include/messages.php'); ?>
     <div class="editthing">
-			<form enctype="multipart/form-data" method="post" action="list.php">
+			<form enctype="multipart/form-data" method="post" action="editthing.php">
 				<fieldset>
 					<legend class="visuallyhidden">Edit Discussion Form:</legend>
 					<label for="name" class="visuallyhidden">Discussion Title</label>
