@@ -141,6 +141,10 @@ foreach ($comments as $comment) {
 				$index = 0;
 				foreach ($comments as $comment) {
 					$index++;
+          $author = $comment['publicusername'];
+          if ($comment['username'] == $loggedinusername || $loggedinuser['isadmin']) {
+            $author = $author . " (" . $comment['username'] . ")";
+          }
 			?>
 			<li data-index="<?php echo $index; ?>" data-contents="comment">
 				<div class="comment">
@@ -148,7 +152,7 @@ foreach ($comments as $comment) {
 				</div>
 				<div class="commentdetails <?php if ($comment['anon'] != TRUE) { echo "mine"; } ?>">
 					<span class="author">
-						-- <?php echo $comment['username']; ?> on <?php echo $comment['commentposted']; ?>
+						-- <?php echo $author; ?> on <?php echo $comment['commentposted']; ?>
 					</span>
 					<span class="report">
 						<?php if (isset($commentid)) { ?>

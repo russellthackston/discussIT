@@ -1482,6 +1482,15 @@ class Application {
 					}
 				}
 
+				// Add a public (anonymous) username
+				$counter = 1;
+				foreach($comments as &$comment) {
+
+					$comment['publicusername'] = "Commenter #" . $counter;
+					$counter += 1;
+
+				}
+
 				// TODO: Make an admin flag to turn on/off this operation
 				if ($loggedinuser['isadmin'] != 1) {
 
