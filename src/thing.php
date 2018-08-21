@@ -29,36 +29,41 @@ if ($loggedinuserid != NULL) {
 
 // If the page/thing is being loaded for display
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    
+
     // Get the thing id from the URL
     $thingid = $_GET['thingid'];
-    
+
     // Attempt to obtain the thing
     $thing = $app->getThing($thingid, $errors);
-    
+
     // If there were no errors getting the thing, try to get the comments
     if (sizeof($errors) == 0) {
-        
+
         // Attempt to obtain the comments for this thing
         $thing = $app->getThing($thingid, $errors);
-        
+
         // If the thing loaded successfully, load the associated comments
         if (isset($thing)) {
             $comments = $app->getComments($thing['thingid'], $errors);
             $commentingClosed = $app->isCommentingClosed($thing['thingid'], $errors);
         }
-        
+
     } else {
         // Redirect the user to the things page on error
         header("Location: list.php?error=nothing");
         exit();
     }
-    
+
+    // Check for url flag indicating that a new comment was created.
+    if (isset($_GET["updatething"]) && $_GET["updatething"] == "success") {
+        $message = "Thing successfully updated.";
+    }
+
     // Check for url flag indicating that a new comment was created.
     if (isset($_GET["newcomment"]) && $_GET["newcomment"] == "success") {
         $message = "New comment successfully created.";
     }
-    
+
     // Check for url flag indicating that a new comment was created.
     if (isset($_GET["report"])) {
         $message = "Report submitted.";
@@ -67,33 +72,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 // If someone is attempting to create a new comment, process their request
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    
+
     // Pull the comment text from the <form> POST
     $text = $_POST['comment'];
-    
+
     // Pull the thing ID from the form
     $thingid = $_POST['thingid'];
     $attachment = $_FILES['attachment'];
-    
+
     // Get the details of the thing from the database
     $thing = $app->getThing($thingid, $errors);
-    
+
     // Attempt to create the new comment and capture the result flag
     $result = $app->addComment($text, $thingid, $attachment, $errors);
-    
+
     // Check to see if the new comment attempt succeeded
     if ($result == TRUE) {
-        
+
         // Redirect the user to the login page on success
         header("Location: thing.php?newcomment=success&thingid=" . $thingid);
         exit();
-        
+
     } else {
         if (isset($thing)) {
             $comments = $app->getComments($thing['thingid'], $errors);
         }
     }
-    
+
 }
 
 $hasCommented = FALSE;
@@ -116,7 +121,7 @@ foreach ($comments as $comment) {
 	<div class="barba-container" data-page="thing">
 	<main id="wrapper">
 		<?php include('include/messages.php'); ?>
-		
+
 		<div class="thingcontainer">
 			<p style="display: none;">Thing loaded</p>
 			<p class="thingtitle"><?php echo $thing['thingname']; ?></p>
@@ -127,9 +132,9 @@ foreach ($comments as $comment) {
 			<?php } ?>
 		</div>
 		<ul class="comments" data-size="<?php echo sizeof($comments); ?>">
-			<?php 
+			<?php
 				$index = 0;
-				foreach ($comments as $comment) { 
+				foreach ($comments as $comment) {
 					$index++;
 			?>
 			<li data-index="<?php echo $index; ?>" data-contents="comment">
@@ -153,27 +158,27 @@ foreach ($comments as $comment) {
 						<a href="attachments/<?php echo $comment['attachmentid'] . '-' . $comment['filename']; ?>" class="no-barba"><?php echo $comment['filename']; ?></a>
 					</p>
 				<?php } ?>
-	
+
 				<?php if (!$comment['voted'] && !$isadmin) { ?>
-					
+
 					<div class="votingform" id="votingid-<?php echo $comment['commentid']; ?>" data-commentid="<?php echo $comment['commentid']; ?>">
 						<input type="button" name="upvote" onclick="up(this);" value="Contributes" class="up" data-commentid="<?php echo $comment['commentid']; ?>">
 						<input type="button" name="showdown" onclick="showdown(this);" value="Does not contribute" class="down" data-commentid="<?php echo $comment['commentid']; ?>">
 					</div>
-	
+
 					<div class="downvoteform" id="downvotediv-<?php echo $comment['commentid']; ?>" style="display: none;">
 						<textarea class="downvotetext" name="downvotetext-<?php echo $comment['commentid']; ?>" rows="4" placeholder="Briefly explain why this does not contribue to the discussion. Required." id="downvotetext-<?php echo $comment['commentid']; ?>"></textarea><br>
 						<input type="button" name="downvote" onclick="down(this);" value="Save" class="down" data-commentid="<?php echo $comment['commentid']; ?>">
 					</div>
-	
+
 					<div class="processing" id="voteprocessing-<?php echo $comment['commentid']; ?>" style="display: none;">Sending critique to server. Please wait...</div>
-	
+
 					<div class="processing" id="voteprocessed-<?php echo $comment['commentid']; ?>" style="display: none;">Your critique has been saved.</div>
-	
+
 				<?php } ?>
-	
+
 				<div id="votes-<?php echo $comment['commentid']; ?>" class="voting <?php if ($comment['up'] > 0 && $comment['up'] == sizeof($comment['critiques'])) { echo "perfect"; } ?> <?php if ($comment['up'] == 0) { echo "unrated"; } ?>" <?php if (!$isadmin && !$comment['voted']) { echo " style='display: none;'"; } ?>>
-					<?php 
+					<?php
 						if (sizeof($comment['critiques']) > 0) {
 							echo $comment['up'] . " out of " . sizeof($comment['critiques']) . " users thought this comment contributed to the discussion.";
 						} else {
@@ -181,23 +186,23 @@ foreach ($comments as $comment) {
 						}
 					?>
 				</div>
-				
+
 				<div class="critiques" id="critiques-<?php echo $comment['commentid']; ?>" <?php if (!$isadmin && !$comment['voted']) { echo " style='display: none;'"; } ?>>
 					<ul class="critiques">
-					<?php 
+					<?php
 						$critiques = $comment['critiques'];
-						foreach ($critiques as $critique) { 
+						foreach ($critiques as $critique) {
 							if (!empty($critique['critiquetext'])) { ?>
 								<li class="critique <?php if ($critique['addstodiscussion'] == 0) { echo "down"; } else { echo "up"; } ?>">
 									<span class="critiquetext"><?php echo $critique['critiquetext']; ?></span>
 									<span class="critiqueauthor">-- <?php echo $critique['username']; ?></span>
 								</li>
-								
-					<?php 	} 
-						} ?>	
+
+					<?php 	}
+						} ?>
 					</ul>
 				</div>
-	
+
 			</li>
 			<?php } ?>
 		</ul>
@@ -209,11 +214,11 @@ foreach ($comments as $comment) {
 						<label for="comment"class="visuallyhidden">Comment</label>
 						<textarea name="comment" id="comment" rows="6" placeholder="Critique all existing comments before adding your own" required="required"><?php echo $text; ?></textarea>
 						<br/>
-						
+
 						<label for="attachment">Add an image, PDF, etc.</label>
 						<input id="attachment" name="attachment" type="file">
 						<br/>
-						
+
 						<input type="hidden" name="thingid" value="<?php echo $thingid; ?>" />
 						<input type="submit" name="start" value="Add comment" id="submitcomment" disabled="disabled" />
 					</fieldset>
