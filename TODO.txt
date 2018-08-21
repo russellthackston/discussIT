@@ -12,3 +12,5 @@ Enhancements
 * Add sub-tabs to Admin page
 * Add To Do list for students
 * Change Edit Profile page to display student name (and warning if missing)
+* Allow instructor to critique, but calculate that grade separately
+* Redo the grade download to contain all details (e.g. per topic stats)
