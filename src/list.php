@@ -1,5 +1,5 @@
 <?php
-	
+
 // Import the application classes
 require_once('include/classes.php');
 
@@ -48,7 +48,7 @@ if (isset($_GET["error"]) && $_GET["error"] == "nothing") {
 if (isset($_GET["newthing"]) && $_GET["newthing"] == "success") {
 	$message = "Thing successfully created.";
 }
-	
+
 // Get the my registration code and the full list
 $myCode = $loggedInUser['registrationcode'];
 $allCodes = $app->getRegistrationCodes($errors);
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 // If someone is attempting to create a new thing, the process the request
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	
+
 	if (isset($_POST['filter']) && $_POST['filter'] == 'discussions') {
 
 		// Pull the filter text from the <form> POST
@@ -103,14 +103,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 		// Attempt to create the new thing and capture the result flag
 		$result = $app->addThing($name, $description, $regCode, $attachment, $commentsopendate, $commentsclosedate, $critiquesclosedate, $errors);
-	
+
 		// Check to see if the new thing attempt succeeded
 		if ($result == TRUE) {
-	
+
 			// Redirect the user to the login page on success
 		    header("Location: list.php?newthing=success");
 			exit();
-	
+
 		}
 
 	}
@@ -128,9 +128,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	<div class="barba-container">
 	<main id="wrapper">
 		<h2>Topics for <?php echo $loggedinuserregistrationcode; ?></h2>
-		
+
 		<?php include('include/messages.php'); ?>
-		
+
 		<!--div class="search">
 			<form action="list.php" method="post">
 				<label for="search">Filter:</label>
@@ -144,9 +144,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			<li>No discussions found. Next discussion starts <?php echo $nextthing['commentsopendate']; ?> </li>
 			<?php } ?>
 			<?php foreach ($things as $thing) { ?>
-				<?php 
+				<?php
 					$excerpt = substr(strip_tags($thing['thingdescription']), 0, 125);
-					$excerpt = substr($excerpt, 0, strrpos($excerpt, " ")); 
+					$excerpt = substr($excerpt, 0, strrpos($excerpt, " "));
 					$excerpt = '"' . $excerpt . '..."';
 				?>
 				<?php $sentiment = $thing['total'] == 0 ? 0 : round(($thing['up'] / $thing['total']) * 100); ?>
@@ -169,9 +169,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<span class="note">Comments close: <?php echo $thing['commentsclosedate']; ?></span>
 					<br>
 					<span class="note">Critiques close: <?php echo $thing['critiquesclosedate']; ?></span>
+					<?php if ($isAdmin) { ?>
+						<br>
+	          <a href="editthing.php?thingid=<?php echo $thing['thingid']; ?>">[Edit]</a>
+	        <?php } ?>
+
 				</li>
 			<?php } ?>
-			
+
 		</ul>
 		<div class="calendar">
 			<a href="calendar.php" class="note">[View full calendar]</a>
@@ -185,26 +190,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<label for="name" class="visuallyhidden">Discussion Title</label>
 					<input type="text" name="name" id="name" placeholder="Enter a discussion title" value="<?php echo $name; ?>"  required="required"/>
 					<br/>
-					
+
 					<label for="description" class="visuallyhidden">Discussion Description</label>
 					<textarea name="description" id="description" rows="10" placeholder="Enter a description" required="required"><?php echo $description; ?></textarea>
 					<br/>
-					
+
 					<label for="commentsopendate">Comments Open Date:</label>
 					<br/>
 					<input type="datetime-local" name="commentsopendate" id="commentsopendate" value="<?php echo $commentsopendate; ?>" required="required" />
 					<br/>
-					
+
 					<label for="commentsclosedate">Comments Close Date:</label>
 					<br/>
 					<input type="datetime-local" name="commentsclosedate" id="commentsclosedate" value="<?php echo $commentsclosedate; ?>" required="required" />
 					<br/>
-					
+
 					<label for="critiquesclosedate">Critiques Close Date:</label>
 					<br/>
 					<input type="datetime-local" name="critiquesclosedate" id="critiquesclosedate" value="<?php echo $critiquesclosedate; ?>" required="required" />
 					<br/>
-					
+
 					<label for="code">Course:</label>
 					<br/>
 					<select id="code" name="code">
@@ -223,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			</form>
 		</div>
 		<?php } ?>
-	
+
 	</main>
 	</div>
 	</div>
