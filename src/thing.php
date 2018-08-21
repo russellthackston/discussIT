@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     // Check for url flag indicating that a new comment was created.
     if (isset($_GET["updatething"]) && $_GET["updatething"] == "success") {
-        $message = "Thing successfully updated.";
+        $message = "Topic successfully updated.";
     }
 
     // Check for url flag indicating that a new comment was created.
