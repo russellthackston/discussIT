@@ -17,8 +17,8 @@ $app->protectPage($errors);
 $commentingClosed = FALSE;
 
 // Check for admin user
-$user = $app->getSessionUser($errors);
-$loggedinuserid = $user["userid"];
+$loggedinuser = $app->getSessionUser($errors);
+$loggedinuserid = $loggedinuser["userid"];
 $isadmin = FALSE;
 $text = "";
 
@@ -142,7 +142,7 @@ foreach ($comments as $comment) {
 				foreach ($comments as $comment) {
 					$index++;
           $author = $comment['publicusername'];
-          if ($comment['username'] == $loggedinusername || $loggedinuser['isadmin'] == 1) {
+          if ($loggedinuser['isadmin'] != 0 || $comment['username'] == $loggedinusername) {
             $author = $author . " (" . $comment['username'] . ")";
           }
 			?>
