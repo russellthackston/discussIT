@@ -126,7 +126,12 @@ foreach ($comments as $comment) {
 			<p style="display: none;">Thing loaded</p>
 			<p class="thingtitle"><?php echo $thing['thingname']; ?></p>
 			<p class="thingdescription"><?php echo nl2br($thing['thingdescription']); ?></p>
-			<p class="thingtagline"><?php echo $thing['username']; ?> on <?php echo $thing['thingcreated']; ?></p>
+			<p class="thingtagline">
+        <?php echo $thing['username']; ?> on <?php echo $thing['thingcreated']; ?>
+        <?php if ($isAdmin) { ?>
+          <a href="editthing?thingid=<?php echo $thingid; ?>">[Edit Topic]</a>
+        <?php } ?>
+      </p>
 			<?php if ($thing['filename'] != NULL) { ?>
 				<p class="thingattachment"><a href="attachments/<?php echo $thing['thingattachmentid'] . '-' . $thing['filename']; ?>" class="no-barba"><?php echo $thing['filename']; ?></a></p>
 			<?php } ?>
