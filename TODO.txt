@@ -1,6 +1,3 @@
-Bugs
-----
-
 Enhancements
 ------------
 * Exclude topic from grade calculation (admins only).
