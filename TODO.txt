@@ -14,3 +14,4 @@ Enhancements
 * Change Edit Profile page to display student name (and warning if missing)
 * Allow instructor to critique, but calculate that grade separately
 * Redo the grade download to contain all details (e.g. per topic stats)
+* Add installer
