@@ -142,7 +142,7 @@ foreach ($comments as $comment) {
 				foreach ($comments as $comment) {
 					$index++;
           $author = $comment['publicusername'];
-          if ($comment['username'] == $loggedinusername || $loggedinuser['isadmin']) {
+          if ($comment['username'] == $loggedinusername || $loggedinuser['isadmin'] == 1) {
             $author = $author . " (" . $comment['username'] . ")";
           }
 			?>
