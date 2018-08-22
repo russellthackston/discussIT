@@ -28,17 +28,16 @@ class Application {
 
 	function databaseReady() {
 
-		$result = TRUE;
+		$result = FALSE;
 
 		// Connect to the database
 		$dbh = $this->getConnection();
 
 		// Construct a SQL statement to perform the insert operation
-		$sql = "SHOW TABLES LIKE :table";
+		$sql = "SHOW TABLES LIKE 'user'";
 
 		// Run the SQL select and capture the result code
 		$stmt = $dbh->prepare($sql);
-		$stmt->bindParam(":table", 'users');
 		$stmt->execute();
 		if ($stmt->rowCount() == 1) {
 			$result = TRUE;
