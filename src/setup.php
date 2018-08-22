@@ -1,14 +1,3 @@
-<?php
-
-// Import the application classes
-require_once('include/classes.php');
-
-// Create an instance of the Application class
-$app = new Application();
-$app->setup();
-
-?>
-
 <!doctype html>
 <html lang="en">
 <?php include 'include/head.php'; ?>
@@ -19,12 +8,7 @@ $app->setup();
 	<main id="wrapper">
 		<h2>IT 3234 Class Discussions</h2>
 		<p>
-			This private discussion site is for students
-			enrolled in Dr. Thackston's IT courses.
-			Students currently registered in one of my courses may
-			<a href="register.php">create an account</a>
-			or proceed directly to the
-			<a href="login.php">login page</a>.
+			First time setup required.
 		</p>
 	</main>
 	</div>
