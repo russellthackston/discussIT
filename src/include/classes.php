@@ -34,7 +34,7 @@ class Application {
 		$dbh = $this->getConnection();
 
 		// Construct a SQL statement to perform the insert operation
-		$sql = "SHOW TABLES LIKE 'user'";
+		$sql = "SHOW TABLES LIKE 'users'";
 
 		// Run the SQL select and capture the result code
 		$stmt = $dbh->prepare($sql);
