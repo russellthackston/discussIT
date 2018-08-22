@@ -19,6 +19,35 @@ class Application {
 			error_reporting(E_ALL);
 		}
 
+		// check for first-time setup of database
+		if (!$this->databaseReady()) {
+			header('Location: setup.php');
+			exit();
+		}
+	}
+
+	function databaseReady() {
+
+		$result = TRUE;
+
+		// Connect to the database
+		$dbh = $this->getConnection();
+
+		// Construct a SQL statement to perform the insert operation
+		$sql = "SHOW TABLES LIKE :table";
+
+		// Run the SQL select and capture the result code
+		$stmt = $dbh->prepare($sql);
+		$stmt->bindParam(":table", 'users');
+		$stmt->execute();
+		if ($stmt->rowCount() == 1) {
+			$result = TRUE;
+		}
+
+		$dbh = NULL;
+
+		return $result;
+
 	}
 
 	// Writes a message to the debug message array for printing in the footer.
