@@ -9,23 +9,23 @@ function activateNewCommentForm() {
 	if (!form) {
 		return;
 	}
-    // Check for critiques on all existing comments before allowing submit
-    var allHidden = true;
-    var forms = document.getElementsByClassName("votingform");
-    for(var i=0; i<forms.length; i++) {
-	    // If there are any visible critique forms, prevent submit
-        if (forms[i].style.display != "none") {
-	        allHidden = false;
-	        break;
-        }
-    }
-    if (allHidden) {
-	    document.getElementById("comment").placeholder = "Add a comment";
-	    document.getElementById("submitcomment").disabled = false;
-    } else {
-	    document.getElementById("comment").placeholder = "Critique all existing comments before adding your own";
-	    document.getElementById("submitcomment").disabled = true;
-    }
+  // Check for critiques on all existing comments before allowing submit
+  var allHidden = true;
+  var forms = document.getElementsByClassName("votingform");
+  for(var i=0; i<forms.length; i++) {
+    // If there are any visible critique forms, prevent submit
+      if (forms[i].style.display != "none") {
+        allHidden = false;
+        break;
+      }
+  }
+  if (allHidden) {
+    document.getElementById("comment").placeholder = "Add a comment";
+    document.getElementById("submitcomment").disabled = false;
+  } else {
+    document.getElementById("comment").placeholder = "Critique all existing comments before adding your own";
+    document.getElementById("submitcomment").disabled = true;
+  }
 }
 
 function processNewCommentForm(e) {
@@ -190,11 +190,13 @@ function displayCritiques(critiques, commentid) {
 	var votesElement = document.getElementById("votes-" + commentid);
 	votesElement.style.display = "block";
 
-	// Hide the up and down vote div element
+	// Remove the voting forms
+	var votingformdiv = document.getElementById("votingform-" + commentid);
 	var downvotediv = document.getElementById("downvotediv-" + commentid);
-	downvotediv.style.display = "none";
 	var upvotediv = document.getElementById("upvotediv-" + commentid);
-	upvotediv.style.display = "none";
+	votingformdiv.remove();
+	upvotediv.remove();
+	downvotediv.remove();
 
 	// Display the comments
 	var up = 0;
@@ -228,14 +230,6 @@ function displayCritiques(critiques, commentid) {
 	var total = up + down;
 	votesElement.innerHTML = (up + " out of " + total +
 		" users thought this comment contributed to the discussion.");
-
-	// Remove the voting form
-	var upvotediv = document.getElementById("upvotediv-" + commentid);
-	upvotediv.remove();
-
-	// Remove the downvote div
-	var downvotingform = document.getElementById("downvotediv-" + commentid);
-	downvotingform.remove();
 
 	activateNewCommentForm();
 
