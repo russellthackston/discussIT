@@ -177,7 +177,7 @@ foreach ($comments as $comment) {
 					</div>
 
 					<div class="upvoteform" id="upvotediv-<?php echo $comment['commentid']; ?>" style="display: none;">
-            <label for="upvotetext-<?php echo $comment['commentid']; ?>" class="visuallyhidden">Provide a comment related to your critique:</label>
+            <label for="upvotetext-<?php echo $comment['commentid']; ?>" class="visuallyhidden">Provide an optional comment related to your critique:</label>
 						<textarea class="upvotetext" name="upvotetext-<?php echo $comment['commentid']; ?>" rows="4" placeholder="Optional. Provide a comment related to your critique." id="upvotetext-<?php echo $comment['commentid']; ?>"></textarea><br>
 						<input type="button" name="upvote" onclick="up(this);" value="Save positive critique" class="up" data-commentid="<?php echo $comment['commentid']; ?>">
 					</div>
