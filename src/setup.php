@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 						$this->debug($e);
 						die();
 					}
-					$sql = file_get_contents('discussion.sql');
+					$sql = file_get_contents('sql/discussion.sql');
 					$dbh->exec($sql);
 
 					// Create the first registration code
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				<a href="login.php">login page</a>
 				and test things out.
 				If everything is in working order,
-				I recommend you delete setup.php from the server. 
+				I recommend you delete setup.php from the server.
 			</p>
 		<?php } ?>
 		<?php if (isset($missingdata) && $missingdata)  { ?>

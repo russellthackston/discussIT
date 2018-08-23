@@ -48,6 +48,12 @@ CREATE TABLE critiques (
   critiquetext text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE dbversion (
+  dbversion INT NOT NULL
+) ENGINE = InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO dbversion (dbversion) VALUES ('1');
+
 CREATE TABLE emailvalidation (
   emailvalidationid varchar(32) NOT NULL COMMENT 'CSPRN',
   userid varchar(32) NOT NULL,

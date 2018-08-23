@@ -9,6 +9,8 @@
 
 class Application {
 
+  private $codeversion = 1;
+
 	public function setup() {
 
 		// Check to see if the client has a cookie called "debug" with a value of "true"
@@ -24,6 +26,8 @@ class Application {
 			header('Location: setup.php');
 			exit();
 		}
+
+		$this->checkForDatabaseUpdates();
 	}
 
 	function databaseReady() {
@@ -51,6 +55,47 @@ class Application {
 
 		return $result;
 
+	}
+
+	function checkForDatabaseUpdates() {
+
+		// Declare an errors array
+		$errors = [];
+
+		// Connect to the database
+		$dbh = $this->getConnection();
+
+		// Construct a SQL statement to perform the insert operation
+		$sql = "SELECT dbversion FROM dbversion LIMIT 1";
+
+		// Run the SQL select and capture the result code
+		$stmt = $dbh->prepare($sql);
+		$stmt->execute();
+		$dbversion = $stmt->fetch(PDO::FETCH_ASSOC)['dbversion'];
+
+		// Compare to the code version
+		if ($dbversion < $codeversion) {
+			$this->updateDatabase($dbh, $dbversion, $codeversion);
+		}
+
+		$dbh = NULL;
+
+	}
+
+	// Updates the database structure to match this code base using the SQL files found in the 'sql' folder.
+	function updateDatabase($dbh, $dbversion, $codeversion) {
+		for ($i = $dbversion; $i < $codeversion; $i++) {
+			$num = $i + 1;
+			$sqlfilename = "sql/update-$num.sql";
+			if (file_exists($sqlfilename)) {
+				$sql = file_get_contents($sqlfilename);
+				$dbh->exec($sql);
+			}
+		}
+
+		$sql = "UPDATE dbversion SET dbversion = $codeversion";
+		$stmt = $dbh->prepare($sql);
+		$stmt->execute();
 	}
 
 	// Writes a message to the debug message array for printing in the footer.
