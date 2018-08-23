@@ -3,6 +3,7 @@
 	--springBud: #DCEAB3;
 	--desertSand: #ECC2A3;
 	--goldFusion: #7B8B4A;
+	--cancelyellow: #ffe066;
 }
 
 
@@ -318,7 +319,7 @@ input[type="button"].down {
 }
 
 input[type="button"].hideupdown {
-	background-color: gray;
+	background-color: var(--cancelyellow);
 	margin-right: 5px;
 	padding-right: 15px;
 	border-radius: 0px 0px 0px 0px;

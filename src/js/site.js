@@ -76,7 +76,7 @@ function showup(elem) {
 	var upvotediv = document.getElementById("upvotediv-" + commentid);
 	var downvotediv = document.getElementById("downvotediv-" + commentid);
 	var cancelbutton = document.getElementById("hideupdown-" + commentid);
-	cancelbutton.style.display = "block";
+	cancelbutton.style.display = "inline";
 	upvotediv.style.display = "block";
 	downvotediv.style.display = "none";
 }
@@ -130,7 +130,7 @@ function showdown(elem) {
 	var upvotediv = document.getElementById("upvotediv-" + commentid);
 	var downvotediv = document.getElementById("downvotediv-" + commentid);
 	var cancelbutton = document.getElementById("hideupdown-" + commentid);
-	cancelbutton.style.display = "block";
+	cancelbutton.style.display = "inline";
 	upvotediv.style.display = "none";
 	downvotediv.style.display = "block";
 }
