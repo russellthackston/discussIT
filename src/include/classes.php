@@ -30,8 +30,7 @@ class Application {
 
 		$result = FALSE;
 
-		if (!file_exists('credentials.php')) {
-			echo "No credentials file"; exit();
+		if (!file_exists('include/credentials.php')) {
 			return FALSE;
 		}
 

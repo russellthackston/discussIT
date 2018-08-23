@@ -1,14 +1,3 @@
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
-
 CREATE TABLE attachments (
   attachmentid varchar(32) NOT NULL COMMENT 'CSPRN',
   filename varchar(255) NOT NULL
@@ -78,12 +67,6 @@ CREATE TABLE registrationcodes (
   starttime time NOT NULL,
   endtime time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-INSERT INTO registrationcodes (registrationcode, starttime, endtime) VALUES
-('Fall2018', '10:10:00', '11:25:00'),
-('Fall2019', '14:30:00', '15:45:00'),
-('Fall2020', '12:20:00', '13:35:00'),
-('QualityAssurance', '10:10:00', '11:25:00');
 
 CREATE TABLE reportcodes (
   reportcodeid int(32) NOT NULL,
@@ -253,8 +236,3 @@ ALTER TABLE userregistrations
 
 ALTER TABLE usersessions
   ADD CONSTRAINT usersessions_ibfk_1 FOREIGN KEY (userid) REFERENCES `users` (userid) ON UPDATE CASCADE;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
