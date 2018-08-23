@@ -320,6 +320,7 @@ input[type="button"].down {
 
 input[type="button"].hideupdown {
 	background-color: var(--cancelyellow);
+	margin-left: 15px;
 	margin-right: 5px;
 	padding-right: 15px;
 	border-radius: 0px 0px 0px 0px;
