@@ -1,11 +1,20 @@
 <?php
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	$servername = $_POST['servername'];
+	$serverdb = $_POST['serverdbname'];
+	$serverusername = $_POST['serverusername'];
+	$serverpassword = $_POST['serverpassword'];
 	if (isset($_POST['testdbsetup'])) {
-		echo "Test DB Setup`";
+		$testconnect = TRUE;
+		try {
+			$dbh = new PDO("mysql:host=$servername;dbname=$serverdb", $serverusername, $serverpassword);
+		} catch (PDOException $e) {
+			$testconnect = FALSE;
+		}
 	}
 	if (isset($_POST['setupdb'])) {
-		echo "Setup DB";
+
 	}
 }
 
@@ -23,18 +32,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			First time setup required.
 			Please provide the following information and click the Setup button.
 		</p>
+		<?php if (isset($testconnect) && $testconnect)  { ?>
+			<p>Connection successful.</p>
+		<?php } ?>
+		<?php if (isset($testconnect) && !$testconnect)  { ?>
+			<p>Connection failed.</p>
+		<?php } ?>
 		<form action="setup.php" method="post" name="setupdbform">
 			<label for="servername">Database server name:</label>
-			<input type="text" name="servername" id="servername">
-			<br>
-			<label for="serverusername">Database username:</label>
-			<input type="text" name="serverusername" id="serverusername">
+			<input type="text" name="servername" id="servername" value="<?php echo $servername; ?>">
 			<br>
 			<label for="serverdbname">Database name:</label>
-			<input type="text" name="serverdbname" id="serverdbname">
+			<input type="text" name="serverdbname" id="serverdbname" value="<?php echo $serverdb; ?>">
+			<br>
+			<label for="serverusername">Database username:</label>
+			<input type="text" name="serverusername" id="serverusername" value="<?php echo $serverusername; ?>">
 			<br>
 			<label for="serverpassword">Database password:</label>
-			<input type="password" name="serverpassword" id="serverpassword">
+			<input type="password" name="serverpassword" id="serverpassword" value="<?php echo $serverpassword; ?>">
 			<br>
 			<input type="submit" name="testdbsetup" id="testdbsetup" value="Test Settings">
 			<br>
