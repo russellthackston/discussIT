@@ -1,3 +1,16 @@
+<?php
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	if (isset($_POST['testdbsetup'])) {
+		echo "Test DB Setup`";
+	}
+	if (isset($_POST['setupdb'])) {
+		echo "Setup DB";
+	}
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
 <?php include 'include/head.php'; ?>
@@ -23,7 +36,9 @@
 			<label for="serverpassword">Database password:</label>
 			<input type="password" name="serverpassword" id="serverpassword">
 			<br>
-			<input type="submit" name="setupdb" id="setupdb">Setup!</input>
+			<input type="submit" name="testdbsetup" id="testdbsetup" value="Test Settings">
+			<br>
+			<input type="submit" name="setupdb" id="setupdb" value="Setup!">
 		</form>
 	</main>
 	</div>
