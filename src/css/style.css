@@ -291,8 +291,15 @@ div.calendar a{
 }
 
 ul.critiques {
-	list-style-image: url('images/critique_15x15.png');
 	margin-top: 10px;
+}
+
+ul.critiques.up {
+	list-style-image: url('images/critiqueup_15x15.png');
+}
+
+ul.critiques.down {
+	list-style-image: url('images/critiquedown_15x15.png');
 }
 
 ul.critiques li{
