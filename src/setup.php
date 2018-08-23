@@ -115,9 +115,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			Please provide the following information and click the Setup button.
 		</p>
 		<?php if (isset($setupcomplete) && $setupcomplete)  { ?>
-			<p>Setup complete. Go to the
-				<a href="login.php">login page</a> 
-				and test things out.</p>
+			<p>
+				Setup complete.
+				Go to the
+				<a href="login.php">login page</a>
+				and test things out.
+				If everything is in working order,
+				I recommend you delete setup.php from the server. 
+			</p>
 		<?php } ?>
 		<?php if (isset($missingdata) && $missingdata)  { ?>
 			<p>Please complete all fields.</p>
