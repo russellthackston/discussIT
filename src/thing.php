@@ -173,7 +173,7 @@ foreach ($comments as $comment) {
 					<div class="votingform" id="votingform-<?php echo $comment['commentid']; ?>" data-commentid="<?php echo $comment['commentid']; ?>">
 						<input type="button" name="showup" onclick="showup(this);" value="Contributes" class="up" data-commentid="<?php echo $comment['commentid']; ?>">
             <input type="button" name="showdown" onclick="showdown(this);" value="Does not contribute" class="down" data-commentid="<?php echo $comment['commentid']; ?>">
-            <input type="button" name="hideupdown" onclick="hideupdown(this);" value="Cancel" class="hideupdown" data-commentid="<?php echo $comment['commentid']; ?>" style="display: none;">
+            <input type="button" name="hideupdown" onclick="hideupdown(this);" value="Cancel" class="hideupdown" id="hideupdown-<?php echo $comment['commentid']; ?>" data-commentid="<?php echo $comment['commentid']; ?>" style="display: none;">
 					</div>
 
 					<div class="upvoteform" id="upvotediv-<?php echo $comment['commentid']; ?>" style="display: none;">
