@@ -25,6 +25,7 @@ $description = "";
 $commentsopendate = "";
 $commentsclosedate = "";
 $critiquesclosedate = "";
+$includeingrade = FALSE;
 
 // Attempt to obtain the list of things
 $things = $app->getThings($errors);
@@ -53,7 +54,6 @@ if (isset($_GET["newthing"]) && $_GET["newthing"] == "success") {
 $myCode = $loggedInUser['registrationcode'];
 $allCodes = $app->getRegistrationCodes($errors);
 $justCodes = array_column($allCodes, 'registrationcode');
-
 
 $starthour = date("H");
 $startminute = date("i");
@@ -100,9 +100,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$commentsopendate = $_POST['commentsopendate'];
 		$commentsclosedate = $_POST['commentsclosedate'];
 		$critiquesclosedate = $_POST['critiquesclosedate'];
+		if (isset($_POST['includeingrade']) && $_POST['includeingrade'] == 'yes') {
+			$includeingrade = TRUE;
+		}
 
 		// Attempt to create the new thing and capture the result flag
-		$result = $app->addThing($name, $description, $regCode, $attachment, $commentsopendate, $commentsclosedate, $critiquesclosedate, $errors);
+		$result = $app->addThing($name, $description, $regCode, $attachment, $commentsopendate, $commentsclosedate, $critiquesclosedate, $includeingrade, $errors);
 
 		// Check to see if the new thing attempt succeeded
 		if ($result == TRUE) {
@@ -210,6 +213,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<label for="critiquesclosedate">Critiques Close Date:</label>
 					<br/>
 					<input type="datetime-local" name="critiquesclosedate" id="critiquesclosedate" value="<?php echo $critiquesclosedate; ?>" required="required" />
+					<br/>
+
+					<label for="includeingrade">Include in grade calculation:</label>
+					<br/>
+					<input type="checkbox" name="includeingrade" id="includeingrade" value="yes" <?php if ($includeingrade) { ?>checked<?php } ?> />
 					<br/>
 
 					<label for="code">Course:</label>

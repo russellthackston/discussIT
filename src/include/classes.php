@@ -1846,7 +1846,7 @@ class Application {
 	}
 
 	// Adds a new thing to the database
-	public function addThing($name, $description, $registrationcode, $attachment, $commentsopendate, $commentsclosedate, $critiquesclosedate, &$errors) {
+	public function addThing($name, $description, $registrationcode, $attachment, $commentsopendate, $commentsclosedate, $critiquesclosedate, $includeingrade, &$errors) {
 
 		// Get the user id from the session
 		$user = $this->getSessionUser($errors);
@@ -1875,9 +1875,9 @@ class Application {
 				// Construct a SQL statement to perform the insert operation
 				$sql = "INSERT INTO things " .
 					"(thingid, thingname, thingdescription, thingcreated, thinguserid, thingattachmentid, thingregistrationcode, " .
-					"commentsopendate, commentsclosedate, critiquesclosedate) " .
+					"commentsopendate, commentsclosedate, critiquesclosedate, includeingrade) " .
 					"VALUES (:thingid, :name, :thingdescription, now(), :userid, :attachmentid, :registrationcode, " .
-					":commentsopendate, :commentsclosedate, :critiquesclosedate)";
+					":commentsopendate, :commentsclosedate, :critiquesclosedate, :includeingrade)";
 
 				// Run the SQL insert and capture the result code
 				$stmt = $dbh->prepare($sql);
@@ -1889,7 +1889,8 @@ class Application {
 				$stmt->bindParam(":registrationcode", $registrationcode);
 				$stmt->bindParam(":commentsopendate", $commentsopendate);
 				$stmt->bindParam(":commentsclosedate", $commentsclosedate);
-				$stmt->bindParam(":critiquesclosedate", $critiquesclosedate);
+        $stmt->bindParam(":critiquesclosedate", $critiquesclosedate);
+        $stmt->bindParam(":includeingrade", $includeingrade);
 				$result = $stmt->execute();
 
 				// If the query did not run successfully, add an error message to the list
