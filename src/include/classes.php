@@ -74,7 +74,7 @@ class Application {
 		$dbversion = $stmt->fetch(PDO::FETCH_ASSOC)['dbversion'];
 
 		// Compare to the code version
-		if ($dbversion < $this->$codeversion) {
+		if ($dbversion < $this->codeversion) {
 			$this->updateDatabase($dbh, $dbversion, $codeversion);
 		}
 
