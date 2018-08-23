@@ -178,12 +178,12 @@ foreach ($comments as $comment) {
 
 					<div class="upvoteform" id="upvotediv-<?php echo $comment['commentid']; ?>" style="display: none;">
 						<textarea class="upvotetext" name="upvotetext-<?php echo $comment['commentid']; ?>" rows="4" placeholder="Optional. Provide a comment related to your critique." id="upvotetext-<?php echo $comment['commentid']; ?>"></textarea><br>
-						<input type="button" name="upvote" onclick="up(this);" value="Save" class="up" data-commentid="<?php echo $comment['commentid']; ?>">
+						<input type="button" name="upvote" onclick="up(this);" value="Save positive critique" class="up" data-commentid="<?php echo $comment['commentid']; ?>">
 					</div>
 
           <div class="downvoteform" id="downvotediv-<?php echo $comment['commentid']; ?>" style="display: none;">
 						<textarea class="downvotetext" name="downvotetext-<?php echo $comment['commentid']; ?>" rows="4" placeholder="Briefly explain why this does not contribue to the discussion. Required." id="downvotetext-<?php echo $comment['commentid']; ?>"></textarea><br>
-						<input type="button" name="downvote" onclick="down(this);" value="Save" class="down" data-commentid="<?php echo $comment['commentid']; ?>">
+						<input type="button" name="downvote" onclick="down(this);" value="Save negative critique" class="down" data-commentid="<?php echo $comment['commentid']; ?>">
 					</div>
 
 					<div class="processing" id="voteprocessing-<?php echo $comment['commentid']; ?>" style="display: none;">Sending critique to server. Please wait...</div>
