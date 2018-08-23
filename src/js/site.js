@@ -9,23 +9,23 @@ function activateNewCommentForm() {
 	if (!form) {
 		return;
 	}
-    // Check for critiques on all existing comments before allowing submit
-    var allHidden = true;
-    var forms = document.getElementsByClassName("votingform");
-    for(var i=0; i<forms.length; i++) {
-	    // If there are any visible critique forms, prevent submit
-        if (forms[i].style.display != "none") {
-	        allHidden = false;
-	        break;
-        }
-    }
-    if (allHidden) {
-	    document.getElementById("comment").placeholder = "Add a comment";
-	    document.getElementById("submitcomment").disabled = false;
-    } else {
-	    document.getElementById("comment").placeholder = "Critique all existing comments before adding your own";
-	    document.getElementById("submitcomment").disabled = true;
-    }
+  // Check for critiques on all existing comments before allowing submit
+  var allHidden = true;
+  var forms = document.getElementsByClassName("votingform");
+  for(var i=0; i<forms.length; i++) {
+    // If there are any visible critique forms, prevent submit
+      if (forms[i].style.display != "none") {
+        allHidden = false;
+        break;
+      }
+  }
+  if (allHidden) {
+    document.getElementById("comment").placeholder = "Add a comment";
+    document.getElementById("submitcomment").disabled = false;
+  } else {
+    document.getElementById("comment").placeholder = "Critique all existing comments before adding your own";
+    document.getElementById("submitcomment").disabled = true;
+  }
 }
 
 function processNewCommentForm(e) {
@@ -60,10 +60,10 @@ function setupCommentForm() {
 function replacePage(href, target) {
 	// Remove the query string parameters
 	href = href.replace(/\?\S+/g, "");
-	
+
 	// Replace the page name with the new one
 	href = href.replace(/\w+\.php/g, target);
-	
+
 	// If there was not page name to replace (e.g. "http://example.com/"), add the new one
 	if (!href.endsWith(target)) {
 		href = href + target;
@@ -71,13 +71,34 @@ function replacePage(href, target) {
 	return href;
 }
 
+function showup(elem) {
+	var commentid = elem.getAttribute('data-commentid');
+	var upvotediv = document.getElementById("upvotediv-" + commentid);
+	var downvotediv = document.getElementById("downvotediv-" + commentid);
+	var cancelbutton = document.getElementById("hideupdown-" + commentid);
+	cancelbutton.style.display = "inline";
+	upvotediv.style.display = "block";
+	downvotediv.style.display = "none";
+}
+
+function hideupdown(elem) {
+	var commentid = elem.getAttribute('data-commentid');
+	var upvotediv = document.getElementById("upvotediv-" + commentid);
+	var downvotediv = document.getElementById("downvotediv-" + commentid);
+	var cancelbutton = document.getElementById("hideupdown-" + commentid);
+	cancelbutton.style.display = "none";
+	upvotediv.style.display = "none";
+	downvotediv.style.display = "none";
+}
+
 function up(elem) {
 	// Get the vote details and display a processing message
 	var commentid = elem.getAttribute('data-commentid');
-	var formElement = document.getElementById("votingid-" + commentid);
+	var upvotetext = document.getElementById("upvotetext-" + commentid);
+	var upvotediv = document.getElementById("upvotediv-" + commentid);
 	var processingElement = document.getElementById("voteprocessing-" + commentid);
 	var processedElement = document.getElementById("voteprocessed-" + commentid);
-	formElement.style.display = "none";
+	upvotediv.style.display = "none";
 	processingElement.style.display = "block";
 
 	// Send the vote to the server
@@ -86,9 +107,9 @@ function up(elem) {
 	var data = {
 		"commentid" : commentid,
 		"vote" : "up",
-		"text" : ""
+		"text" : upvotetext.value
 	};
-	
+
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -106,28 +127,30 @@ function up(elem) {
 
 function showdown(elem) {
 	var commentid = elem.getAttribute('data-commentid');
-	var formElement = document.getElementById("votingid-" + commentid);
+	var upvotediv = document.getElementById("upvotediv-" + commentid);
 	var downvotediv = document.getElementById("downvotediv-" + commentid);
-	formElement.style.display = "none";
+	var cancelbutton = document.getElementById("hideupdown-" + commentid);
+	cancelbutton.style.display = "inline";
+	upvotediv.style.display = "none";
 	downvotediv.style.display = "block";
 }
 
 function down(elem) {
-	
+
 	// Validate input
 	var commentid = elem.getAttribute('data-commentid');
 	var downvotetext = document.getElementById("downvotetext-" + commentid);
 	if (!downvotetext.value) {
 
 		alert("Please provide an explanation.");
-		
+
 	} else {
-		
+
 		// Get the vote details and display a processing message
-		var formElement = document.getElementById("votingid-" + commentid);
+		var upvotediv = document.getElementById("upvotediv-" + commentid);
 		var processingElement = document.getElementById("voteprocessing-" + commentid);
 		var processedElement = document.getElementById("voteprocessed-" + commentid);
-		formElement.style.display = "none";
+		upvotediv.style.display = "none";
 		processingElement.style.display = "block";
 
 		// Send the vote to the server
@@ -138,7 +161,7 @@ function down(elem) {
 			"vote" : "down",
 			"text" : downvotetext.value
 		};
-		
+
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
@@ -166,10 +189,14 @@ function displayCritiques(critiques, commentid) {
 	// Display the votes summary
 	var votesElement = document.getElementById("votes-" + commentid);
 	votesElement.style.display = "block";
-	
-	// Hide the form element
-	var formElement = document.getElementById("downvotediv-" + commentid);
-	formElement.style.display = "none";
+
+	// Remove the voting forms
+	var votingformdiv = document.getElementById("votingform-" + commentid);
+	var downvotediv = document.getElementById("downvotediv-" + commentid);
+	var upvotediv = document.getElementById("upvotediv-" + commentid);
+	votingformdiv.remove();
+	upvotediv.remove();
+	downvotediv.remove();
 
 	// Display the comments
 	var up = 0;
@@ -201,17 +228,9 @@ function displayCritiques(critiques, commentid) {
 
 	// Update the counters
 	var total = up + down;
-	votesElement.innerHTML = (up + " out of " + total + 
+	votesElement.innerHTML = (up + " out of " + total +
 		" users thought this comment contributed to the discussion.");
-		
-	// Remove the voting form
-	var votingform = document.getElementById("votingid-" + commentid);
-	votingform.remove();
-	
-	// Remove the downvote div
-	var downvotingform = document.getElementById("downvotediv-" + commentid);
-	downvotingform.remove();
-		
+
 	activateNewCommentForm();
 
 }
@@ -238,7 +257,7 @@ function toggleMoreInfo(elem) {
 			element.disabled = "disabled";
 		}
 	});
-	
+
 	// Enable this text box
 	if(elem.getAttribute("data-moreinfoneeded") == "1") {
 		var tbox = document.getElementById("moreinfoneeded-" + elem.value);
@@ -287,14 +306,14 @@ function fadeInWrapper() {
 
 function reloadWrapper(url) {
 	fadeOutWrapper();
-	
+
 	// Load the new page in a new div off the right side of the screen
 	var newWrapper = document.createElement('div');
 	newWrapper.setAttribute('id', 'newwrapper');
 	newWrapper.style.opacity = 0.0;
 	newWrapper.display = "none";
 	document.body.insertBefore(newWrapper, document.getElementById('sitefooter'));
-	
+
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -327,7 +346,7 @@ function showPage(target) {
     var propValue;
 	for(var propName in event) {
 	    propValue = event[propName]
-	
+
 	    console.log(propName,propValue);
 	}
     reloadWrapper(event.state);
@@ -335,13 +354,13 @@ function showPage(target) {
 */
 
 function rollcall(elem) {
-	
+
 	// Get the vote details and display a processing message
 	var messageElem = document.getElementById("rollcallresult");
 
 	// Send the vote to the server
 	var href = replacePage(window.location.href, "rollcall.php");
-	
+
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -381,5 +400,3 @@ function switchregcode() {
 	var href = replacePage(window.location.href, "switchregcode.php") + "?regcode=" + option;
 	window.location.href = href;
 }
-
-

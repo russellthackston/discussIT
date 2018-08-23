@@ -170,12 +170,18 @@ foreach ($comments as $comment) {
 
 				<?php if (!$comment['voted'] && !$isadmin) { ?>
 
-					<div class="votingform" id="votingid-<?php echo $comment['commentid']; ?>" data-commentid="<?php echo $comment['commentid']; ?>">
-						<input type="button" name="upvote" onclick="up(this);" value="Contributes" class="up" data-commentid="<?php echo $comment['commentid']; ?>">
-						<input type="button" name="showdown" onclick="showdown(this);" value="Does not contribute" class="down" data-commentid="<?php echo $comment['commentid']; ?>">
+					<div class="votingform" id="votingform-<?php echo $comment['commentid']; ?>" data-commentid="<?php echo $comment['commentid']; ?>">
+						<input type="button" name="showup" onclick="showup(this);" value="Contributes" class="up" data-commentid="<?php echo $comment['commentid']; ?>">
+            <input type="button" name="showdown" onclick="showdown(this);" value="Does not contribute" class="down" data-commentid="<?php echo $comment['commentid']; ?>">
+            <input type="button" name="hideupdown" onclick="hideupdown(this);" value="Cancel" class="hideupdown" id="hideupdown-<?php echo $comment['commentid']; ?>" data-commentid="<?php echo $comment['commentid']; ?>" style="display: none;">
 					</div>
 
-					<div class="downvoteform" id="downvotediv-<?php echo $comment['commentid']; ?>" style="display: none;">
+					<div class="upvoteform" id="upvotediv-<?php echo $comment['commentid']; ?>" style="display: none;">
+						<textarea class="upvotetext" name="upvotetext-<?php echo $comment['commentid']; ?>" rows="4" placeholder="Optional. Provide a comment related to your critique." id="upvotetext-<?php echo $comment['commentid']; ?>"></textarea><br>
+						<input type="button" name="upvote" onclick="up(this);" value="Save" class="up" data-commentid="<?php echo $comment['commentid']; ?>">
+					</div>
+
+          <div class="downvoteform" id="downvotediv-<?php echo $comment['commentid']; ?>" style="display: none;">
 						<textarea class="downvotetext" name="downvotetext-<?php echo $comment['commentid']; ?>" rows="4" placeholder="Briefly explain why this does not contribue to the discussion. Required." id="downvotetext-<?php echo $comment['commentid']; ?>"></textarea><br>
 						<input type="button" name="downvote" onclick="down(this);" value="Save" class="down" data-commentid="<?php echo $comment['commentid']; ?>">
 					</div>
