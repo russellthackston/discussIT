@@ -107,7 +107,7 @@ function up(elem) {
 	var data = {
 		"commentid" : commentid,
 		"vote" : "up",
-		"text" : upvotetext
+		"text" : upvotetext.value
 	};
 
 	var xhttp = new XMLHttpRequest();
