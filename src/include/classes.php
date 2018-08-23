@@ -30,6 +30,11 @@ class Application {
 
 		$result = FALSE;
 
+		if (!file_exists('credentials.php')) {
+			echo "No credentials file"; exit();
+			return FALSE;
+		}
+
 		// Connect to the database
 		$dbh = $this->getConnection();
 
