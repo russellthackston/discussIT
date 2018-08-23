@@ -1,7 +1,7 @@
-<?php 
+<?php
 $regs = array();
 if ($user != null) {
-	$regs = $app->getUserRegistrations($user['userid']);
+	$regs = $app->getUserRegistrations($user['userid'], $errors);
 }
 ?>
 
@@ -28,7 +28,7 @@ if ($user != null) {
 					<?php foreach($regs as $code) { ?>
 					<option value="<?php echo $code; ?>" <?php if ($code == $loggedinuserregistrationcode) { echo "selected='selected'"; } ?> ><?php echo $code; ?></option>
 					<?php } ?>
-				</select>			
+				</select>
 			<?php } ?>
 		<?php } ?>
 	</p>
