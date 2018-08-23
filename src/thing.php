@@ -177,11 +177,13 @@ foreach ($comments as $comment) {
 					</div>
 
 					<div class="upvoteform" id="upvotediv-<?php echo $comment['commentid']; ?>" style="display: none;">
+            <label for="upvotetext-<?php echo $comment['commentid']; ?>" class="visuallyhidden">Provide a comment related to your critique:</label>
 						<textarea class="upvotetext" name="upvotetext-<?php echo $comment['commentid']; ?>" rows="4" placeholder="Optional. Provide a comment related to your critique." id="upvotetext-<?php echo $comment['commentid']; ?>"></textarea><br>
 						<input type="button" name="upvote" onclick="up(this);" value="Save positive critique" class="up" data-commentid="<?php echo $comment['commentid']; ?>">
 					</div>
 
           <div class="downvoteform" id="downvotediv-<?php echo $comment['commentid']; ?>" style="display: none;">
+            <label for="downvotetext-<?php echo $comment['commentid']; ?>" class="visuallyhidden">Briefly explain why this does not contribue to the discussion:</label>
 						<textarea class="downvotetext" name="downvotetext-<?php echo $comment['commentid']; ?>" rows="4" placeholder="Briefly explain why this does not contribue to the discussion. Required." id="downvotetext-<?php echo $comment['commentid']; ?>"></textarea><br>
 						<input type="button" name="downvote" onclick="down(this);" value="Save negative critique" class="down" data-commentid="<?php echo $comment['commentid']; ?>">
 					</div>
@@ -226,7 +228,7 @@ foreach ($comments as $comment) {
 				<form enctype="multipart/form-data" method="post" action="thing.php" name="newcommentform" id="newcommentform">
 					<fieldset>
 						<legend class="visuallyhidden">New Comment Form:</legend>
-						<label for="comment"class="visuallyhidden">Comment</label>
+						<label for="comment" class="visuallyhidden">Comment</label>
 						<textarea name="comment" id="comment" rows="6" placeholder="Critique all existing comments before adding your own" required="required"><?php echo $text; ?></textarea>
 						<br/>
 
