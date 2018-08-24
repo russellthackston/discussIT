@@ -13,3 +13,4 @@ Enhancements
 * Redo the grade download to contain all details (e.g. per topic stats)
 * Add installer
 * Next/Previous topic buttons on Topic page
+* Change username to student name in author byline
