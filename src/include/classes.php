@@ -2548,6 +2548,43 @@ class Application {
 	}
 
 	public function getProgressReport($userid, $registrationcode, &$errors) {
+
+        /**
+        numberoftopics
+        numberofgradedtopics
+        numberofungradedtopics
+
+        numberofcommentsmade
+        numberofgradedcommentsmade
+        numberofungradedcommentsmade
+
+        numberofcritiquesreceived
+        numberofungradedcritiquesreceived
+        numberofgradedcritiquesreceived
+        numberofpositivecritiquesreceived
+        numberofnegativecritiquesreceived
+        	ungradedupvotes
+        	ungradeddownvotes
+        	gradedupvotes
+        	gradeddownvotes
+
+
+        numberofcritiquesgiven
+        numberofgradedcritiquesgiven
+        numberofungradedcritiquesgiven
+
+        numberofcritiquesexpected
+        numberofgradedcritiquesexpected
+        numberofungradedcritiquesexpected
+
+        numberofuncommentedtopics
+        numberofuncritiquedcomments
+
+        commentinggrade (numberofgradedcommentsmade/numberofgradedtopics)
+        critiquinggrade (numberofgradedcritiquesgiven/numberofgradedcritiquesexpected)
+        commentquality (gradedupvotes/numberofgradedcritiquesreceived)
+        **/
+
 		$progressReport = array();
 
 		if (empty($userid)) {
