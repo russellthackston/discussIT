@@ -127,7 +127,7 @@ foreach ($comments as $comment) {
         <?php echo $thing['username']; ?> on <?php echo $thing['thingcreated']; ?>
         <?php if (!$thing['includeingrading']) { ?>
             Not included in grade calculation.
-        <?php } ?>
+        <?php } else { echo "Graded"; } ?>
         <?php if ($isadmin) { ?>
           <a href="editthing.php?thingid=<?php echo $thingid; ?>">[Edit Topic]</a>
         <?php } ?>
