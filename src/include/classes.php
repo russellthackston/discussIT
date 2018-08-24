@@ -1374,7 +1374,8 @@ class Application {
 		// Construct a SQL statement to perform the select operation
 		$sql = "SELECT thingid, thingname, thingdescription, " .
 			"convert_tz(things.thingcreated,@@session.time_zone,'America/New_York') as thingcreated, " .
-			"thinguserid, thingattachmentid, thingregistrationcode, commentsopendate, commentsclosedate, critiquesclosedate " .
+			"thinguserid, thingattachmentid, thingregistrationcode, commentsopendate, " .
+      "commentsclosedate, critiquesclosedate, includeingrading " .
 			"FROM things LEFT JOIN users ON things.thinguserid = users.userid " .
 			"WHERE thingregistrationcode = :registrationcode ";
 		if (!$isadmin) {
@@ -1453,7 +1454,7 @@ class Application {
 			$sql = "SELECT things.thingid, things.thingname, things.thingdescription, " .
 				"convert_tz(things.thingcreated,@@session.time_zone,'America/New_York') as thingcreated, " .
 				"things.thinguserid, things.thingattachmentid, things.thingregistrationcode, username, " .
-				"filename, commentsopendate, commentsclosedate, critiquesclosedate " .
+				"filename, commentsopendate, commentsclosedate, critiquesclosedate, includeingrading " .
 				"FROM things LEFT JOIN users ON things.thinguserid = users.userid " .
 				"LEFT JOIN attachments ON things.thingattachmentid = attachments.attachmentid " .
 				"WHERE thingid = :thingid";

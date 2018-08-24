@@ -174,12 +174,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<span class="note">Comments close: <?php echo $thing['commentsclosedate']; ?></span>
 					<br>
 					<span class="note">Critiques close: <?php echo $thing['critiquesclosedate']; ?></span>
-					<?php if ($isAdmin) { ?>
-						<br>
-						<span class="note">
-	          	<a href="editthing.php?thingid=<?php echo $thing['thingid']; ?>">[Edit]</a>
-						</span>
-					<?php } ?>
+					<br>
+					<span class="note">
+						<?php if (!$thing['includeingrading']) { ?>
+		          	Not included in grade calculation.
+						<?php } ?>
+						<?php if ($isAdmin) { ?>
+		          	<a href="editthing.php?thingid=<?php echo $thing['thingid']; ?>">[Edit]</a>
+						<?php } ?>
+					</span>
 
 				</li>
 			<?php } ?>
