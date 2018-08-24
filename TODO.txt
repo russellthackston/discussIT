@@ -12,3 +12,4 @@ Enhancements
 * Allow instructor to critique, but calculate that grade separately
 * Redo the grade download to contain all details (e.g. per topic stats)
 * Add installer
+* Next/Previous topic buttons on Topic page
