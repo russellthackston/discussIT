@@ -177,7 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<br>
 					<span class="note">
 						<?php if (!$thing['includeingrading']) { ?>
-		          <b>[Not included in grade calculation]</b>
+		          <b>[Ungraded topic]</b>
 						<?php } else { ?>
 							<b>[Graded Topic]</b>
 						<?php } ?>

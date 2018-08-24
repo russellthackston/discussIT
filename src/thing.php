@@ -126,7 +126,7 @@ foreach ($comments as $comment) {
 			<p class="thingtagline">
         <?php echo $thing['username']; ?> on <?php echo $thing['thingcreated']; ?>
         <?php if (!$thing['includeingrading']) { ?>
-          <b>[Not included in grade calculation]</b>
+          <b>[Ungraded topic]</b>
         <?php } else { ?>
           <b>[Graded Topic]</b>
         <?php } ?>
