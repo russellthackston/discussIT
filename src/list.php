@@ -177,8 +177,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<br>
 					<span class="note">
 						<?php if (!$thing['includeingrading']) { ?>
-		          	Not included in grade calculation.
-						<?php } else { echo "Graded"; } ?>
+		          <b>[Not included in grade calculation]</b>
+						<?php } else { ?>
+							<b>[Graded Topic]</b>
+						<?php } ?>
 						<?php if ($isAdmin) { ?>
 		          	<a href="editthing.php?thingid=<?php echo $thing['thingid']; ?>">[Edit]</a>
 						<?php } ?>
