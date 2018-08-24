@@ -30,18 +30,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 	// Get the userid
 	if (!isset($_GET['userid'])) {
-
 		$userid = $loggedinuserid;
-
 	} else {
-
 		$userid = $_GET['userid'];
-		
 	}
-	
+
 	// Attempt to obtain the user information.
 	$user = $app->getUser($userid, $errors);
-	
+
 	if ($user != NULL){
 		$username = $user['username'];
 		$isadminFlag = ($user['isadmin'] == "1");
@@ -49,12 +45,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		$regs = $app->getUserRegistrations($userid, $errors);
 	}
 
-// If someone is attempting to edit their profile, process the request	
+// If someone is attempting to edit their profile, process the request
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	
+
 	if (isset($_POST['editprofile'])) {
-		
-		// Get the form values 
+
+		// Get the form values
 		$userid   = $_POST['userid'];
 		$username = $_POST['username'];
 		$password = $_POST['password'];
@@ -70,20 +66,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 			$user = $app->getUser($userid, $errors);
 			$registrationCode = $user['registrationcode'];
 		}
-	
+
 		// Attempt to update the user information.
 		$result = $app->updateUser($userid, $username, $password, $isadminFlag, $errors);
-		
+
 		// Display message upon success.
 		if ($result == TRUE){
-	
+
 		    $result = $app->updateSession($loggedinuserid, $loggedinusersessionid, $registrationCode, $errors);
-			
+
 			if ($result) {
 				$message = "User successfully updated.";
 				$loggedinuserregistrationcode = $registrationCode;
 			}
-			
 		}
 
 	} else if (isset($_POST['addregcode'])) {
@@ -95,14 +90,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		$result = $app->addUserRegistration($userid, $registrationCode, $errors);
 
 		if ($result) {
-
 			$message = "Course registration added.";
-
 		}
-
 	}
-		
-
 }
 
 $user = $app->getUser($userid, $errors);
@@ -110,21 +100,6 @@ $regs = $app->getUserRegistrations($userid, $errors);
 
 // Load the progress report for the user being edited
 $progressReport = $app->getProgressReport($userid, $loggedinuserregistrationcode, $errors);
-if ($progressReport['numberofcommentsmade'] && $progressReport['numberofcommentsmade'] != 0 && $progressReport['numberoftopics'] != 0) {
-	$commentinggrade = round(100 * $progressReport['numberofcommentsmade'] / $progressReport['numberoftopics']) . "%";
-} else {
-	$commentinggrade = "No data";
-}
-if ($progressReport['numberofcritiquesreceived'] && $progressReport['numberofcritiquesreceived'] != 0) {
-	$commentQuality = round(100 * $progressReport['up'] / $progressReport['numberofcritiquesreceived']) . "%";
-} else {
-	$commentQuality = "No data";
-}
-if ($progressReport['numberofcritiquesexpected'] && $progressReport['numberofcritiquesexpected'] != 0) {
-	$critiqueQuality = round(100 * $progressReport['critiques'] / $progressReport['numberofcritiquesexpected']) . "%";
-} else {
-	$critiqueQuality = "No data";
-}
 
 ?>
 
@@ -139,56 +114,88 @@ if ($progressReport['numberofcritiquesexpected'] && $progressReport['numberofcri
 		<?php if (isset($progressReport) && sizeof($progressReport) > 0) { ?>
 		<h2>Stats for <?php echo $username; ?></h2>
 		<div class="progress">
-			<div>Topics (current &amp; past): <?php echo $progressReport['numberoftopics']; ?></div>
-			<div>Comments made: <?php echo $progressReport['numberofcommentsmade']; ?></div>
+			<div>
+				Topics (current &amp; past): <?php echo $progressReport['numberoftopics']; ?>
+				(<?php echo $progressReport['numberofgradedtopics']; ?> graded
+				&amp;
+				<?php echo $progressReport['numberofungradedtopics']; ?> ungraded)
+			</div>
+			<div>
+				Comments made: <?php echo $progressReport['numberofcommentsmade']; ?>
+				(<?php echo $progressReport['numberofgradedcommentsmade']; ?> graded
+				&amp;
+				<?php echo $progressReport['numberofungradedcommentsmade']; ?> ungraded)
+			</div>
 			<br>
-			<div>Positive critiques received: <?php echo $progressReport['up']; ?></div>
-			<div>Negative critiques received: <?php echo $progressReport['down']; ?></div>
+			<div>
+				Positive critiques received:
+				<?php echo $progressReport['numberofpositivecritiquesreceived']; ?>
+				(<?php echo $progressReport['gradedupvotes']; ?> graded
+				&amp;
+				<?php echo $progressReport['ungradedupvotes']; ?> ungraded)
+			</div>
+			<div>
+				Negative critiques received:
+				<?php echo $progressReport['numberofnegativecritiquesreceived']; ?>
+				(<?php echo $progressReport['gradeddownvotes']; ?> graded
+				&amp;
+				<?php echo $progressReport['ungradeddownvotes']; ?> ungraded)
+			</div>
 			<div>Total number of critiques received: <?php echo $progressReport['numberofcritiquesreceived']; ?></div>
 			<br>
-			<div>Critiques given: <?php echo $progressReport['critiques']; ?></div>
-			<div>Critiques expected: <?php echo $progressReport['numberofcritiquesexpected']; ?></div>
+			<div>
+				Critiques given: <?php echo $progressReport['numberofcritiquesgiven']; ?>
+				(<?php echo $progressReport['numberofgradedcritiquesgiven']; ?> graded
+				&amp;
+				<?php echo $progressReport['numberofungradedcritiquesgiven']; ?> ungraded)
+			</div>
+			<div>
+				Critiques expected: <?php echo $progressReport['numberofcritiquesexpected']; ?>
+				(<?php echo $progressReport['numberofgradedcritiquesexpected']; ?> graded
+				&amp;
+				<?php echo $progressReport['numberofungradedcritiquesexpected']; ?> ungraded)
+			</div>
 		</div>
 		<hr>
 		<h2>Grades for <?php echo $username; ?></h2>
 		<div class="progress">
-			<div>Commenting grade: <?php echo $commentinggrade; ?></div>
-			<div>Critiquing grade: <?php echo $critiqueQuality; ?></div>
-			<div>Comment quality: <?php echo $commentQuality; ?></div>
+			<div>Commenting grade: <?php echo $progressReport['commentinggrade']; ?></div>
+			<div>Critiquing grade: <?php echo $progressReport['critiquinggrade']; ?></div>
+			<div>Comment quality: <?php echo $progressReport['commentquality']; ?></div>
 		</div>
 		<hr>
 		<?php } ?>
 		<h3>Edit Profile</h3>
 		<div class="profile">
-			<?php include 'include/messages.php'; ?>	
+			<?php include 'include/messages.php'; ?>
 			<form action="editprofile.php" method="post">
 				<fieldset>
 					<legend class="visuallyhidden">Edit Profile Form:</legend>
-					
+
 					<input type="hidden" name="userid" value="<?php echo $userid; ?>" />
-					
+
 					<label for="username">User Name</label>
 					<input type="text" name="username" id="username" placeholder="Pick a username" required="required" value="<?php echo $username ; ?>" />
 					<br/>
-					
+
 					<label for="password">Password (optional)</label>
-					<input type="password" name="password" id="password" placeholder="Enter a password" value="<?php echo $password; ?>" /> 
+					<input type="password" name="password" id="password" placeholder="Enter a password" value="<?php echo $password; ?>" />
 					<br/>
-					
+
 					<label for="registrationcode">Current Course</label>
 					<select id="registrationcode" name="registrationcode">
 						<?php foreach($regs as $code) { ?>
 						<option value="<?php echo $code; ?>" <?php if ($code == $loggedinuserregistrationcode) { echo "selected='selected'"; } ?> ><?php echo $code; ?></option>
 						<?php } ?>
-					</select>			
+					</select>
 					<br/>
-					
+
 					<?php if ($loggedinuserid != $userid) { ?>
 					<label for="isadmin">Grant admin rights</label>
 					<input type="checkbox" name="isadmin" id="isadmin" <?php echo ($isadminFlag ? "checked=checked" : ""); ?> value="isadmin" />
 					<?php } ?>
 					<br/>
-							
+
 					<input type="hidden" name="editprofile" value="editprofile">
 					<input type="submit" value="Update profile" />
 				</fieldset>
@@ -199,11 +206,11 @@ if ($progressReport['numberofcritiquesexpected'] && $progressReport['numberofcri
 			<form action="editprofile.php" method="post">
 				<fieldset>
 					<input type="hidden" name="userid" value="<?php echo $userid; ?>" />
-					
+
 					<label for="regcode" class="visuallyhidden">Enter a Registration Code:</label>
 					<input type="text" name="regcode" id="regcode" size="30" maxlength="255" placeholder="Enter a new registration code" required="required" value="<?php echo $registrationCode ; ?>" />
 					<br/>
-					
+
 					<input type="hidden" name="addregcode" value="addregcode">
 					<input type="submit" value="Add code" />
 				</fieldset>

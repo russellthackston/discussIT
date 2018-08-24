@@ -44,7 +44,7 @@ class Application {
 		// Construct a SQL statement to perform the insert operation
 		$sql = "SHOW TABLES LIKE 'users'";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->execute();
 		if ($stmt->rowCount() == 1) {
@@ -70,7 +70,7 @@ class Application {
 		// Construct a SQL statement to perform the insert operation
 		$sql = "SELECT dbversion FROM dbversion LIMIT 1";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->execute();
 		$dbversion = $stmt->fetch(PDO::FETCH_ASSOC)['dbversion'];
@@ -172,7 +172,7 @@ class Application {
 		$sql = "INSERT INTO auditlog (context, message, logdate, ipaddress, userid) " .
 			"VALUES (:context, :message, NOW(), :ipaddress, :userid)";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":context", $context);
 		$stmt->bindParam(":message", $message);
@@ -272,7 +272,7 @@ class Application {
 		$sql = "INSERT INTO emailvalidation (emailvalidationid, userid, email, emailsent) " .
 			"VALUES (:emailvalidationid, :userid, :email, NOW())";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":emailvalidationid", $validationid);
 		$stmt->bindParam(":userid", $userid);
@@ -321,7 +321,7 @@ class Application {
 		// Construct a SQL statement to perform the insert operation
 		$sql = "SELECT userid FROM emailvalidation WHERE emailvalidationid = :emailvalidationid";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":emailvalidationid", $validationid);
 		$result = $stmt->execute();
@@ -348,7 +348,7 @@ class Application {
 				// Construct a SQL statement to perform the insert operation
 				$sql = "DELETE FROM emailvalidation WHERE emailvalidationid = :emailvalidationid";
 
-				// Run the SQL select and capture the result code
+
 				$stmt = $dbh->prepare($sql);
 				$stmt->bindParam(":emailvalidationid", $validationid);
 				$result = $stmt->execute();
@@ -366,7 +366,7 @@ class Application {
 					// Construct a SQL statement to perform the insert operation
 					$sql = "UPDATE users SET emailvalidated = 1 WHERE userid = :userid";
 
-					// Run the SQL select and capture the result code
+
 					$stmt = $dbh->prepare($sql);
 					$stmt->bindParam(":userid", $userid);
 					$result = $stmt->execute();
@@ -636,7 +636,7 @@ class Application {
 			// Construct a SQL statement to perform the insert operation
 			$sql = "SELECT email, userid FROM users WHERE username = :username OR email = :email";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":username", $usernameOrEmail);
 			$stmt->bindParam(":email", $usernameOrEmail);
@@ -663,7 +663,7 @@ class Application {
 					$sql = "INSERT INTO passwordreset (passwordresetid, userid, email, expires) " .
 						"VALUES (:passwordresetid, :userid, :email, DATE_ADD(NOW(), INTERVAL 1 HOUR))";
 
-					// Run the SQL select and capture the result code
+
 					$stmt = $dbh->prepare($sql);
 					$stmt->bindParam(":passwordresetid", $passwordresetid);
 					$stmt->bindParam(":userid", $userid);
@@ -712,7 +712,7 @@ class Application {
 		// Construct a SQL statement to perform the insert operation
 		$sql = "DELETE FROM passwordreset WHERE passwordresetid = :passwordresetid OR expires < NOW()";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":passwordresetid", $passwordresetid);
 		$stmt->execute();
@@ -742,7 +742,7 @@ class Application {
 			// Construct a SQL statement to perform the insert operation
 			$sql = "SELECT userid FROM passwordreset WHERE passwordresetid = :passwordresetid AND expires > NOW()";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":passwordresetid", $passwordresetid);
 			$result = $stmt->execute();
@@ -782,7 +782,7 @@ class Application {
 		// Construct a SQL statement to perform the select operation
 		$sql = "SELECT registrationcode FROM userregistrations WHERE userid = :userid";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(':userid', $userid);
 		$result = $stmt->execute();
@@ -794,10 +794,10 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getUserRegistrations error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
+
 			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$regs = array_column($rows, 'registrationcode');
 			$this->auditlog("getUserRegistrations", "success");
@@ -840,7 +840,7 @@ class Application {
 			$sql = "INSERT INTO usersessions (usersessionid, userid, expires, registrationcode) " .
 				"VALUES (:sessionid, :userid, DATE_ADD(NOW(), INTERVAL 7 DAY), :registrationcode)";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":sessionid", $sessionid);
 			$stmt->bindParam(":userid", $userid);
@@ -896,7 +896,7 @@ class Application {
 			// Construct a SQL statement to perform the insert operation
 			$sql = "UPDATE usersessions SET registrationcode = :registrationcode WHERE usersessionid = :usersessionid";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":registrationcode", $registrationcode);
 			$stmt->bindParam(":usersessionid", $usersessionid);
@@ -939,7 +939,7 @@ class Application {
 				"LEFT JOIN users on usersessions.userid = users.userid " .
 				"WHERE usersessionid = :sessionid AND expires > now()";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":sessionid", $sessionid);
 			$result = $stmt->execute();
@@ -986,7 +986,7 @@ class Application {
 	   	    "ORDER BY expires " .
 	   	    "LIMIT 1";
 
-	    // Run the SQL select and capture the result code
+
 	    $stmt = $dbh->prepare($sql);
 	    $stmt->bindParam(":userid", $userid);
 	    $result = $stmt->execute();
@@ -1039,7 +1039,7 @@ class Application {
 			// Construct a SQL statement to perform the insert operation
 			$sql = "SELECT isadmin FROM users WHERE userid = :userid";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":userid", $userid);
 			$result = $stmt->execute();
@@ -1086,7 +1086,7 @@ class Application {
 			$sql = "SELECT userid, passwordhash, emailvalidated FROM users " .
 				"WHERE username = :username";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":username", $username);
 			$result = $stmt->execute();
@@ -1168,7 +1168,7 @@ class Application {
 				// Construct a SQL statement to perform the insert operation
 				$sql = "DELETE FROM usersessions WHERE usersessionid = :sessionid OR expires < now()";
 
-				// Run the SQL select and capture the result code
+
 				$stmt = $dbh->prepare($sql);
 				$stmt->bindParam(":sessionid", $sessionid);
 				$result = $stmt->execute();
@@ -1267,7 +1267,7 @@ class Application {
 			"SELECT MAX(commentsopendate) FROM things LEFT JOIN users ON things.thinguserid = users.userid " .
 			"WHERE thingregistrationcode = :registrationcode2)";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":registrationcode1", $registrationcode);
 		$stmt->bindParam(":registrationcode2", $registrationcode);
@@ -1283,7 +1283,7 @@ class Application {
 		// If the query ran successfully, then get the list of things
 		} else {
 
-			// Get all the rows
+
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 			if ($row) {
@@ -1323,7 +1323,7 @@ class Application {
 			"WHERE thingregistrationcode = :registrationcode " .
 			"ORDER BY things.commentsopendate ASC";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":registrationcode", $registrationcode);
 		$result = $stmt->execute();
@@ -1338,7 +1338,7 @@ class Application {
 		// If the query ran successfully, then get the list of things
 		} else {
 
-			// Get all the rows
+
 			$things = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		}
@@ -1383,7 +1383,7 @@ class Application {
 		}
 		$sql = $sql . "ORDER BY things.commentsopendate ASC";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":registrationcode", $registrationcode);
 		$result = $stmt->execute();
@@ -1398,7 +1398,7 @@ class Application {
 		// If the query ran successfully, then get the list of things
 		} else {
 
-			// Get all the rows
+
 			$things = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			// Get the comments for each discussion
@@ -1459,7 +1459,7 @@ class Application {
 				"LEFT JOIN attachments ON things.thingattachmentid = attachments.attachmentid " .
 				"WHERE thingid = :thingid";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":thingid", $thingid);
 			$result = $stmt->execute();
@@ -1527,7 +1527,7 @@ class Application {
 				"LEFT JOIN attachments ON comments.commentattachmentid = attachments.attachmentid " .
 				"WHERE commentthingid = :thingid ORDER BY commentposted ASC";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":thingid", $thingid);
 			$result = $stmt->execute();
@@ -1542,7 +1542,7 @@ class Application {
 			// If the query ran successfully, then get the list of comments
 			} else {
 
-				// Get all the rows
+
 				$comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 				// Load the critiques for the comments
@@ -1637,7 +1637,7 @@ class Application {
 				"LEFT JOIN attachments ON comments.commentattachmentid = attachments.attachmentid " .
 				"WHERE commentid = :commentid";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":commentid", $commentid);
 			$result = $stmt->execute();
@@ -1652,7 +1652,7 @@ class Application {
 			// If the query ran successfully, then get the list of comments
 			} else {
 
-				// Get all the rows
+
 				$comment = $stmt->fetch(PDO::FETCH_ASSOC);
 
 			}
@@ -1696,7 +1696,7 @@ class Application {
 				"FROM critiques LEFT JOIN users ON critiques.critiqueuserid = users.userid " .
 				"WHERE critiquecommentid = :commentid ORDER BY critiqueposted ASC";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":commentid", $commentid);
 			$result = $stmt->execute();
@@ -1711,7 +1711,7 @@ class Application {
 			// If the query ran successfully, then get the list of comments
 			} else {
 
-				// Get all the rows
+
 				$critiques = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 				// Set the anon flag for all critiques
@@ -2197,7 +2197,7 @@ class Application {
 			"LEFT JOIN students ON users.studentid = students.studentid 	" .
 			"GROUP BY students.studentname";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$result = $stmt->execute();
 
@@ -2208,10 +2208,10 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getusers error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
+
 			$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$this->auditlog("getusers", "success");
 
@@ -2263,7 +2263,7 @@ class Application {
 				$sql = "SELECT userid, username, email, isadmin FROM users " .
 					"WHERE userid = :userid";
 
-				// Run the SQL select and capture the result code
+
 				$stmt = $dbh->prepare($sql);
 				$stmt->bindParam(":userid", $userid);
 				$result = $stmt->execute();
@@ -2354,7 +2354,7 @@ class Application {
 							(!empty($password) ? ", passwordhash=:passwordhash" : "") .
 							" WHERE userid = :userid";
 
-					// Run the SQL select and capture the result code
+
 					$stmt = $dbh->prepare($sql);
 					$stmt->bindParam(":username", $username);
 					$adminFlag = ($isadminDB ? "1" : "0");
@@ -2416,7 +2416,7 @@ class Application {
 			$sql = "UPDATE users SET passwordhash=:passwordhash " .
 				"WHERE userid = :userid";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":passwordhash", $passwordhash);
 			$stmt->bindParam(":userid", $userid);
@@ -2465,7 +2465,7 @@ class Application {
 		// Construct a SQL statement to perform the select operation
 		$sql = "SELECT attachmenttypeid, name, extension FROM attachmenttypes ORDER BY name";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$result = $stmt->execute();
 
@@ -2476,10 +2476,10 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getattachmenttypes error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
+
 			$types = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$this->auditlog("getattachmenttypes", "success");
 
@@ -2520,7 +2520,7 @@ class Application {
 			$sql = "INSERT INTO attachmenttypes (attachmenttypeid, name, extension) " .
 				"VALUES (:attachmenttypeid, :name, :extension)";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":attachmenttypeid", $attachmenttypeid);
 			$stmt->bindParam(":name", $name);
@@ -2561,11 +2561,12 @@ class Application {
 		$dbh = $this->getConnection();
 
 		// Get number of topics for the current registration code
-		$sql = "SELECT COUNT(*) AS numberoftopics FROM things " .
-		"WHERE LOWER(thingregistrationcode) = LOWER(:registrationcode) " .
-		"AND commentsopendate < convert_tz(now(), @@session.time_zone, 'America/New_York')";
+		$sql = "SELECT includeingrading, COUNT(*) AS numberoftopics FROM things " .
+    		"WHERE LOWER(thingregistrationcode) = LOWER(:registrationcode) " .
+    		"AND commentsopendate < convert_tz(now(), @@session.time_zone, 'America/New_York') " .
+            "GROUP BY includeingrading";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":registrationcode", $registrationcode);
 		$result = $stmt->execute();
@@ -2577,52 +2578,74 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getProgressReport error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
-			$row = $stmt->fetch(PDO::FETCH_ASSOC);
-			$progressReport['numberoftopics'] = $row['numberoftopics'];
-			$this->auditlog("getProgressReport", "the numberoftopics=".$progressReport['numberoftopics']);
+
+            $progressReport['numberofgradedtopics'] = 0;
+            $progressReport['numberofungradedtopics'] = 0;
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($rows as $row) {
+                if ($row['includeingrading']) {
+                    $progressReport['numberofgradedtopics'] = $row['numberoftopics'];
+                } else {
+                    $progressReport['numberofungradedtopics'] = $row['numberoftopics'];
+                }
+            }
+			$progressReport['numberoftopics'] =
+                $progressReport['numberofgradedtopics'] +
+                $progressReport['numberofungradedtopics'];
 
 		}
 
 		// Get the number of comments made by this user under this registration code
-		$sql = "SELECT COUNT(*) AS numberofcomments FROM comments " .
+		$sql = "SELECT includeingrading, COUNT(*) AS numberofcommentsmade FROM comments " .
 			"LEFT JOIN things ON comments.commentthingid = things.thingid " .
 			"WHERE commentuserid = :userid " .
-			"AND LOWER(things.thingregistrationcode) = LOWER(:regcode)";
+			"AND LOWER(things.thingregistrationcode) = LOWER(:regcode) " .
+            "GROUP BY includeingrading";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":userid", $userid);
 		$stmt->bindParam(":regcode", $registrationcode);
 		$result = $stmt->execute();
 
-		// If the query did not run successfully, add an error message to the list
+        // If the query did not run successfully, add an error message to the list
 		if ($result === FALSE) {
 
 			$errors[] = "An unexpected error occurred getting the progress report (number of comments made)";
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getProgressReport error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
-			$row = $stmt->fetch(PDO::FETCH_ASSOC);
-			$progressReport['numberofcommentsmade'] = $row['numberofcomments'];
+
+            $progressReport['numberofgradedcommentsmade'] = 0;
+            $progressReport['numberofungradedcommentsmade'] = 0;
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($rows as $row) {
+                if ($row['includeingrading']) {
+                    $progressReport['numberofgradedcommentsmade'] = $row['numberofcommentsmade'];
+                } else {
+                    $progressReport['numberofungradedcommentsmade'] = $row['numberofcommentsmade'];
+                }
+            }
+			$progressReport['numberofcommentsmade'] =
+                $progressReport['numberofgradedcommentsmade'] +
+                $progressReport['numberofungradedcommentsmade'];
 
 		}
 
 		// Get the number of critiques received on this user's comments under this registration code
-		$sql = "SELECT addstodiscussion, COUNT(addstodiscussion) AS cAdds FROM critiques " .
+		$sql = "SELECT includeingrading, addstodiscussion, COUNT(addstodiscussion) AS numcritiques FROM critiques " .
 			"WHERE critiquecommentid IN  " .
 			"(SELECT commentid FROM comments LEFT JOIN things ON comments.commentthingid = things.thingid  " .
              	"WHERE commentuserid = :commentuserid AND LOWER(things.thingregistrationcode) = LOWER(:regcode))  " .
-			"GROUP BY addstodiscussion";
+			"GROUP BY includeingrading, addstodiscussion";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":commentuserid", $userid);
 		$stmt->bindParam(":regcode", $registrationcode);
@@ -2635,33 +2658,54 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getProgressReport error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
-			$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$progressReport['up'] = 0;
 			$progressReport['down'] = 0;
-			foreach ($row as $r) {
-				if ($r['addstodiscussion'] == "1") {
-					$progressReport['up'] = $r['cAdds'];
-				} else if ($r['addstodiscussion'] == "0") {
-					$progressReport['down'] = $r['cAdds'];
-				}
+			foreach ($rows as $row) {
+                if ($row['includeingrading']) {
+                    if ($row['addstodiscussion']) {
+    					$progressReport['gradedupvotes'] = $row['numcritiques'];
+    				} else {
+    					$progressReport['gradeddownvotes'] = $row['numcritiques'];
+    				}
+                } else {
+                    if ($row['addstodiscussion']) {
+    					$progressReport['ungradedupvotes'] = $row['numcritiques'];
+    				} else {
+    					$progressReport['ungradeddownvotes'] = $row['numcritiques'];
+    				}
+                }
 			}
-			$progressReport['numberofcritiquesreceived'] = $progressReport['up'] + $progressReport['down'];
+            $progressReport['numberofgradedcritiquesreceived'] =
+                $progressReport['gradedupvotes'] +
+                $progressReport['gradeddownvotes'];
+            $progressReport['numberofungradedcritiquesreceived'] =
+                $progressReport['ungradedupvotes'] +
+                $progressReport['ungradeddownvotes'];
+            $progressReport['numberofcritiquesreceived'] =
+                $progressReport['numberofgradedcritiquesreceived'] +
+                $progressReport['numberofungradedcritiquesreceived'];
+            $progressReport['numberofpositivecritiquesreceived'] =
+                $progressReport['gradedupvotes'] +
+                $progressReport['ungradedupvotes'];
+            $progressReport['numberofnegativecritiquesreceived'] =
+                $progressReport['gradeddownvotes'] +
+                $progressReport['ungradeddownvotes'];
 		}
 
 		// Get the number of critiques made by this user for this registration code
-		$sql = "SELECT count(*) AS critiquecount " .
-			"FROM critiques  " .
+		$sql = "SELECT includeingrading, count(*) AS critiquecount " .
+			"FROM critiques " .
+            "LEFT JOIN comments ON comments.commentid = critique.critiquecommentid " .
+            "LEFT JOIN things ON things.thingid = comments.commentthingid " .
 	        "WHERE critiqueuserid = :critiqueuserid " .
-	        "AND critiquecommentid IN ( " .
-	            "SELECT commentid FROM comments WHERE commentthingid IN ( " .
-		   	"SELECT thingid FROM things WHERE LOWER(things.thingregistrationcode) = LOWER(:regcode) " .
-			")) ";
+            "AND LOWER(things.thingregistrationcode) = LOWER(:regcode) " .
+			"GROUP BY includeingrading";
 
-		// Run the SQL select and capture the result code
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":critiqueuserid", $userid);
 		$stmt->bindParam(":regcode", $registrationcode);
@@ -2674,19 +2718,29 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getProgressReport error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
 		} else {
 
-			// Get all the rows
-			$row = $stmt->fetch(PDO::FETCH_ASSOC);
-			$progressReport['critiques'] = $row['critiquecount'];
+
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($rows as $row) {
+                if ($row['includeingrading']) {
+                    $progressReport['numberofgradedcritiquesgiven'] = $row['critiquecount'];
+                } else {
+                    $progressReport['numberofungradedcritiquesgiven'] = $row['critiquecount'];
+                }
+            }
+            $progressReport['numberofcritiquesgiven'] =
+                $progressReport['numberofgradedcritiquesgiven'] +
+                $progressReport['numberofungradedcritiquesgiven'];
 		}
 
-		// Get the number of comments made (and therefore critiques expected) for this registration code
-		$sql = "SELECT count(*) AS numberofcomments FROM comments WHERE commentthingid IN " .
-			"(SELECT thingid FROM things WHERE LOWER(thingregistrationcode) = LOWER(:registrationcode))";
+		// Get the total number of comments made (and therefore critiques expected) for this registration code
+		$sql = "SELECT includeingrading, count(*) AS numberofcommentsmade FROM comments " .
+            "LEFT JOIN things ON things.thingid = comments.commentthingid " .
+			"WHERE LOWER(thingregistrationcode) = LOWER(:registrationcode)) " .
+            "GROUP BY includeingrading";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":registrationcode", $registrationcode);
 		$result = $stmt->execute();
@@ -2698,23 +2752,31 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getProgressReport error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
-			$row = $stmt->fetch(PDO::FETCH_ASSOC);
-			$progressReport['numberofcritiquesexpected'] = $row['numberofcomments'];
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($rows as $row) {
+                if ($row['includeingrading']) {
+                    $progressReport['numberofgradedcritiquesexpected'] = $row['numberofcommentsmade'];
+                } else {
+                    $progressReport['numberofungradedcritiquesexpected'] = $row['numberofcommentsmade'];
+                }
+            }
+            $progressReport['numberofcritiquesexpected'] =
+                $progressReport['numberofgradedcritiquesexpected'] +
+                $progressReport['numberofungradedcritiquesexpected'];
 
 		}
 
 		// Number of uncommented topics
 		$sql = "SELECT COUNT(*) AS numberoftopics FROM things " .
-		"WHERE thingregistrationcode = :registrationcode " .
-		"AND commentsopendate < convert_tz(now(), @@session.time_zone, 'America/New_York') " .
-		"AND commentsclosedate > convert_tz(now(), @@session.time_zone, 'America/New_York') " .
-		"AND thingid NOT IN (SELECT commentthingid FROM comments WHERE commentuserid = :userid)";
+    		"WHERE thingregistrationcode = :registrationcode " .
+    		"AND commentsopendate < convert_tz(now(), @@session.time_zone, 'America/New_York') " .
+    		"AND commentsclosedate > convert_tz(now(), @@session.time_zone, 'America/New_York') " .
+    		"AND thingid NOT IN (SELECT commentthingid FROM comments WHERE commentuserid = :userid)";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":registrationcode", $registrationcode);
 		$stmt->bindParam(":userid", $userid);
@@ -2727,10 +2789,10 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getProgressReport error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
+
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
 			$progressReport['numberofuncommentedtopics'] = $row['numberoftopics'];
 
@@ -2738,13 +2800,13 @@ class Application {
 
 		// Number of uncritiqued comments
 		$sql = "SELECT COUNT(*) AS numberofcomments FROM comments " .
-		"LEFT JOIN things ON comments.commentthingid = things.thingid " .
-		"WHERE thingregistrationcode = :registrationcode " .
-		"AND commentsopendate < convert_tz(now(), @@session.time_zone, 'America/New_York') " .
-		"AND critiquesclosedate > convert_tz(now(), @@session.time_zone, 'America/New_York') " .
-		"AND commentid NOT IN (SELECT critiquecommentid FROM critiques WHERE critiqueuserid = :userid)";
+    		"LEFT JOIN things ON comments.commentthingid = things.thingid " .
+    		"WHERE thingregistrationcode = :registrationcode " .
+    		"AND commentsopendate < convert_tz(now(), @@session.time_zone, 'America/New_York') " .
+    		"AND critiquesclosedate > convert_tz(now(), @@session.time_zone, 'America/New_York') " .
+    		"AND commentid NOT IN (SELECT critiquecommentid FROM critiques WHERE critiqueuserid = :userid)";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":registrationcode", $registrationcode);
 		$stmt->bindParam(":userid", $userid);
@@ -2756,12 +2818,10 @@ class Application {
 			$errors[] = "An unexpected error occurred getting the progress report (number of uncritiqued comments)";
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getProgressReport error", $stmt->errorInfo());
-			$progressReport['numberofuncritiquedcomments'] = 0;
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
 			$progressReport['numberofuncritiquedcomments'] = $row['numberofcomments'];
 
@@ -2769,6 +2829,27 @@ class Application {
 
 		// Close the connection
 		$dbh = NULL;
+
+        // Calculate grades
+        $progressReport['commentinggrade'] = 0;
+        $progressReport['critiquinggrade'] = 0;
+        $progressReport['commentquality'] = 0;
+
+        if ($progressReport['numberofgradedtopics'] != 0) {
+        	$progressReport['commentinggrade'] = round(100 * $progressReport['numberofgradedcommentsmade'] / $progressReport['numberofgradedtopics']) . "%";
+        } else {
+        	$progressReport['commentinggrade'] = "No graded topics";
+        }
+        if ($progressReport['numberofgradedcritiquesexpected'] != 0) {
+        	$progressReport['critiquinggrade'] = round(100 * $progressReport['numberofgradedcritiquesgiven'] / $progressReport['numberofgradedcritiquesexpected']) . "%";
+        } else {
+        	$progressReport['critiquinggrade'] = "No graded critiques received";
+        }
+        if ($progressReport['numberofgradedcritiquesreceived'] != 0) {
+            $progressReport['commentquality'] = round(100 * $progressReport['gradedupvotes'] / $progressReport['numberofgradedcritiquesreceived']) . "%";
+        } else {
+            $progressReport['commentquality'] = "No graded critiques received";
+        }
 
 		return $progressReport;
 	}
@@ -2784,7 +2865,7 @@ class Application {
 			"FROM users LEFT JOIN userregistrations ON users.userid = userregistrations.userid " .
 			"GROUP BY registrationcode, userid";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$result = $stmt->execute();
 
@@ -2795,10 +2876,10 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getAllProgressReports error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
+
 			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$progressReport['progress'] = $rows;
 
@@ -2809,7 +2890,7 @@ class Application {
 			"WHERE commentsopendate < convert_tz(now(), @@session.time_zone, 'America/New_York') " .
 			"GROUP BY registrationcode";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$result = $stmt->execute();
 
@@ -2820,10 +2901,10 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getAllProgressReports error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
+
 			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$progressReport['numberofcommentsexpected'] = $rows;
 			foreach ($progressReport['numberofcommentsexpected'] as $row) {
@@ -2841,7 +2922,7 @@ class Application {
 			"LEFT JOIN users ON users.userid = comments.commentuserid " .
 			"GROUP BY thingregistrationcode, userid";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$result = $stmt->execute();
 
@@ -2852,10 +2933,10 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getAllProgressReports error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
+
 			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$progressReport['numberofcommentsmade'] = $rows;
 
@@ -2881,7 +2962,7 @@ class Application {
             "LEFT JOIN things ON things.thingid = comments.commentthingid " .
 			"GROUP BY registrationcode, userid, addstodiscussion";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$result = $stmt->execute();
 
@@ -2892,10 +2973,10 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getAllProgressReports error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
+
 			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$progressReport['summaryofcritiquesreceived'] = $rows;
 
@@ -2926,7 +3007,7 @@ class Application {
             "LEFT JOIN things ON things.thingid = comments.commentthingid " .
 			"GROUP BY registrationcode, userid";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$result = $stmt->execute();
 
@@ -2937,10 +3018,10 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getAllProgressReports error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
+
 			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$progressReport['numberofcritiquesmade'] = $rows;
 
@@ -2965,7 +3046,7 @@ class Application {
             "LEFT JOIN things ON things.thingid = comments.commentthingid " .
             "GROUP BY registrationcode";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$result = $stmt->execute();
 
@@ -2976,10 +3057,10 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getProgressReport error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
+
 			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$progressReport['numberofcritiquesexpected'] = $rows;
 
@@ -3055,7 +3136,7 @@ class Application {
 		// Construct a SQL statement to perform the select operation
 		$sql = "SELECT reportcodeid, reportcodename, moreinfoneeded FROM reportcodes ORDER BY reportcodeid";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$result = $stmt->execute();
 
@@ -3066,10 +3147,10 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getReportCodes error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
+
 			$codes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$this->auditlog("getReportCodes", "success");
 
@@ -3093,7 +3174,7 @@ class Application {
 		// Construct a SQL statement to perform the select operation
 		$sql = "SELECT * FROM userreports";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$result = $stmt->execute();
 
@@ -3104,10 +3185,10 @@ class Application {
 			$this->debug($stmt->errorInfo());
 			$this->auditlog("getReports error", $stmt->errorInfo());
 
-		// If the query ran successfully, then get the list of users
+
 		} else {
 
-			// Get all the rows
+
 			$reports = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$this->auditlog("getReports", "success");
 
@@ -3141,7 +3222,7 @@ class Application {
 			$sql = "INSERT INTO userreports (userreportid, userreportcommentid, userreportreasoncodeid, userreportuserid, reportsubmitted, moreinfo) " .
 				"VALUES (:userreportid, :userreportcommentid, :userreportreasoncodeid, :userreportuserid, NOW(), :moreinfo)";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":userreportid", $reportid);
 			$stmt->bindParam(":userreportcommentid", $commentid);
@@ -3204,7 +3285,7 @@ class Application {
 			$sql = "INSERT INTO rollcall (userid, callsubmitted) " .
 				"VALUES (:userid, NOW()) ON DUPLICATE KEY UPDATE callsubmitted = NOW()";
 
-			// Run the SQL select and capture the result code
+
 			$stmt = $dbh->prepare($sql);
 			$stmt->bindParam(":userid", $userid);
 			$result = $stmt->execute();
@@ -3244,7 +3325,7 @@ class Application {
             "GROUP BY users.userid " .
 			"ORDER BY studentname ASC";
 
-		// Run the SQL select and capture the result code
+
 		$stmt = $dbh->prepare($sql);
 		$stmt->bindParam(":regcode", $registrationcode);
 		$result = $stmt->execute();
