@@ -779,7 +779,7 @@ class Application {
 		// Connect to the database
 		$dbh = $this->getConnection();
 
-		// Construct a SQL statement to perform the select operation
+
 		$sql = "SELECT registrationcode FROM userregistrations WHERE userid = :userid";
 
 
@@ -1259,7 +1259,7 @@ class Application {
 		// Connect to the database
 		$dbh = $this->getConnection();
 
-		// Construct a SQL statement to perform the select operation
+
 		$sql = "SELECT thingid " .
 			"FROM things LEFT JOIN users ON things.thinguserid = users.userid " .
 			"WHERE thingregistrationcode = :registrationcode1 " .
@@ -1314,7 +1314,7 @@ class Application {
 		// Connect to the database
 		$dbh = $this->getConnection();
 
-		// Construct a SQL statement to perform the select operation
+
 		$sql = "SELECT thingname, commentsopendate, commentsclosedate, critiquesclosedate, " .
 			"(commentsopendate > now()) as notopen, " .
 			"(commentsclosedate < now()) as commentsclosed, " .
@@ -1371,7 +1371,7 @@ class Application {
 		// Connect to the database
 		$dbh = $this->getConnection();
 
-		// Construct a SQL statement to perform the select operation
+
 		$sql = "SELECT thingid, thingname, thingdescription, " .
 			"convert_tz(things.thingcreated,@@session.time_zone,'America/New_York') as thingcreated, " .
 			"thinguserid, thingattachmentid, thingregistrationcode, commentsopendate, " .
@@ -1450,7 +1450,7 @@ class Application {
 			// Connect to the database
 			$dbh = $this->getConnection();
 
-			// Construct a SQL statement to perform the select operation
+
 			$sql = "SELECT things.thingid, things.thingname, things.thingdescription, " .
 				"convert_tz(things.thingcreated,@@session.time_zone,'America/New_York') as thingcreated, " .
 				"things.thinguserid, things.thingattachmentid, things.thingregistrationcode, username, " .
@@ -1519,7 +1519,7 @@ class Application {
 			// Connect to the database
 			$dbh = $this->getConnection();
 
-			// Construct a SQL statement to perform the select operation
+
 			$sql = "SELECT commentid, commenttext, commentuserid, " .
 				"convert_tz(comments.commentposted,@@session.time_zone,'America/New_York') as commentposted, " .
 				"username, attachmentid, filename " .
@@ -1629,7 +1629,7 @@ class Application {
 			// Connect to the database
 			$dbh = $this->getConnection();
 
-			// Construct a SQL statement to perform the select operation
+
 			$sql = "SELECT commentid, commenttext, commentuserid, " .
 				"convert_tz(comments.commentposted,@@session.time_zone,'America/New_York') as commentposted, " .
 				"username, attachmentid, filename " .
@@ -1689,7 +1689,7 @@ class Application {
 			// Connect to the database
 			$dbh = $this->getConnection();
 
-			// Construct a SQL statement to perform the select operation
+
 			$sql = "SELECT critiqueid, critiquetext, " .
 				"convert_tz(critiques.critiqueposted,@@session.time_zone,'America/New_York') as critiqueposted, " .
 				"username, addstodiscussion, critiqueuserid " .
@@ -2190,7 +2190,7 @@ class Application {
 		// Connect to the database
 		$dbh = $this->getConnection();
 
-		// Construct a SQL statement to perform the select operation
+
 		//$sql = "SELECT userid, username, email, isadmin FROM users ORDER BY username";
 		$sql = "SELECT users.userid, username, email, isadmin, GROUP_CONCAT(registrationcode) AS regcodes, students.studentname " .
 			"FROM users LEFT JOIN userregistrations ON users.userid = userregistrations.userid " .
@@ -2259,7 +2259,7 @@ class Application {
 				// Connect to the database
 				$dbh = $this->getConnection();
 
-				// Construct a SQL statement to perform the select operation
+
 				$sql = "SELECT userid, username, email, isadmin FROM users " .
 					"WHERE userid = :userid";
 
@@ -2348,7 +2348,7 @@ class Application {
 					// Hash the user's password
 					$passwordhash = password_hash($password, PASSWORD_DEFAULT);
 
-					// Construct a SQL statement to perform the select operation
+
 					$sql = 	"UPDATE users SET username=:username  " .
 							($loggedinuserid != $userid ? ", isadmin=:isAdmin " : "") .
 							(!empty($password) ? ", passwordhash=:passwordhash" : "") .
@@ -2412,7 +2412,7 @@ class Application {
 			// Hash the user's password
 			$passwordhash = password_hash($password, PASSWORD_DEFAULT);
 
-			// Construct a SQL statement to perform the select operation
+
 			$sql = "UPDATE users SET passwordhash=:passwordhash " .
 				"WHERE userid = :userid";
 
@@ -2462,7 +2462,7 @@ class Application {
 		// Connect to the database
 		$dbh = $this->getConnection();
 
-		// Construct a SQL statement to perform the select operation
+
 		$sql = "SELECT attachmenttypeid, name, extension FROM attachmenttypes ORDER BY name";
 
 
@@ -2639,10 +2639,11 @@ class Application {
 		}
 
 		// Get the number of critiques received on this user's comments under this registration code
-		$sql = "SELECT includeingrading, addstodiscussion, COUNT(addstodiscussion) AS numcritiques FROM critiques " .
-			"WHERE critiquecommentid IN  " .
-			"(SELECT commentid FROM comments LEFT JOIN things ON comments.commentthingid = things.thingid  " .
-             	"WHERE commentuserid = :commentuserid AND LOWER(things.thingregistrationcode) = LOWER(:regcode))  " .
+		$sql = "SELECT includeingrading, addstodiscussion, COUNT(addstodiscussion) AS numcritiques " .
+            "FROM critiques " .
+            "LEFT JOIN comments ON comments.commentid = critiques.critiquecommentid " .
+			"LEFT JOIN things ON comments.commentthingid = things.thingid  " .
+         	"WHERE commentuserid = :commentuserid AND LOWER(things.thingregistrationcode) = LOWER(:regcode)  " .
 			"GROUP BY includeingrading, addstodiscussion";
 
 
@@ -2860,7 +2861,7 @@ class Application {
 		// Connect to the database
 		$dbh = $this->getConnection();
 
-		// Construct a SQL statement to perform the select operation
+
 		$sql = "SELECT userregistrations.registrationcode, users.userid, users.username " .
 			"FROM users LEFT JOIN userregistrations ON users.userid = userregistrations.userid " .
 			"GROUP BY registrationcode, userid";
@@ -2885,7 +2886,7 @@ class Application {
 
 		}
 
-		// Construct a SQL statement to perform the select operation
+
 		$sql = "SELECT thingregistrationcode as registrationcode, COUNT(*) AS numberoftopics FROM things " .
 			"WHERE commentsopendate < convert_tz(now(), @@session.time_zone, 'America/New_York') " .
 			"GROUP BY registrationcode";
@@ -2916,7 +2917,7 @@ class Application {
 			}
 		}
 
-		// Construct a SQL statement to perform the select operation
+
 		$sql = "SELECT thingregistrationcode as registrationcode, userid, COUNT(*) AS numberofcomments FROM comments " .
 			"LEFT JOIN things ON comments.commentthingid = things.thingid " .
 			"LEFT JOIN users ON users.userid = comments.commentuserid " .
@@ -2955,7 +2956,6 @@ class Application {
 			}
 		}
 
-		// Construct a SQL statement to perform the select operation
 		$sql = "SELECT things.thingregistrationcode AS registrationcode, userid, addstodiscussion, COUNT(addstodiscussion) AS critiquecount FROM critiques " .
 			"LEFT JOIN users ON critiques.critiqueuserid = users.userid " .
             "LEFT JOIN comments on comments.commentid = critiques.critiquecommentid " .
@@ -3000,7 +3000,7 @@ class Application {
 			}
 		}
 
-		// Construct a SQL statement to perform the select operation
+
 		$sql = "SELECT things.thingregistrationcode AS registrationcode, userid, COUNT(*) AS critiquecount FROM critiques " .
 			"LEFT JOIN users ON critiques.critiqueuserid = users.userid " .
             "LEFT JOIN comments on comments.commentid = critiques.critiquecommentid " .
@@ -3040,7 +3040,7 @@ class Application {
 			}
 		}
 
-		// Construct a SQL statement to perform the select operation
+
 		$sql = "SELECT things.thingregistrationcode AS registrationcode, COUNT(*) AS numberofcomments FROM comments " .
 			"LEFT JOIN users ON users.userid = comments.commentuserid " .
             "LEFT JOIN things ON things.thingid = comments.commentthingid " .
@@ -3133,7 +3133,7 @@ class Application {
 		// Connect to the database
 		$dbh = $this->getConnection();
 
-		// Construct a SQL statement to perform the select operation
+
 		$sql = "SELECT reportcodeid, reportcodename, moreinfoneeded FROM reportcodes ORDER BY reportcodeid";
 
 
@@ -3171,7 +3171,7 @@ class Application {
 		// Connect to the database
 		$dbh = $this->getConnection();
 
-		// Construct a SQL statement to perform the select operation
+
 		$sql = "SELECT * FROM userreports";
 
 
