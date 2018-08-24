@@ -1853,7 +1853,9 @@ class Application {
 	}
 
 	// Adds a new thing to the database
-	public function addThing($name, $description, $registrationcode, $attachment, $commentsopendate, $commentsclosedate, $critiquesclosedate, $includeingrade, &$errors) {
+	public function addThing($name, $description, $registrationcode, $attachment,
+      $commentsopendate, $commentsclosedate, $critiquesclosedate,
+      $includeingrading, &$errors) {
 
 		// Get the user id from the session
 		$user = $this->getSessionUser($errors);
@@ -1897,7 +1899,7 @@ class Application {
 				$stmt->bindParam(":commentsopendate", $commentsopendate);
 				$stmt->bindParam(":commentsclosedate", $commentsclosedate);
         $stmt->bindParam(":critiquesclosedate", $critiquesclosedate);
-        $stmt->bindParam(":includeingrading", $includeingrade);
+        $stmt->bindParam(":includeingrading", $includeingrading);
 				$result = $stmt->execute();
 
 				// If the query did not run successfully, add an error message to the list
@@ -1931,7 +1933,7 @@ class Application {
 	}
 
 	// Updates an existing thing in the database. Does not support changes to attachments.
-	public function updateThing($thingid, $name, $description, $registrationcode, $attachment, $commentsopendate, $commentsclosedate, $critiquesclosedate, &$errors) {
+	public function updateThing($thingid, $name, $description, $registrationcode, $attachment, $commentsopendate, $commentsclosedate, $critiquesclosedate, $includeingrading, &$errors) {
 
 		// Get the user id from the session
 		$user = $this->getSessionUser($errors);
@@ -1966,7 +1968,8 @@ class Application {
 					"thingregistrationcode = :registrationcode, " .
 					"commentsopendate = :commentsopendate, " .
 					"commentsclosedate = :commentsclosedate, " .
-					"critiquesclosedate = :critiquesclosedate " .
+					"critiquesclosedate = :critiquesclosedate, " .
+          "includeingrading = :includeingrading " .
 					"WHERE thingid = :thingid";
 
 				// Run the SQL insert and capture the result code
@@ -1978,8 +1981,9 @@ class Application {
 				$stmt->bindParam(":registrationcode", $registrationcode);
 				$stmt->bindParam(":commentsopendate", $commentsopendate);
 				$stmt->bindParam(":commentsclosedate", $commentsclosedate);
-				$stmt->bindParam(":critiquesclosedate", $critiquesclosedate);
-				$stmt->bindParam(":thingid", $thingid);
+        $stmt->bindParam(":critiquesclosedate", $critiquesclosedate);
+        $stmt->bindParam(":includeingrading", $includeingrading);
+        $stmt->bindParam(":thingid", $thingid);
 				$result = $stmt->execute();
 
 				// If the query did not run successfully, add an error message to the list
