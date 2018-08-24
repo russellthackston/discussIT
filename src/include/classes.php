@@ -75,6 +75,7 @@ class Application {
 		$stmt->execute();
 		$dbversion = $stmt->fetch(PDO::FETCH_ASSOC)['dbversion'];
 
+    $ver = $this->codeversion;
     $this->auditlog("checkForDatabaseUpdates", "Database version: $dbversion; Code version: $ver");
 
 		// Compare to the code version
