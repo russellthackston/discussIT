@@ -2621,17 +2621,6 @@ class Application {
 			"(SELECT commentid FROM comments LEFT JOIN things ON comments.commentthingid = things.thingid  " .
              	"WHERE commentuserid = :commentuserid AND LOWER(things.thingregistrationcode) = LOWER(:regcode))  " .
 			"GROUP BY addstodiscussion";
-		/**
-		SELECT addstodiscussion, COUNT(addstodiscussion) AS cAdds
-		FROM critiques WHERE critiquecommentid in (
-		    SELECT commentid FROM comments
-			WHERE commentuserid = :commentuserid
-		    AND commentthingid IN (
-		    	SELECT thingid FROM things WHERE LOWER(things.thingregistrationcode) = LOWER(:regcode)
-		    )
-		)
-		GROUP BY addstodiscussion
-		**/
 
 		// Run the SQL select and capture the result code
 		$stmt = $dbh->prepare($sql);
