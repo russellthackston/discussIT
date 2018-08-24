@@ -1882,9 +1882,9 @@ class Application {
 				// Construct a SQL statement to perform the insert operation
 				$sql = "INSERT INTO things " .
 					"(thingid, thingname, thingdescription, thingcreated, thinguserid, thingattachmentid, thingregistrationcode, " .
-					"commentsopendate, commentsclosedate, critiquesclosedate, includeingrade) " .
+					"commentsopendate, commentsclosedate, critiquesclosedate, includeingrading) " .
 					"VALUES (:thingid, :name, :thingdescription, now(), :userid, :attachmentid, :registrationcode, " .
-					":commentsopendate, :commentsclosedate, :critiquesclosedate, :includeingrade)";
+					":commentsopendate, :commentsclosedate, :critiquesclosedate, :includeingrading)";
 
 				// Run the SQL insert and capture the result code
 				$stmt = $dbh->prepare($sql);
@@ -1897,7 +1897,7 @@ class Application {
 				$stmt->bindParam(":commentsopendate", $commentsopendate);
 				$stmt->bindParam(":commentsclosedate", $commentsclosedate);
         $stmt->bindParam(":critiquesclosedate", $critiquesclosedate);
-        $stmt->bindParam(":includeingrade", $includeingrade);
+        $stmt->bindParam(":includeingrading", $includeingrade);
 				$result = $stmt->execute();
 
 				// If the query did not run successfully, add an error message to the list
