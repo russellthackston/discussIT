@@ -82,7 +82,7 @@ class Application {
 		if ($dbversion < $this->codeversion) {
       $ver = $this->codeversion;
       $this->auditlog("checkForDatabaseUpdates", "Database needs updating from $dbversion to $ver");
-			$this->updateDatabase($dbh, $dbversion, $codeversion);
+			$this->updateDatabase($dbh, $dbversion, $this->codeversion);
 		}
 
 		$dbh = NULL;
