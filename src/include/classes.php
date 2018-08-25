@@ -2738,7 +2738,7 @@ class Application {
 		// Get the number of critiques made by this user for this registration code
 		$sql = "SELECT includeingrading, count(*) AS critiquecount " .
 			"FROM critiques " .
-            "LEFT JOIN comments ON comments.commentid = critique.critiquecommentid " .
+            "LEFT JOIN comments ON comments.commentid = critiques.critiquecommentid " .
             "LEFT JOIN things ON things.thingid = comments.commentthingid " .
 	        "WHERE critiqueuserid = :critiqueuserid " .
             "AND LOWER(things.thingregistrationcode) = LOWER(:regcode) " .
@@ -2775,7 +2775,7 @@ class Application {
 		// Get the total number of comments made (and therefore critiques expected) for this registration code
 		$sql = "SELECT includeingrading, count(*) AS numberofcommentsmade FROM comments " .
             "LEFT JOIN things ON things.thingid = comments.commentthingid " .
-			"WHERE LOWER(thingregistrationcode) = LOWER(:registrationcode)) " .
+			"WHERE LOWER(thingregistrationcode) = LOWER(:registrationcode) " .
             "GROUP BY includeingrading";
 
 
