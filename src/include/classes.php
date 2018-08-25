@@ -59,8 +59,6 @@ class Application {
 
 	function checkForDatabaseUpdates() {
 
-    $this->auditlog("checkForDatabaseUpdates", "Checking...");
-
 		// Declare an errors array
 		$errors = [];
 
@@ -75,14 +73,11 @@ class Application {
 		$stmt->execute();
 		$dbversion = $stmt->fetch(PDO::FETCH_ASSOC)['dbversion'];
 
-    $ver = $this->codeversion;
-    $this->auditlog("checkForDatabaseUpdates", "Database version: $dbversion; Code version: $ver");
-
 		// Compare to the code version
 		if ($dbversion < $this->codeversion) {
-      $ver = $this->codeversion;
-      $this->auditlog("checkForDatabaseUpdates", "Database needs updating from $dbversion to $ver");
-			$this->updateDatabase($dbh, $dbversion, $this->codeversion);
+            $ver = $this->codeversion;
+            $this->auditlog("checkForDatabaseUpdates", "Database needs updating from $dbversion to $ver");
+                $this->updateDatabase($dbh, $dbversion, $this->codeversion);
 		}
 
 		$dbh = NULL;
