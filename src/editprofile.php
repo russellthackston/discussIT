@@ -114,47 +114,56 @@ $progressReport = $app->getProgressReport($userid, $loggedinuserregistrationcode
 		<?php if (isset($progressReport) && sizeof($progressReport) > 0) { ?>
 		<h2>Stats for <?php echo $username; ?></h2>
 		<div class="progress">
-			<div>
-				Topics (current &amp; past): <?php echo $progressReport['numberoftopics']; ?>
-				(<?php echo $progressReport['numberofgradedtopics']; ?> graded
-				&amp;
-				<?php echo $progressReport['numberofungradedtopics']; ?> ungraded)
-			</div>
-			<div>
-				Comments made: <?php echo $progressReport['numberofcommentsmade']; ?>
-				(<?php echo $progressReport['numberofgradedcommentsmade']; ?> graded
-				&amp;
-				<?php echo $progressReport['numberofungradedcommentsmade']; ?> ungraded)
-			</div>
-			<br>
-			<div>
-				Positive critiques received:
-				<?php echo $progressReport['numberofpositivecritiquesreceived']; ?>
-				(<?php echo $progressReport['gradedupvotes']; ?> graded
-				&amp;
-				<?php echo $progressReport['ungradedupvotes']; ?> ungraded)
-			</div>
-			<div>
-				Negative critiques received:
-				<?php echo $progressReport['numberofnegativecritiquesreceived']; ?>
-				(<?php echo $progressReport['gradeddownvotes']; ?> graded
-				&amp;
-				<?php echo $progressReport['ungradeddownvotes']; ?> ungraded)
-			</div>
-			<div>Total number of critiques received: <?php echo $progressReport['numberofcritiquesreceived']; ?></div>
-			<br>
-			<div>
-				Critiques given: <?php echo $progressReport['numberofcritiquesgiven']; ?>
-				(<?php echo $progressReport['numberofgradedcritiquesgiven']; ?> graded
-				&amp;
-				<?php echo $progressReport['numberofungradedcritiquesgiven']; ?> ungraded)
-			</div>
-			<div>
-				Critiques expected: <?php echo $progressReport['numberofcritiquesexpected']; ?>
-				(<?php echo $progressReport['numberofgradedcritiquesexpected']; ?> graded
-				&amp;
-				<?php echo $progressReport['numberofungradedcritiquesexpected']; ?> ungraded)
-			</div>
+			<table>
+				<tr>
+					<th>Item</th>
+					<th>Graded</th>
+					<th>Ungraded</th>
+					<th>Total</th>
+				</tr>
+				<tr>
+					<td>Topics (current &amp; past)</td>
+					<td><?php echo $progressReport['numberofgradedtopics']; ?></td>
+					<td><?php echo $progressReport['numberofungradedtopics']; ?></td>
+					<td><?php echo $progressReport['numberoftopics']; ?></td>
+				</tr>
+				<tr>
+					<td>Comments made</td>
+					<td><?php echo $progressReport['numberofgradedcommentsmade']; ?></td>
+					<td><?php echo $progressReport['numberofungradedcommentsmade']; ?></td>
+					<td><?php echo $progressReport['numberofcommentsmade']; ?></td>
+				</tr>
+				<tr>
+					<td>Positive critiques received</td>
+					<td><?php echo $progressReport['gradedupvotes']; ?></td>
+					<td><?php echo $progressReport['ungradedupvotes']; ?></td>
+					<td><?php echo $progressReport['numberofpositivecritiquesreceived']; ?></td>
+				</tr>
+				<tr>
+					<td>Negative critiques received</td>
+					<td><?php echo $progressReport['gradeddownvotes']; ?></td>
+					<td><?php echo $progressReport['ungradeddownvotes']; ?></td>
+					<td><?php echo $progressReport['numberofnegativecritiquesreceived']; ?></td>
+				</tr>
+				<tr>
+					<td>Total number of critiques received</td>
+					<td><?php echo $progressReport['numberofgradedcritiquesreceived']; ?></td>
+					<td><?php echo $progressReport['numberofungradedcritiquesreceived']; ?></td>
+					<td><?php echo $progressReport['numberofcritiquesreceived']; ?></td>
+				</tr>
+				<tr>
+					<td>Total number of critiques given</td>
+					<td><?php echo $progressReport['numberofgradedcritiquesgiven']; ?></td>
+					<td><?php echo $progressReport['numberofungradedcritiquesgiven']; ?></td>
+					<td><?php echo $progressReport['numberofcritiquesgiven']; ?></td>
+				</tr>
+				<tr>
+					<td>Total number of critiques expected</td>
+					<td><?php echo $progressReport['numberofgradedcritiquesexpected']; ?></td>
+					<td><?php echo $progressReport['numberofungradedcritiquesexpected']; ?></td>
+					<td><?php echo $progressReport['numberofcritiquesexpected']; ?></td>
+				</tr>
+			</table>
 		</div>
 		<hr>
 		<h2>Grades for <?php echo $username; ?></h2>
