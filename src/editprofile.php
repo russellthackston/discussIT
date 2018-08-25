@@ -114,7 +114,7 @@ $progressReport = $app->getProgressReport($userid, $loggedinuserregistrationcode
 		<?php if (isset($progressReport) && sizeof($progressReport) > 0) { ?>
 		<h2>Stats for <?php echo $username; ?></h2>
 		<div class="progress">
-			<table>
+			<table class-"progress">
 				<tr>
 					<th>Item</th>
 					<th>Graded</th>
