@@ -2699,7 +2699,10 @@ class Application {
 
 		} else {
 
-
+            $progressReport['gradedupvotes'] = 0;
+            $progressReport['gradeddownvotes'] = 0;
+            $progressReport['ungradedupvotes'] = 0;
+            $progressReport['ungradeddownvotes'] = 0;
 			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			$progressReport['up'] = 0;
 			$progressReport['down'] = 0;
@@ -2758,7 +2761,8 @@ class Application {
 
 		} else {
 
-
+            $progressReport['numberofgradedcritiquesgiven'] = 0;
+            $progressReport['numberofungradedcritiquesgiven'] = 0;
 			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($rows as $row) {
                 if ($row['includeingrading']) {
@@ -2793,6 +2797,8 @@ class Application {
 
 		} else {
 
+            $progressReport['numberofgradedcritiquesexpected'] = 0;
+            $progressReport['numberofungradedcritiquesexpected'] = 0;
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($rows as $row) {
                 if ($row['includeingrading']) {
