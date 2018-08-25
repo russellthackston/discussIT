@@ -50,9 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		$commentsopendate = $thing['commentsopendate'];
 		$commentsclosedate = $thing['commentsclosedate'];
 		$critiquesclosedate = $thing['critiquesclosedate'];
-		if (isset($_POST['includeingrading']) && $_POST['includeingrading'] == 'yes') {
-			$includeingrading = TRUE;
-		}
+		if (isset($thing['includeingrading']) && $thing['includeingrading'] == '1') {
+            $includeingrading = TRUE;
+        }
 
 	} else {
 		$errors[] = "Could not load thing";
@@ -74,6 +74,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$commentsopendate = $_POST['commentsopendate'];
 		$commentsclosedate = $_POST['commentsclosedate'];
 		$critiquesclosedate = $_POST['critiquesclosedate'];
+		if (isset($_POST['includeingrading']) && $_POST['includeingrading'] == 'yes') {
+            $includeingrading = TRUE;
+        } else {
+	        $includeingrading = FALSE;
+        }
+
 
 		// Attempt to create the new thing and capture the result flag
 		$result = $app->updateThing($thingid, $name, $description, $regCode,
