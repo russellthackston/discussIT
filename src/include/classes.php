@@ -1712,22 +1712,17 @@ class Application {
                         // If the query ran successfully, then get the list of comments
                     } else {
 
-
                         $critiques = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $counter = 1;
+                        foreach($critiques as &$critique) {
 
-                        // TODO: Make an admin flag to turn on/off this operation
-                        if ($loggedinuser['isadmin'] != 1) {
-                            $counter = 1;
-                            foreach($critiques as &$critique) {
-
-                                if ($critique['username'] == $loggedinusername) {
-                                    $critique['mine'] = TRUE;
-                                } else {
-                                    $critique['mine'] = FALSE;
-                                }
-                                $critique['publicusername'] = "Critiquer #" . $counter;
-
+                            if ($critique['username'] == $loggedinusername) {
+                                $critique['mine'] = TRUE;
+                            } else {
+                                $critique['mine'] = FALSE;
                             }
+                            $critique['publicusername'] = "Critiquer #" . $counter;
+                            $counter++;
 
                         }
 

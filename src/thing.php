@@ -221,7 +221,7 @@ foreach ($comments as $comment) {
                                             <li class="critique <?php if ($critique['addstodiscussion'] == 0) { echo "down"; } else { echo "up"; } ?>">
                                                 <span class="critiquetext"><?php echo $critique['critiquetext']; ?></span>
                                                 <?php
-                                                $critauthor = $critique['username'];
+                                                $critauthor = $critique['publicusername'];
                                                 if ($loggedinuser['isadmin'] != 0 || $critique['username'] == $loggedinusername) {
                                                     if (!empty($comment['studentname'])) {
                                                         $critauthor = $critauthor . " (" . $critique['studentname'] . ")";
