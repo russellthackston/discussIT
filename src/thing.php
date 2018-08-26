@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // Check for url flag indicating that a new comment was created.
     if (isset($_GET["report"])) {
         $message = "Report submitted.";
-        $commentid = $_GET["report"];
+        $reportedCommentID = $_GET["report"];
     }
 }
 // If someone is attempting to create a new comment, process their request
@@ -161,10 +161,10 @@ foreach ($comments as $comment) {
 						-- <?php echo $author; ?> on <?php echo $comment['commentposted']; ?>
 					</span>
 					<span class="report">
-						<?php if (isset($commentid)) { ?>
-						Reported
+						<?php if (isset($reportedCommentID) && $reportedCommentID == $comment['commentid']) { ?>
+                            Reported
 						<?php } else { ?>
-						<a href="report.php?commentid=<?php echo $comment['commentid']; ?>&thingid=<?php echo $thingid; ?>">Report</a>
+                            <a href="report.php?commentid=<?php echo $comment['commentid']; ?>&thingid=<?php echo $thingid; ?>">Report</a>
 						<?php } ?>
 					</span>
 				</div>
