@@ -111,9 +111,13 @@ ul.things li.new {
 	margin-bottom: 20px;
 }
 
-.author, span.critiqueauthor {
+.author {
 	font-size: .75em;
 	font-style: italic;
+}
+
+span.critiqueauthor {
+	font-size: .75em;
 }
 
 span.crit-stats, span.report {
