@@ -1544,7 +1544,11 @@ class Application {
 
                         // Load the critiques for the comments
                         foreach($comments as &$comment) {
-                            $comment['anon'] = FALSE;
+                            if ($comment['username'] == $loggedinusername) {
+                                $comment['mine'] = TRUE;
+                            } else {
+                                $comment['mine'] = FALSE;
+                            }
                             $commentid = $comment['commentid'];
                             $comment['critiques'] = $this->getCritiques($commentid, $errors);
 
@@ -1579,16 +1583,7 @@ class Application {
                             $counter = 1;
                             foreach($comments as &$comment) {
 
-                                if ($comment['username'] != $loggedinusername) {
-
-                                    $comment['username'] = "Commenter #" . $counter;
-                                    $comment['anon'] = TRUE;
-
-                                } else {
-
-                                    $comment['anon'] = FALSE;
-
-                                }
+                                $comment['username'] = "Commenter #" . $counter;
 
                                 $counter += 1;
 
@@ -1650,8 +1645,12 @@ class Application {
                         // If the query ran successfully, then get the list of comments
                     } else {
 
-
                         $comment = $stmt->fetch(PDO::FETCH_ASSOC);
+                        if ($comment['username'] == $loggedinusername) {
+                            $comment['mine'] = TRUE;
+                        } else {
+                            $comment['mine'] = FALSE;
+                        }
 
                     }
 
@@ -1690,8 +1689,10 @@ class Application {
 
                     $sql = "SELECT critiqueid, critiquetext, " .
                     "convert_tz(critiques.critiqueposted,@@session.time_zone,'America/New_York') as critiqueposted, " .
-                    "username, addstodiscussion, critiqueuserid " .
-                    "FROM critiques LEFT JOIN users ON critiques.critiqueuserid = users.userid " .
+                    "username, addstodiscussion, critiqueuserid, studentname " .
+                    "FROM critiques " .
+                    "LEFT JOIN users ON critiques.critiqueuserid = users.userid " .
+                    "LEFT JOIN students ON students.studentid = users.studentid " .
                     "WHERE critiquecommentid = :commentid ORDER BY critiqueposted ASC";
 
 
@@ -1712,27 +1713,17 @@ class Application {
 
                         $critiques = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                        // Set the anon flag for all critiques
-                        foreach($critiques as &$critique) {
-                            $critique['anon'] = FALSE;
-                        }
-
                         // TODO: Make an admin flag to turn on/off this operation
                         if ($loggedinuser['isadmin'] != 1) {
                             $counter = 1;
                             foreach($critiques as &$critique) {
 
-                                if ($critique['username'] != $loggedinusername) {
-
-                                    $critique['username'] = "Critiquer #" . $counter;
-                                    $critique['anon'] = TRUE;
-                                    $counter += 1;
-
+                                if ($critique['username'] == $loggedinusername) {
+                                    $critique['mine'] = TRUE;
                                 } else {
-
-                                    $critique['anon'] = FALSE;
-
+                                    $critique['mine'] = FALSE;
                                 }
+                                $critique['publicusername'] = "Critiquer #" . $counter;
 
                             }
 

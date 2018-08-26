@@ -144,7 +144,7 @@ foreach ($comments as $comment) {
                     foreach ($comments as $comment) {
                         $index++;
                         $author = $comment['publicusername'];
-                        if ($loggedinuser['isadmin'] != 0 || $comment['username'] == $loggedinusername) {
+                        if ($loggedinuser['isadmin'] != 0 || $comment['mine']) {
                             if (!empty($comment['studentname'])) {
                                 $author = $author . " (" . $comment['studentname'] . ")";
                             } else {
@@ -156,7 +156,7 @@ foreach ($comments as $comment) {
                             <div class="comment">
                                 <?php echo nl2br(htmlentities($comment['commenttext'])); ?>
                             </div>
-                            <div class="commentdetails <?php if ($comment['anon'] != TRUE) { echo "mine"; } ?>">
+                            <div class="commentdetails <?php if ($comment['mine']) { echo "mine"; } ?>">
                                 <span class="author">
                                     -- <?php echo $author; ?> on <?php echo $comment['commentposted']; ?>
                                 </span>
@@ -220,9 +220,18 @@ foreach ($comments as $comment) {
                                         if (!empty($critique['critiquetext'])) { ?>
                                             <li class="critique <?php if ($critique['addstodiscussion'] == 0) { echo "down"; } else { echo "up"; } ?>">
                                                 <span class="critiquetext"><?php echo $critique['critiquetext']; ?></span>
-                                                <span class="critiqueauthor">-- <?php echo $critique['username']; ?></span>
+                                                <?php
+                                                $critauthor = $critique['username'];
+                                                if ($loggedinuser['isadmin'] != 0 || $comment['username'] == $loggedinusername) {
+                                                    if (!empty($comment['studentname'])) {
+                                                        $critauthor = $critauthor . " (" . $comment['studentname'] . ")";
+                                                    } else {
+                                                        $critauthor = $critauthor . " (" . $comment['username'] . ")";
+                                                    }
+                                                }
+                                                ?>
+                                                <span class="critiqueauthor">-- <?php echo  ?></span>
                                             </li>
-
                                         <?php 	}
                                     } ?>
                                 </ul>
