@@ -145,7 +145,11 @@ foreach ($comments as $comment) {
 					$index++;
           $author = $comment['publicusername'];
           if ($loggedinuser['isadmin'] != 0 || $comment['username'] == $loggedinusername) {
-            $author = $author . " (" . $comment['username'] . ")";
+              if (!empty($comment['studentname'])) {
+                  $author = $author . " (" . $comment['studentname'] . ")";
+              } else {
+                  $author = $author . " (" . $comment['username'] . ")";
+              }
           }
 			?>
 			<li data-index="<?php echo $index; ?>" data-contents="comment">
