@@ -1646,6 +1646,8 @@ class Application {
                     } else {
 
                         $comment = $stmt->fetch(PDO::FETCH_ASSOC);
+                        $loggedinuser = $this->getSessionUser($errors);
+                        $loggedinusername = $loggedinuser["username"];
                         if ($comment['username'] == $loggedinusername) {
                             $comment['mine'] = TRUE;
                         } else {
