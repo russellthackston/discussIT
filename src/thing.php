@@ -201,9 +201,15 @@ foreach ($comments as $comment) {
                             <?php } ?>
 
                             <div id="votes-<?php echo $comment['commentid']; ?>" class="voting <?php if ($comment['up'] > 0 && $comment['up'] == sizeof($comment['critiques'])) { echo "perfect"; } ?> <?php if ($comment['up'] == 0) { echo "unrated"; } ?>" <?php if (!$isadmin && !$comment['voted']) { echo " style='display: none;'"; } ?>>
-                                <?php
-                                if (sizeof($comment['critiques']) > 0) {
-                                    echo $comment['up'] . " out of " . sizeof($comment['critiques']) . " users thought this comment contributed to the discussion.";
+                                <?php if (sizeof($comment['critiques']) > 0) { ?>
+                                    <span style="display: none;" id="crit-stats-long-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid'] ?>">
+                                        <?php echo $comment['up'] . " out of " .
+                                            sizeof($comment['critiques']) .
+                                            " users thought this comment contributed to the discussion."; ?>
+                                    </span>
+                                    <span id="crit-stats-short-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid'] ?>">
+                                        +<?php echo $comment['up'] ?> / -<?php echo $comment['down']; ?>
+                                    </span>
                                 } else {
                                     echo "No critiques";
                                 }
