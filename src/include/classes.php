@@ -3483,113 +3483,112 @@ class Application {
                 // All done, return result
                 return $calendar;
             }
-        }
 
-        // Get a list of students from the database and will return the $errors array listing any errors encountered
-        public function getStudents(&$errors) {
+            // Get a list of students from the database and will return the $errors array listing any errors encountered
+            public function getStudents(&$errors) {
 
-            // Assume an empty list of users
-            $students = array();
-
-            // Connect to the database
-            $dbh = $this->getConnection();
-            $sql = "SELECT * FROM students";
-            $stmt = $dbh->prepare($sql);
-            $result = $stmt->execute();
-
-            // If the query did not run successfully, add an error message to the list
-            if ($result === FALSE) {
-                $errors[] = "An unexpected error occurred getting the student list.";
-                $this->debug($stmt->errorInfo());
-                $this->auditlog("getStudents error", $stmt->errorInfo());
-            } else {
-                $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                $this->auditlog("getStudents", "success");
-            }
-
-            // Close the connection
-            $dbh = NULL;
-
-            // Return the list of users
-            return $students;
-
-        }
-
-        // Gets a single student from database and will return the $errors array listing any errors encountered
-        public function getStudent($studentid, &$errors) {
-
-            // Assume no user exists for this user id
-            $student = NULL;
-
-            // Validate the user input
-            if (empty($studentid)) {
-                $errors[] = "Missing student ID";
-            }
-
-            if(sizeof($errors)== 0) {
+                // Assume an empty list of users
+                $students = array();
 
                 // Connect to the database
                 $dbh = $this->getConnection();
-                $sql = "SELECT * FROM students WHERE studentid = :studentid";
+                $sql = "SELECT * FROM students";
                 $stmt = $dbh->prepare($sql);
-                $stmt->bindParam(":studentid", $studentid);
                 $result = $stmt->execute();
+
+                // If the query did not run successfully, add an error message to the list
                 if ($result === FALSE) {
-                    $errors[] = "An unexpected error occurred retrieving the specified student.";
+                    $errors[] = "An unexpected error occurred getting the student list.";
                     $this->debug($stmt->errorInfo());
-                    $this->auditlog("getStudent error", $stmt->errorInfo());
-                } else if ($stmt->rowCount() == 0) {
-                    $errors[] = "Bad student ID";
-                    $this->auditlog("getStudent", "bad studentid: $studentid");
+                    $this->auditlog("getStudents error", $stmt->errorInfo());
                 } else {
-                    $student = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    $this->auditlog("getStudents", "success");
                 }
+
+                // Close the connection
                 $dbh = NULL;
-            }
-            return $student;
-        }
 
-        // Updates a single user in the database and will return the $errors array listing any errors encountered
-        public function updateStudent($studentid, $studentname, &$errors) {
+                // Return the list of users
+                return $students;
 
-            $user = NULL;
-
-            if (empty($studentid)) {
-                $errors[] = "Missing userid";
-            }
-            if (empty($studentname)) {
-                $errors[] = "Missing student name";
             }
 
-            if(sizeof($errors) == 0) {
+            // Gets a single student from database and will return the $errors array listing any errors encountered
+            public function getStudent($studentid, &$errors) {
 
-                // Connect to the database
-                $dbh = $this->getConnection();
-                $sql = 	"UPDATE students SET studentname=:studentname  " .
+                // Assume no user exists for this user id
+                $student = NULL;
+
+                // Validate the user input
+                if (empty($studentid)) {
+                    $errors[] = "Missing student ID";
+                }
+
+                if(sizeof($errors)== 0) {
+
+                    // Connect to the database
+                    $dbh = $this->getConnection();
+                    $sql = "SELECT * FROM students WHERE studentid = :studentid";
+                    $stmt = $dbh->prepare($sql);
+                    $stmt->bindParam(":studentid", $studentid);
+                    $result = $stmt->execute();
+                    if ($result === FALSE) {
+                        $errors[] = "An unexpected error occurred retrieving the specified student.";
+                        $this->debug($stmt->errorInfo());
+                        $this->auditlog("getStudent error", $stmt->errorInfo());
+                    } else if ($stmt->rowCount() == 0) {
+                        $errors[] = "Bad student ID";
+                        $this->auditlog("getStudent", "bad studentid: $studentid");
+                    } else {
+                        $student = $stmt->fetch(PDO::FETCH_ASSOC);
+                    }
+                    $dbh = NULL;
+                }
+                return $student;
+            }
+
+            // Updates a single user in the database and will return the $errors array listing any errors encountered
+            public function updateStudent($studentid, $studentname, &$errors) {
+
+                $user = NULL;
+
+                if (empty($studentid)) {
+                    $errors[] = "Missing userid";
+                }
+                if (empty($studentname)) {
+                    $errors[] = "Missing student name";
+                }
+
+                if(sizeof($errors) == 0) {
+
+                    // Connect to the database
+                    $dbh = $this->getConnection();
+                    $sql = 	"UPDATE students SET studentname=:studentname  " .
                     " WHERE studentid = :studentid";
-                $stmt = $dbh->prepare($sql);
-                $stmt->bindParam(":studentname", $studentname);
-                $stmt->bindParam(":studentid", $studentid);
-                $result = $stmt->execute();
-                if ($result === FALSE) {
-                    $errors[] = "An unexpected error occurred saving the student record. ";
-                    $this->debug($stmt->errorInfo());
-                    $this->auditlog("updateStudent error", $stmt->errorInfo());
+                    $stmt = $dbh->prepare($sql);
+                    $stmt->bindParam(":studentname", $studentname);
+                    $stmt->bindParam(":studentid", $studentid);
+                    $result = $stmt->execute();
+                    if ($result === FALSE) {
+                        $errors[] = "An unexpected error occurred saving the student record. ";
+                        $this->debug($stmt->errorInfo());
+                        $this->auditlog("updateStudent error", $stmt->errorInfo());
+                    } else {
+                        $this->auditlog("updateStudent", "success");
+                    }
+                    $dbh = NULL;
                 } else {
-                    $this->auditlog("updateStudent", "success");
+                    $this->auditlog("updateStudent validation error", $errors);
                 }
-                $dbh = NULL;
-            } else {
-                $this->auditlog("updateStudent validation error", $errors);
-            }
 
-            // Return TRUE if there are no errors, otherwise return FALSE
-            if (sizeof($errors) == 0){
-                return TRUE;
-            } else {
-                return FALSE;
+                // Return TRUE if there are no errors, otherwise return FALSE
+                if (sizeof($errors) == 0){
+                    return TRUE;
+                } else {
+                    return FALSE;
+                }
             }
         }
 
-
-?>
+        ?>
