@@ -400,3 +400,12 @@ function switchregcode() {
 	var href = replacePage(window.location.href, "switchregcode.php") + "?regcode=" + option;
 	window.location.href = href;
 }
+
+function toggleVoteSummary(elem) {
+	var commentid = elem.getAttribute('data-commentid');
+	var short = document.getElementById('crit-stats-short-' + commentid);
+	var long = document.getElementById('crit-stats-long-' + commentid);
+	var disp = short.style.display;
+	short.style.display = long.style.display;
+	long.style.display = disp;
+}
