@@ -167,6 +167,18 @@ foreach ($comments as $comment) {
                                         <a href="report.php?commentid=<?php echo $comment['commentid']; ?>&thingid=<?php echo $thingid; ?>">Report</a>
                                     <?php } ?>
                                 </span>
+                                <?php if (sizeof($comment['critiques']) > 0) { ?>
+                                    <span style="display: none;" id="crit-stats-long-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid'] ?>" onclick="toggleVoteSummary(this);">
+                                        <?php echo $comment['up'] . " out of " .
+                                            sizeof($comment['critiques']) .
+                                            " users thought this comment contributed to the discussion."; ?>
+                                    </span>
+                                    <span id="crit-stats-short-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid']; ?>" onclick="toggleVoteSummary(this);">
+                                        +<?php echo $comment['up'] ?> / <?php echo (-1 * $comment['down']); ?>
+                                    </span>
+                                <?php } else {
+                                    echo "No critiques";
+                                } ?>
                             </div>
                             <?php if ($comment['filename'] != NULL) { ?>
                                 <p class="commentattachment">
@@ -199,21 +211,6 @@ foreach ($comments as $comment) {
                                 <div class="processing" id="voteprocessed-<?php echo $comment['commentid']; ?>" style="display: none;">Your critique has been saved.</div>
 
                             <?php } ?>
-
-                            <div id="votes-<?php echo $comment['commentid']; ?>" class="voting <?php if ($comment['up'] > 0 && $comment['up'] == sizeof($comment['critiques'])) { echo "perfect"; } ?> <?php if ($comment['up'] == 0) { echo "unrated"; } ?>" <?php if (!$isadmin && !$comment['voted']) { echo " style='display: none;'"; } ?>>
-                                <?php if (sizeof($comment['critiques']) > 0) { ?>
-                                    <span style="display: none;" id="crit-stats-long-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid'] ?>" onclick="toggleVoteSummary(this);">
-                                        <?php echo $comment['up'] . " out of " .
-                                            sizeof($comment['critiques']) .
-                                            " users thought this comment contributed to the discussion."; ?>
-                                    </span>
-                                    <span id="crit-stats-short-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid']; ?>" onclick="toggleVoteSummary(this);">
-                                        +<?php echo $comment['up'] ?> / <?php echo (-1 * $comment['down']); ?>
-                                    </span>
-                                <?php } else {
-                                    echo "No critiques";
-                                } ?>
-                            </div>
 
                             <div class="critiques" id="critiques-<?php echo $comment['commentid']; ?>" <?php if (!$isadmin && !$comment['voted']) { echo " style='display: none;'"; } ?>>
                                 <ul class="critiques">
