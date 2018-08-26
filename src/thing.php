@@ -222,11 +222,11 @@ foreach ($comments as $comment) {
                                                 <span class="critiquetext"><?php echo $critique['critiquetext']; ?></span>
                                                 <?php
                                                 $critauthor = $critique['username'];
-                                                if ($loggedinuser['isadmin'] != 0 || $comment['username'] == $loggedinusername) {
+                                                if ($loggedinuser['isadmin'] != 0 || $critique['username'] == $loggedinusername) {
                                                     if (!empty($comment['studentname'])) {
-                                                        $critauthor = $critauthor . " (" . $comment['studentname'] . ")";
+                                                        $critauthor = $critauthor . " (" . $critique['studentname'] . ")";
                                                     } else {
-                                                        $critauthor = $critauthor . " (" . $comment['username'] . ")";
+                                                        $critauthor = $critauthor . " (" . $critique['username'] . ")";
                                                     }
                                                 }
                                                 ?>
