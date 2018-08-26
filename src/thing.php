@@ -230,7 +230,7 @@ foreach ($comments as $comment) {
                                                     }
                                                 }
                                                 ?>
-                                                <span class="critiqueauthor">-- <?php echo  ?></span>
+                                                <span class="critiqueauthor">-- <?php echo $critauthor; ?></span>
                                             </li>
                                         <?php 	}
                                     } ?>
