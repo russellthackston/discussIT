@@ -207,13 +207,12 @@ foreach ($comments as $comment) {
                                             sizeof($comment['critiques']) .
                                             " users thought this comment contributed to the discussion."; ?>
                                     </span>
-                                    <span id="crit-stats-short-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid'] ?>">
+                                    <span id="crit-stats-short-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid']; ?>">
                                         +<?php echo $comment['up'] ?> / -<?php echo $comment['down']; ?>
                                     </span>
-                                } else {
+                                <?php } else {
                                     echo "No critiques";
-                                }
-                                ?>
+                                } ?>
                             </div>
 
                             <div class="critiques" id="critiques-<?php echo $comment['commentid']; ?>" <?php if (!$isadmin && !$comment['voted']) { echo " style='display: none;'"; } ?>>
