@@ -170,7 +170,9 @@ ul.comments li span.mine {
 	font-size: .75em;
 	font-weight: bold;
 	margin-left: 15px;
+	margin-top: 3px;
 }
+
 div form input[type="text"], div form input[type="password"], div form textarea {
 	margin-bottom: 10px;
 }
