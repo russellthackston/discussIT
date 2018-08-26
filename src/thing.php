@@ -167,7 +167,7 @@ foreach ($comments as $comment) {
                                             " users thought this comment contributed to the discussion."; ?>]
                                     </span>
                                     <span class="crit-stats" id="crit-stats-short-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid']; ?>" onclick="toggleVoteSummary(this);">
-                                        [+<?php echo $comment['up'] ?> / <?php echo (-1 * $comment['down']); ?>]
+                                        [+<?php echo $comment['up'] ?>/<?php echo (-1 * $comment['down']); ?>]
                                     </span>
                                 <?php } else { ?>
                                     <span class="crit-stats">[No critiques]</span>
