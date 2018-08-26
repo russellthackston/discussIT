@@ -459,6 +459,10 @@ table#rollcall tr.notpresent {
 	color: red;
 }
 
+div#tabs ul {
+	border-bottom: 1px solid black;
+}
+
 div#tabs ul li {
 	display: inline-block;
 	margin: 5px 5px 0px 5px;
