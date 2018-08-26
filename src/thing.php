@@ -208,7 +208,7 @@ foreach ($comments as $comment) {
                                             " users thought this comment contributed to the discussion."; ?>
                                     </span>
                                     <span id="crit-stats-short-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid']; ?>">
-                                        +<?php echo $comment['up'] ?> / <?php echo (-1 * $comment['down']); ?>
+                                        Votes: +<?php echo $comment['up'] ?> / <?php echo (-1 * $comment['down']); ?>
                                     </span>
                                 <?php } else {
                                     echo "No critiques";
