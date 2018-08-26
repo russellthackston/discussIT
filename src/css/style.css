@@ -458,3 +458,7 @@ td.calendar-day, td.calendar-day-np {
 table#rollcall tr.notpresent {
 	color: red;
 }
+
+div.tabs ul li {
+	display: inline-block;
+}

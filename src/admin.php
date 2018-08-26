@@ -69,7 +69,7 @@ $reports = $app->getReports($errors);
             <main id="wrapper">
                 <h2>Admin Functions</h2>
                 <?php include 'include/messages.php'; ?>
-                <div id-"tabs">
+                <div id="tabs">
                     <ul>
                         <li onclick="showAdminTab(this);" data-tab="userreports">User Reports</li>
                         <li onclick="showAdminTab(this);" data-tab="userlist">User List</li>
