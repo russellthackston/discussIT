@@ -168,13 +168,13 @@ foreach ($comments as $comment) {
                                     <?php } ?>
                                 </span>
                                 <?php if (sizeof($comment['critiques']) > 0) { ?>
-                                    <span style="display: none;" id="crit-stats-long-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid'] ?>" onclick="toggleVoteSummary(this);">
+                                    <span class="crit-stats" style="display: none;" id="crit-stats-long-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid'] ?>" onclick="toggleVoteSummary(this);">
                                         <?php echo $comment['up'] . " out of " .
                                             sizeof($comment['critiques']) .
                                             " users thought this comment contributed to the discussion."; ?>
                                     </span>
-                                    <span id="crit-stats-short-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid']; ?>" onclick="toggleVoteSummary(this);">
-                                        +<?php echo $comment['up'] ?> / <?php echo (-1 * $comment['down']); ?>
+                                    <span class="crit-stats" id="crit-stats-short-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid']; ?>" onclick="toggleVoteSummary(this);">
+                                        [ +<?php echo $comment['up'] ?> / <?php echo (-1 * $comment['down']); ?> ]
                                     </span>
                                 <?php } else {
                                     echo "No critiques";
