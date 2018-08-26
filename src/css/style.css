@@ -111,13 +111,14 @@ ul.things li.new {
 	margin-bottom: 20px;
 }
 
-.author, span.critiqueauthor, .report {
+.author, span.critiqueauthor {
 	font-size: .75em;
 	font-style: italic;
 }
 
-span.crit-stats {
+span.crit-stats, span.report {
 	font-size: .75em;
+	margin-left: 5px;
 }
 
 span.report {
