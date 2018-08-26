@@ -461,8 +461,9 @@ table#rollcall tr.notpresent {
 
 div#tabs ul li {
 	display: inline-block;
-	margin: 5px;
+	margin: 5px 5px 0px 5px;
 	border: 1px solid black;
+	border-bottom-width: 0px;
     border-radius: 5px 5px 0px 0px;
-    padding: 5px;	
+    padding: 5px;
 }
