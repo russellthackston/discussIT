@@ -117,7 +117,7 @@ $reports = $app->getReports($errors);
                 <ul class="reports">
                     <?php foreach($reports as $report) { ?>
                         <?php $comment = $app->getComment($report['userreportcommentid'], $errors); ?>
-                        <li><a href="thing.php?thingid=<?php echo $comment['commentthingid']; ?>#<?php echo $comment['commentid']; ?>"><?php echo $report['userreportid']; ?></a> -- <?php echo $report['userreportreasoncodeid']; ?> -- <?php echo $report['moreinfo']; ?><br>Comment: <?php echo $comment['commenttext']; ?><br>Posted by: <?php echo $comment['username']; ?></li>
+                        <li><a href="thing.php?thingid=<?php echo $comment['commentthingid']; ?>#comment-<?php echo $comment['commentid']; ?>"><?php echo $report['userreportid']; ?></a> -- <?php echo $report['userreportreasoncodeid']; ?> -- <?php echo $report['moreinfo']; ?><br>Comment: <?php echo $comment['commenttext']; ?><br>Posted by: <?php echo $comment['username']; ?></li>
                     <?php } ?>
                     <?php if (sizeof($reports) == 0) { ?>
                         <li>No user report found</li>

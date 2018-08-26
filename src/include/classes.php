@@ -1629,8 +1629,9 @@ class Application {
 
                     $sql = "SELECT commentid, commenttext, commentuserid, " .
                     "convert_tz(comments.commentposted,@@session.time_zone,'America/New_York') as commentposted, " .
-                    "username, attachmentid, filename " .
-                    "FROM comments LEFT JOIN users ON comments.commentuserid = users.userid " .
+                    "username, attachmentid, filename, commentthingid " .
+                    "FROM comments " .
+                    "LEFT JOIN users ON comments.commentuserid = users.userid " .
                     "LEFT JOIN attachments ON comments.commentattachmentid = attachments.attachmentid " .
                     "WHERE commentid = :commentid";
 
