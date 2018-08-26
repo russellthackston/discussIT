@@ -409,3 +409,10 @@ function toggleVoteSummary(elem) {
 	short.style.display = long.style.display;
 	long.style.display = disp;
 }
+
+function showAdminTab(elem) {
+	document.getElementById('userreports').style.display = "none";
+	document.getElementById('userlist').style.display = "none";
+	document.getElementById('attachmenttypes').style.display = "none";
+	document.getElementById(elem.getAttribute('data-tab')).style.display = "block";
+}
