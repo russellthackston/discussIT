@@ -1517,9 +1517,11 @@ class Application {
 
 			$sql = "SELECT commentid, commenttext, commentuserid, " .
 				"convert_tz(comments.commentposted,@@session.time_zone,'America/New_York') as commentposted, " .
-				"username, attachmentid, filename " .
+				"username, attachmentid, filename, studentname " .
 				"FROM comments LEFT JOIN users ON comments.commentuserid = users.userid " .
 				"LEFT JOIN attachments ON comments.commentattachmentid = attachments.attachmentid " .
+                "LEFT JOIN users ON users.userid = comments.commentsuserid " .
+                "LEFT JOIN students ON students.studentid = users.studentid " .
 				"WHERE commentthingid = :thingid ORDER BY commentposted ASC";
 
 
