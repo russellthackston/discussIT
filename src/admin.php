@@ -52,10 +52,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
-// Attempt to obtain the list of users
 $attachmentTypes = $app->getAttachmentTypes($errors);
-
 $reports = $app->getReports($errors);
+$students = $app->getStudents($errors);
 
 ?>
 
@@ -73,6 +72,7 @@ $reports = $app->getReports($errors);
                     <ul>
                         <li onclick="showAdminTab(this);" data-tab="userreports">User Reports</li>
                         <li onclick="showAdminTab(this);" data-tab="userlist">User List</li>
+                        <li onclick="showAdminTab(this);" data-tab="studentlist">Student List</li>
                         <li onclick="showAdminTab(this);" data-tab="attachmenttypes">Attachment Types</li>
                     </ul>
                 </div>
@@ -85,6 +85,17 @@ $reports = $app->getReports($errors);
                         <?php } ?>
                         <?php if (sizeof($reports) == 0) { ?>
                             <li>No user report found</li>
+                        <?php } ?>
+                    </ul>
+                </div>
+                <div id="studentlist" style="display: none;">
+                    <h3>Student List</h3>
+                    <ul class="students">
+                        <?php foreach($students as $student) { ?>
+                            <li class="student">
+                                <?php echo $student['studentid']; ?> --
+                                <a href="editstudent.php?studentid=<?php echo $student['studentid']; ?>"><?php echo $student['studentname']; ?></a>
+                            </li>
                         <?php } ?>
                     </ul>
                 </div>

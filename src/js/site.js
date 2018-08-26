@@ -413,6 +413,7 @@ function toggleVoteSummary(elem) {
 function showAdminTab(elem) {
 	document.getElementById('userreports').style.display = "none";
 	document.getElementById('userlist').style.display = "none";
+	document.getElementById('studentlist').style.display = "none";
 	document.getElementById('attachmenttypes').style.display = "none";
 	document.getElementById(elem.getAttribute('data-tab')).style.display = "block";
 }
