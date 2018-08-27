@@ -17,9 +17,13 @@ $app->protectPage($errors, TRUE);
 // If someone is adding a new attachment type
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+    $this->auditlog("editStudent.php", "Request to edit");
+    $this->auditlog("editStudent.php", $_POST);
+
     // Parse the JSON
     $entityBody = file_get_contents('php://input');
     $data = json_decode($entityBody);
+    $this->auditlog("editStudent.php", $entityBody);
 
     // Get the individual attributes
     $studentid = $data->studentid;
