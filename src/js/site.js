@@ -221,7 +221,7 @@ function displayCritiques(critiques, commentid) {
 				classes += "up ";
 			}
 			cElem.setAttribute("class", classes);
-			cElem.appendChild(document.createTextNode(element.critiquetext + " -- " + element.displayname));
+			cElem.appendChild(document.createTextNode(element.critiquetext + " -- " + element.publicusername));
 			critiquesList.appendChild(cElem);
 		}
 	});
