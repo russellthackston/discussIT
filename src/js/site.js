@@ -116,7 +116,6 @@ function up(elem) {
 			processingElement.style.display = "none";
 			processedElement.style.display = "block";
 			var critiques = this.responseText;
-			console.log(critiques);
 			displayCritiques(critiques, commentid);
 		}
 	};
@@ -168,7 +167,6 @@ function down(elem) {
 				processingElement.style.display = "none";
 				processedElement.style.display = "block";
 				var critiques = this.responseText;
-				console.log(critiques);
 				displayCritiques(critiques, commentid);
 			}
 		};
