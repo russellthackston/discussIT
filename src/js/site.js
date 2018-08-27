@@ -417,3 +417,14 @@ function showAdminTab(elem) {
 	document.getElementById('attachmenttypes').style.display = "none";
 	document.getElementById(elem.getAttribute('data-tab')).style.display = "block";
 }
+
+function showEditStudent(elem) {
+	var studentid = elem.getAttribute('data-studentid');
+	document.getElementById('student-name-textfield-' + studentid).style.display = "inline";
+	document.getElementById('student-edit-button-' + studentid).style.display = "inline";
+	document.getElementById('student-name-' + studentid).style.display = "none";
+}
+
+function saveStudent(elem) {
+
+}

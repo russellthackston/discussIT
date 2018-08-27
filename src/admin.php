@@ -93,10 +93,12 @@ $students = $app->getStudents($errors);
                     <ul class="students">
                         <?php foreach($students as $student) { ?>
                             <li class="student">
-                                <span onlick="showEditStudent(this);" data-studentid="<?php echo $student['studentid']; ?>"><?php echo $student['studentname']; ?></span>
-                                <input style="display: none" type="text" name="studentname" id="student-name-<?php echo $student['studentid']; ?>" value="<?php echo $student['studentname']; ?>">
+                                <span onlick="showEditStudent(this);" id="student-name-<?php echo $student['studentid']; ?>" data-studentid="<?php echo $student['studentid']; ?>">
+                                    <?php echo $student['studentname']; ?>
+                                    (<?php echo $student['studentid']; ?>)
+                                </span>
+                                <input style="display: none" type="text" name="studentname" id="student-name-textfield-<?php echo $student['studentid']; ?>" value="<?php echo $student['studentname']; ?>">
                                 <input style="display: none" type="button" id="student-edit-button-<?php echo $student['studentid']; ?>" data-studentid="<?php echo $student['studentid']; ?>" value="Save" onclick="saveStudent(this)">
-                                (<?php echo $student['studentid']; ?>)
                             </li>
                         <?php } ?>
                     </ul>
