@@ -23,10 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $studentname = $data->studentname;
     $result = $app->updateStudent($studentid, $studentname, $errors);
     if ($result) {
-    	$response = $studentname;
-    	echo json_encode($response);
+    	echo json_encode(array('studentname' => $studentname));
     } else {
-        echo json_encode('Error');
+        echo json_encode(array('studentname' => 'Error'));
     }
 
 }
