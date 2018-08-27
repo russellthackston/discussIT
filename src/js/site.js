@@ -267,92 +267,6 @@ function toggleMoreInfo(elem) {
 	}
 }
 
-function fadeOutWrapper() {
-	var footer = document.getElementById("sitefooter");
-	var oldWrapper = document.getElementById('wrapper');
-	oldWrapper.setAttribute("id", "oldwrapper");
-	var op = 1;  // initial opacity
-    var timer = setInterval(function () {
-        if (op <= 0.1) {
-            clearInterval(timer);
-            oldWrapper.remove();
-			fadeInWrapper();
-        }
-        oldWrapper.style.opacity = op;
-        oldWrapper.style.filter = 'alpha(opacity=' + op * 100 + ")";
-        footer.style.opacity = op;
-        footer.style.filter = 'alpha(opacity=' + op * 100 + ")";
-        op -= op * 0.1;
-    }, 20);
-}
-
-function fadeInWrapper() {
-	var footer = document.getElementById("sitefooter");
-	var newWrapper = document.getElementById('newwrapper');
-	var op = 0.1;  // initial opacity
-    newWrapper.style.display = 'block';
-    var timer = setInterval(function () {
-        if (op >= 1){
-            clearInterval(timer);
-            newWrapper.setAttribute("id", "wrapper");
-        }
-        newWrapper.style.opacity = op;
-        newWrapper.style.filter = 'alpha(opacity=' + op * 100 + ")";
-        footer.style.opacity = op;
-        footer.style.filter = 'alpha(opacity=' + op * 100 + ")";
-        op += op * 0.1;
-    }, 20);
-}
-
-function reloadWrapper(url) {
-	fadeOutWrapper();
-
-	// Load the new page in a new div off the right side of the screen
-	var newWrapper = document.createElement('div');
-	newWrapper.setAttribute('id', 'newwrapper');
-	newWrapper.style.opacity = 0.0;
-	newWrapper.display = "none";
-	document.body.insertBefore(newWrapper, document.getElementById('sitefooter'));
-
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			parser=new DOMParser();
-			htmlDoc=parser.parseFromString(this.responseText, "text/html");
-			newWrapper.innerHTML = htmlDoc.getElementById('wrapper').innerHTML;
-		}
-	};
-	xhttp.open("get", url, true);
-	xhttp.send();
-	//window.history.pushState(document.location.href, document.title, url);
-	//window.history.replaceState(document.location.href, document.title, url);
-}
-
-function showThing(elem) {
-	var thingid = elem.getAttribute('data-thingid');
-
-	var href = replacePage(window.location.href, "thing.php") + "?thingid=" + thingid;
-	console.log(href);
-	reloadWrapper(href);
-}
-
-function showPage(target) {
-	var href = replacePage(window.location.href, target)
- 	reloadWrapper(href);
-}
-
-/*
-	window.onpopstate = function (event) {
-    var propValue;
-	for(var propName in event) {
-	    propValue = event[propName]
-
-	    console.log(propName,propValue);
-	}
-    reloadWrapper(event.state);
-};
-*/
-
 function rollcall(elem) {
 
 	// Get the vote details and display a processing message
@@ -426,5 +340,28 @@ function showEditStudent(elem) {
 }
 
 function saveStudent(elem) {
+	// Send the vote to the server
+	var href = window.location.href;
+	var studentid = elem.getAttribute('data-studentid');
+	var studentname = document.getElementById('student-name-textfield-' + studentid).value;
+	document.getElementById('student-name-' + studentid).style.display = "inline";
+	document.getElementById('student-name-textfield-' + studentid).style.display = "none";
+	document.getElementById('student-edit-button-' + studentid).style.display = "none";
+	console.log(href);
+	var data = {
+		"studentid" : studentid,
+		"studentname" : studentname
+	};
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			obj = JSON.parse(critiques);
+			document.getElementById('student-name-' + studentid).innerHTML = obj.studentname;
+		}
+	};
+	xhttp.open("post", href, true);
+	xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	xhttp.send(JSON.stringify(data));
 
 }
