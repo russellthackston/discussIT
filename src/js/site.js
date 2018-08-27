@@ -359,6 +359,8 @@ function saveStudent(elem) {
 			console.log(this.responseText);
 			obj = JSON.parse(this.responseText);
 			document.getElementById('student-name-' + studentid).innerHTML = obj.studentname;
+		} else {
+			console.log(this);
 		}
 	};
 	xhttp.open("post", href, true);
