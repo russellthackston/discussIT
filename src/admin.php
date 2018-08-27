@@ -93,8 +93,10 @@ $students = $app->getStudents($errors);
                     <ul class="students">
                         <?php foreach($students as $student) { ?>
                             <li class="student">
-                                <?php echo $student['studentid']; ?> --
-                                <a href="editstudent.php?studentid=<?php echo $student['studentid']; ?>"><?php echo $student['studentname']; ?></a>
+                                <span onlick="showEditStudent(this);" data-studentid="<?php echo $student['studentid']; ?>"><?php echo $student['studentname']; ?></span>
+                                <input style="display: none" type="text" name="studentname" id="student-name-<?php echo $student['studentid']; ?>" value="<?php echo $student['studentname']; ?>">
+                                <input style="display: none" type="button" id="student-edit-button-<?php echo $student['studentid']; ?>" data-studentid="<?php echo $student['studentid']; ?>" value="Save" onclick="saveStudent(this)">
+                                (<?php echo $student['studentid']; ?>)
                             </li>
                         <?php } ?>
                     </ul>
