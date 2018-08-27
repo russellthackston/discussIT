@@ -17,24 +17,18 @@ $app->protectPage($errors, TRUE);
 // If someone is adding a new attachment type
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $app->auditlog("editStudent.php", "Request to edit");
-    $app->auditlog("editStudent.php", $_POST);
-
-    // Parse the JSON
     $entityBody = file_get_contents('php://input');
     $data = json_decode($entityBody);
-    $app->auditlog("editStudent.php", $entityBody);
-
-    // Get the individual attributes
     $studentid = $data->studentid;
     $studentname = $data->studentname;
-
-    // Add the critique to the database
     $result = $app->updateStudent($studentid, $studentname, $errors);
-
     if ($result) {
-    	$response = $studentname
+    	$response = $studentname;
     	echo json_encode($response);
+    } else {
+        echo json_encode('Error');
     }
 
 }
+
+?>
