@@ -3492,7 +3492,7 @@ class Application {
 
                 // Connect to the database
                 $dbh = $this->getConnection();
-                $sql = "SELECT * FROM students";
+                $sql = "SELECT * FROM students ORDER BY studentname";
                 $stmt = $dbh->prepare($sql);
                 $result = $stmt->execute();
 
