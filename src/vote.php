@@ -27,6 +27,9 @@ $result = $app->addCritique($text, $commentid, $addstodiscussion, $errors);
 
 if ($result) {
 	$response = $app->getCritiques($commentid, $errors);
+	foreach ($response as $resp) {
+		$resp['username'] = $resp['publicusername'];
+	}
 	echo json_encode($response);
 }
 
