@@ -341,7 +341,7 @@ function showEditStudent(elem) {
 
 function saveStudent(elem) {
 	// Send the vote to the server
-	var href = window.location.href;
+	var href = replacePage(window.location.href, "editstudent.php") + "?regcode=" + option;
 	var studentid = elem.getAttribute('data-studentid');
 	var studentname = document.getElementById('student-name-textfield-' + studentid).value;
 	document.getElementById('student-name-' + studentid).style.display = "inline";
