@@ -187,7 +187,7 @@ function displayCritiques(critiques, commentid) {
 	critiquesElement.style.display = "block";
 
 	// Display the votes summary
-	var votesElement = document.getElementById("votes-" + commentid);
+	var votesElement = document.getElementById("votingform-" + commentid);
 	votesElement.style.display = "block";
 
 	// Remove the voting forms
