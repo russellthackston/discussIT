@@ -94,6 +94,12 @@ $students = $app->getStudents($errors);
                 <div id="studentlist" style="display: none;">
                     <h3>Student List</h3>
                     <table class="students">
+                        <tr>
+                            <th>Name</th>
+                            <th>Registered?</th>
+                            <th>Student ID</th>
+                            <th>Registrations</th>
+                        </tr>
                         <?php foreach($students as $student) { ?>
                             <tr class="student">
                                 <td>
@@ -102,6 +108,9 @@ $students = $app->getStudents($errors);
                                     </span>
                                     <input style="display: none" type="text" name="studentname" id="student-name-textfield-<?php echo $student['studentid']; ?>" value="<?php echo $student['studentname']; ?>">
                                     <input style="display: none" type="button" id="student-edit-button-<?php echo $student['studentid']; ?>" data-studentid="<?php echo $student['studentid']; ?>" value="Save" onclick="saveStudent(this)">
+                                </td>
+                                <td>
+                                    <?php if($student['regcount'] > 0) { echo "Yes"; } else { echo "No"; } ?>
                                 </td>
                                 <td>
                                     <?php echo $student['studentid']; ?>
