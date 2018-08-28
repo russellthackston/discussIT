@@ -175,10 +175,12 @@ foreach ($comments as $comment) {
                                             <span class="up"><?php echo $comment['up'];?></span>
                                             out of
                                             <span class="total"><?php echo sizeof($comment['critiques']); ?></span>
-                                            users thought this comment contributed to the discussion]
+                                            users thought this comment contributed to the discussion.
+                                            <?php if (!$comment['voted']) { echo "You have not voted on this comment." } ?>
+                                            ]
                                         </span>
                                         <span class="crit-stats" id="crit-stats-short-<?php echo $comment['commentid'] ?>" data-commentid="<?php echo $comment['commentid']; ?>" onclick="toggleVoteSummary(this);">
-                                            [+<span class="up"><?php echo $comment['up'] ?></span>/<span class="down"><?php echo (-1 * $comment['down']); ?></span>]
+                                            [+<span class="up"><?php echo $comment['up'] ?></span>/<span class="down"><?php echo (-1 * $comment['down']); ?></span>]<?php if (!$comment['voted']) { echo "*" } ?>
                                         </span>
                                     <?php } else { ?>
                                         <span class="crit-stats">[No critiques]</span>
