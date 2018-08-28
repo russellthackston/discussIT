@@ -2582,7 +2582,7 @@ class Application {
                 commentquality (gradedupvotes/numberofgradedcritiquesreceived)
                 */
 
-                $progressReport = array();
+                $progressReport = array("userid"=>$userid, "registrationcode"=>$registrationcode);
 
                 if (empty($userid)) {
                     $errors[] = "Missing user ID";
@@ -2917,9 +2917,7 @@ class Application {
 
                 foreach ($students as $student) {
                     $studentReport = $this->getProgressReport($student['userid'], $student['registrationcode'], $errors);
-                    $progressReport[] = array("userid"=>$student['userid'],
-                        "registrationcode"=>$student['registrationcode'],
-                        "report"=>$studentReport);
+                    $progressReport[] = $studentReport;
                 }
 
                 /*
