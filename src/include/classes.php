@@ -2924,7 +2924,7 @@ class Application {
                 foreach ($studentReport as $key => $value) {
                     $labels[$key] = $key;
                 }
-                array_splice($progressReport['progress'], 0, 0, array($labels));
+                array_splice($progressReport, 0, 0, array($labels));
 
                 return $progressReport;
             }
