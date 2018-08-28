@@ -1712,6 +1712,7 @@ class Application {
                         // If the query ran successfully, then get the list of comments
                     } else {
 
+                        // TODO: Enforce authorization rules on data
                         $critiques = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         $counter = 1;
                         foreach($critiques as &$critique) {

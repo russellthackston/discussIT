@@ -196,39 +196,8 @@ function displayCritiques(critiques, commentid) {
 	upvotediv.remove();
 	downvotediv.remove();
 
-	// Display the comments
-	var up = 0;
-	var down = 0;
-	obj = JSON.parse(critiques);
-	critiquesElement.innerHTML = "";
-	var critiquesList = document.createElement("ul");
-	critiquesList.setAttribute("class", "critiques");
-	critiquesElement.appendChild(critiquesList);
-	obj.forEach(function(element) {
-		if (element.addstodiscussion == "0") {
-			down += 1;
-		} else {
-			up += 1;
-		}
-		if (element.critiquetext) {
-			var cElem = document.createElement("li");
-			var classes = "critique ";
-			if (element.addstodiscussion == "0") {
-				classes += "down ";
-			} else {
-				classes += "up ";
-			}
-			cElem.setAttribute("class", classes);
-			cElem.appendChild(document.createTextNode(element.critiquetext + " -- " + element.publicusername));
-			critiquesList.appendChild(cElem);
-		}
-	});
-
-	// Update the counters
-	var total = up + down;
-	votesElement.innerHTML = (up + " out of " + total +
-		" users thought this comment contributed to the discussion.");
-
+	// Display the critiques
+	critiquesElement.innerHTML = critiques;
 	activateNewCommentForm();
 
 }

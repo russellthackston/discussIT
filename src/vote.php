@@ -26,11 +26,8 @@ $addstodiscussion = ($data->vote == "up");
 $result = $app->addCritique($text, $commentid, $addstodiscussion, $errors);
 
 if ($result) {
-	$response = $app->getCritiques($commentid, $errors);
-	foreach ($response as &$resp) {
-		$resp['username'] = $resp['publicusername'];
-	}
-	echo json_encode($response);
+	$rcritiques = $app->getCritiques($commentid, $errors);
+	<?php require('include/critiqueslist.php'); ?>
 }
 
 ?>
