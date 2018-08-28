@@ -3298,7 +3298,7 @@ class Application {
                     "FROM students " .
                     "LEFT JOIN users ON users.studentid = students.studentid " .
                     "LEFT JOIN userregistrations ON userregistrations.userid = users.userid " .
-                    "GROUP BY studentid, studentname";
+                    "GROUP BY studentname, studentid";
                 $stmt = $dbh->prepare($sql);
                 $result = $stmt->execute();
 
