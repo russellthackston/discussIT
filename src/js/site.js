@@ -363,6 +363,7 @@ function saveStudent(elem) {
 }
 
 function addStudent() {
+	var href = replacePage(window.location.href, "addstudent.php");
 	var studentid = document.getElementById('newstudentid').value;
 	var studentname = document.getElementById('newstudentname').value;
 	var data = {
