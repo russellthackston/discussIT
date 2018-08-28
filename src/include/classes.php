@@ -3294,11 +3294,11 @@ class Application {
 
                 // Connect to the database
                 $dbh = $this->getConnection();
-                $sql = "SELECT students.*, GROUP_CONCAT(registrationcode) AS regcodes" . 
+                $sql = "SELECT studentid, studentname, GROUP_CONCAT(registrationcode) AS regcodes" .
                     "FROM students " .
                     "LEFT JOIN users ON users.studentid = students.studentid " .
                     "LEFT JOIN userregistrations ON userregistrations.userid = users.userid " .
-                    "ORDER BY studentname";
+                    "GROUP BY studentid, studentname";
                 $stmt = $dbh->prepare($sql);
                 $result = $stmt->execute();
 
