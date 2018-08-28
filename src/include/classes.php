@@ -2920,20 +2920,11 @@ class Application {
                     $progressReport[] = $studentReport;
                 }
 
-                /*
-                $labels = array(array(
-                    "registrationcode"=>"registrationcode",
-                    "userid"=>"userid",
-                    "username"=>"username",
-                    "numberoftopics"=>"numberoftopics",
-                    "numberofcommentsmade"=>"numberofcommentsmade",
-                    "positivecritiques"=>"positivecritiques",
-                    "negativecritiques"=>"negativecritiques",
-                    "numberofcritiquesmade"=>"numberofcritiquesmade",
-                    "numberofcritiquesexpected"=>"numberofcritiquesexpected"
-                ));
-                array_splice($progressReport['progress'], 0, 0, $labels);
-                */
+                $labels = array();
+                foreach ($studentReport as $key => $value) {
+                    $labels[] = $key=>$key;
+                }
+                array_splice($progressReport['progress'], 0, 0, array($labels));
 
                 return $progressReport;
             }
