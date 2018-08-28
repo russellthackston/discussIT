@@ -71,6 +71,7 @@ $students = $app->getStudents($errors);
                 <div id="tabs">
                     <ul>
                         <li onclick="showAdminTab(this);" data-tab="userreports">User Reports</li>
+                        <li onclick="showAdminTab(this);" data-tab="progressreports">Progress Reports</li>
                         <li onclick="showAdminTab(this);" data-tab="userlist">User List</li>
                         <li onclick="showAdminTab(this);" data-tab="studentlist">Student List</li>
                         <li onclick="showAdminTab(this);" data-tab="attachmenttypes">Attachment Types</li>
@@ -87,6 +88,9 @@ $students = $app->getStudents($errors);
                             <li>No user report found</li>
                         <?php } ?>
                     </ul>
+                </div>
+                <div id="progressreports" style="display: none;">
+                    <a href="admin.php?downloadprogress" class="no-barba">Download progress report</a>
                 </div>
                 <div id="studentlist" style="display: none;">
                     <h3>Student List</h3>
@@ -126,7 +130,6 @@ $students = $app->getStudents($errors);
                             </li>
                         <?php } ?>
                     </ul>
-                    <a href="admin.php?downloadprogress" class="no-barba">Download progress report</a>
                 </div>
                 <div id="attachmenttypes" style="display: none;">
                     <h3>Valid Attachment Types</h3>
