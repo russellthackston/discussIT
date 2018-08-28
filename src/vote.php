@@ -27,7 +27,7 @@ $result = $app->addCritique($text, $commentid, $addstodiscussion, $errors);
 
 if ($result) {
 	$rcritiques = $app->getCritiques($commentid, $errors);
-	<?php require('include/critiqueslist.php'); ?>
+	require('include/critiqueslist.php');
 }
 
 ?>
