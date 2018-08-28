@@ -116,7 +116,7 @@ function up(elem) {
 			processingElement.style.display = "none";
 			processedElement.style.display = "block";
 			var critiques = this.responseText;
-			displayCritiques(critiques, commentid);
+			displayCritiques(critiques, commentid, "up");
 		}
 	};
 	xhttp.open("post", href, true);
@@ -167,7 +167,7 @@ function down(elem) {
 				processingElement.style.display = "none";
 				processedElement.style.display = "block";
 				var critiques = this.responseText;
-				displayCritiques(critiques, commentid);
+				displayCritiques(critiques, commentid, "down");
 			}
 		};
 		xhttp.open("post", href, true);
@@ -178,15 +178,37 @@ function down(elem) {
 
 }
 
-function displayCritiques(critiques, commentid) {
+function displayCritiques(critiques, commentid, vote) {
 
 	// Display the critique list
 	var critiquesElement = document.getElementById("critiques-" + commentid);
 	critiquesElement.style.display = "block";
 
-	// Display the votes summary
-	var votesElement = document.getElementById("votingform-" + commentid);
-	votesElement.style.display = "block";
+	// Fix and display the votes summary
+	var statsElement = document.getElementById("stats-container-" + commentid);
+	var ups = statsElement.getElementsByClassName("up");
+	var downs = statsElement.getElementsByClassName("down");
+	var totals = statsElement.getElementsByClassName("total");
+	if (vote == "up") {
+		for (var i = 0; i < ups.length; i++) {
+			var num = parseInt(ups[i].innerHTML);
+			num++;
+			ups[i].innerHTML = "" + num;
+		}
+	}
+	if (vote == "down") {
+		for (var i = 0; i < downs.length; i++) {
+			var num = parseInt(downs[i].innerHTML);
+			num--;
+			downs[i].innerHTML = "" + num;
+		}
+	}
+	for (var i = 0; i < totals.length; i++) {
+		var num = parseInt(totals[i].innerHTML);
+		num++;
+		totals[i].innerHTML = "" + num;
+	}
+	statsElement.style.display = "inline";
 
 	// Remove the voting forms
 	var votingformdiv = document.getElementById("votingform-" + commentid);
