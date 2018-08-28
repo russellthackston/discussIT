@@ -352,7 +352,7 @@ function saveStudent(elem) {
 		if (this.readyState == 4 && this.status == 200) {
 			console.log(this.responseText);
 			obj = JSON.parse(this.responseText);
-			document.getElementById('student-name-' + studentid).innerHTML = obj.studentname + " (" + obj.studentid + ")";
+			document.getElementById('student-name-' + studentid).innerHTML = obj.studentname;
 		} else {
 			console.log(this);
 		}
