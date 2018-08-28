@@ -93,18 +93,25 @@ $students = $app->getStudents($errors);
                 </div>
                 <div id="studentlist" style="display: none;">
                     <h3>Student List</h3>
-                    <ul class="students">
+                    <table class="students">
                         <?php foreach($students as $student) { ?>
-                            <li class="student">
-                                <span onclick="showEditStudent(this);" id="student-name-<?php echo $student['studentid']; ?>" data-studentid="<?php echo $student['studentid']; ?>">
-                                    <?php echo $student['studentname']; ?>
-                                    (<?php echo $student['studentid']; ?>)
-                                </span>
-                                <input style="display: none" type="text" name="studentname" id="student-name-textfield-<?php echo $student['studentid']; ?>" value="<?php echo $student['studentname']; ?>">
-                                <input style="display: none" type="button" id="student-edit-button-<?php echo $student['studentid']; ?>" data-studentid="<?php echo $student['studentid']; ?>" value="Save" onclick="saveStudent(this)">
+                            <tr class="student">
+                                <td>
+                                    <span onclick="showEditStudent(this);" id="student-name-<?php echo $student['studentid']; ?>" data-studentid="<?php echo $student['studentid']; ?>">
+                                        <?php echo $student['studentname']; ?>
+                                    </span>
+                                    <input style="display: none" type="text" name="studentname" id="student-name-textfield-<?php echo $student['studentid']; ?>" value="<?php echo $student['studentname']; ?>">
+                                    <input style="display: none" type="button" id="student-edit-button-<?php echo $student['studentid']; ?>" data-studentid="<?php echo $student['studentid']; ?>" value="Save" onclick="saveStudent(this)">
+                                </td>
+                                <td>
+                                    <?php echo $student['studentid']; ?>
+                                </td>
+                                <td>
+                                    <?php echo $student['regcodes']; ?>
+                                </td>
                             </li>
                         <?php } ?>
-                    </ul>
+                    </table>
                 </div>
                 <div id="userlist" style="display: none;">
                     <h3>User List</h3>
