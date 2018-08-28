@@ -26,7 +26,7 @@ $addstodiscussion = ($data->vote == "up");
 $result = $app->addCritique($text, $commentid, $addstodiscussion, $errors);
 
 if ($result) {
-	$rcritiques = $app->getCritiques($commentid, $errors);
+	$critiques = $app->getCritiques($commentid, $errors);
 	require('include/critiqueslist.php');
 }
 
