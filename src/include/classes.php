@@ -3294,7 +3294,8 @@ class Application {
 
                 // Connect to the database
                 $dbh = $this->getConnection();
-                $sql = "SELECT students.*, GROUP_CONCAT(registrationcode) FROM students " . 
+                $sql = "SELECT students.*, GROUP_CONCAT(registrationcode) AS regcodes" . 
+                    "FROM students " .
                     "LEFT JOIN users ON users.studentid = students.studentid " .
                     "LEFT JOIN userregistrations ON userregistrations.userid = users.userid " .
                     "ORDER BY studentname";
