@@ -2546,7 +2546,7 @@ class Application {
 
             public function getProgressReport($userid, $registrationcode, &$errors) {
 
-                /**
+                /*
                 numberoftopics
                 numberofgradedtopics
                 numberofungradedtopics
@@ -2580,7 +2580,7 @@ class Application {
                 commentinggrade (numberofgradedcommentsmade/numberofgradedtopics)
                 critiquinggrade (numberofgradedcritiquesgiven/numberofgradedcritiquesexpected)
                 commentquality (gradedupvotes/numberofgradedcritiquesreceived)
-                **/
+                */
 
                 $progressReport = array();
 
@@ -2900,228 +2900,29 @@ class Application {
 
                 // Connect to the database
                 $dbh = $this->getConnection();
-
-
-                $sql = "SELECT userregistrations.registrationcode, users.userid, users.username " .
-                "FROM users LEFT JOIN userregistrations ON users.userid = userregistrations.userid " .
-                "GROUP BY registrationcode, userid";
-
-
+                $sql = "SELECT userregistrations.registrationcode, users.userid " .
+                    "FROM users LEFT JOIN userregistrations ON users.userid = userregistrations.userid " .
+                    "GROUP BY registrationcode, userid";
                 $stmt = $dbh->prepare($sql);
                 $result = $stmt->execute();
 
                 // If the query did not run successfully, add an error message to the list
                 if ($result === FALSE) {
-
                     $errors[] = "An unexpected error occurred getting the progress report (user list)";
                     $this->debug($stmt->errorInfo());
                     $this->auditlog("getAllProgressReports error", $stmt->errorInfo());
-
-
                 } else {
-
-
-                    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    $progressReport['progress'] = $rows;
-
+                    $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 }
 
-
-                $sql = "SELECT thingregistrationcode as registrationcode, COUNT(*) AS numberoftopics FROM things " .
-                "WHERE commentsopendate < convert_tz(now(), @@session.time_zone, 'America/New_York') " .
-                "GROUP BY registrationcode";
-
-
-                $stmt = $dbh->prepare($sql);
-                $result = $stmt->execute();
-
-                // If the query did not run successfully, add an error message to the list
-                if ($result === FALSE) {
-
-                    $errors[] = "An unexpected error occurred getting the progress report (number of topics)";
-                    $this->debug($stmt->errorInfo());
-                    $this->auditlog("getAllProgressReports error", $stmt->errorInfo());
-
-
-                } else {
-
-
-                    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    $progressReport['numberofcommentsexpected'] = $rows;
-                    foreach ($progressReport['numberofcommentsexpected'] as $row) {
-                        foreach ($progressReport['progress'] as &$user) {
-                            if (strtolower($row['registrationcode']) == strtolower($user['registrationcode'])) {
-                                $user['numberoftopics'] = $row['numberoftopics'];
-                            }
-                        }
-                    }
+                foreach ($students as $student) {
+                    $studentReport = $this->getProgressReport($student['userid'], $student['registrationcode'], $errors);
+                    $progressReport[] = array("userid"=>$student['userid'],
+                        "registrationcode"=>$student['registrationcode'],
+                        "report"=>$studentReport);
                 }
 
-
-                $sql = "SELECT thingregistrationcode as registrationcode, userid, COUNT(*) AS numberofcomments FROM comments " .
-                "LEFT JOIN things ON comments.commentthingid = things.thingid " .
-                "LEFT JOIN users ON users.userid = comments.commentuserid " .
-                "GROUP BY thingregistrationcode, userid";
-
-
-                $stmt = $dbh->prepare($sql);
-                $result = $stmt->execute();
-
-                // If the query did not run successfully, add an error message to the list
-                if ($result === FALSE) {
-
-                    $errors[] = "An unexpected error occurred getting the progress report (number of comments made)";
-                    $this->debug($stmt->errorInfo());
-                    $this->auditlog("getAllProgressReports error", $stmt->errorInfo());
-
-
-                } else {
-
-
-                    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    $progressReport['numberofcommentsmade'] = $rows;
-
-                    // Initialize each user to zero comments
-                    foreach ($progressReport['progress'] as &$user) {
-                        $user['numberofcommentsmade'] = "0";
-                    }
-
-                    // Populate the real values
-                    foreach ($progressReport['numberofcommentsmade'] as $row) {
-                        foreach ($progressReport['progress'] as &$user) {
-                            if (strtolower($row['registrationcode']) == strtolower($user['registrationcode']) && $row['userid'] == $user['userid']) {
-                                $user['numberofcommentsmade'] = $row['numberofcomments'];
-                            }
-                        }
-                    }
-                }
-
-                $sql = "SELECT things.thingregistrationcode AS registrationcode, userid, addstodiscussion, COUNT(addstodiscussion) AS critiquecount FROM critiques " .
-                "LEFT JOIN users ON critiques.critiqueuserid = users.userid " .
-                "LEFT JOIN comments on comments.commentid = critiques.critiquecommentid " .
-                "LEFT JOIN things ON things.thingid = comments.commentthingid " .
-                "GROUP BY registrationcode, userid, addstodiscussion";
-
-
-                $stmt = $dbh->prepare($sql);
-                $result = $stmt->execute();
-
-                // If the query did not run successfully, add an error message to the list
-                if ($result === FALSE) {
-
-                    $errors[] = "An unexpected error occurred getting the progress report (analytics)";
-                    $this->debug($stmt->errorInfo());
-                    $this->auditlog("getAllProgressReports error", $stmt->errorInfo());
-
-
-                } else {
-
-
-                    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    $progressReport['summaryofcritiquesreceived'] = $rows;
-
-                    // Initialize each user to zero comments
-                    foreach ($progressReport['progress'] as &$user) {
-                        $user['positivecritiques'] = "0";
-                        $user['negativecritiques'] = "0";
-                    }
-
-                    // Populate the real values
-                    foreach ($progressReport['summaryofcritiquesreceived'] as $row) {
-                        foreach ($progressReport['progress'] as &$user) {
-                            if (strtolower($row['registrationcode']) == strtolower($user['registrationcode']) && $row['userid'] == $user['userid']) {
-                                if ($row['addstodiscussion'] == 1) {
-                                    $user['positivecritiques'] += $row['critiquecount'];
-                                } else {
-                                    $user['negativecritiques'] += $row['critiquecount'];
-                                }
-                            }
-                        }
-                    }
-                }
-
-
-                $sql = "SELECT things.thingregistrationcode AS registrationcode, userid, COUNT(*) AS critiquecount FROM critiques " .
-                "LEFT JOIN users ON critiques.critiqueuserid = users.userid " .
-                "LEFT JOIN comments on comments.commentid = critiques.critiquecommentid " .
-                "LEFT JOIN things ON things.thingid = comments.commentthingid " .
-                "GROUP BY registrationcode, userid";
-
-
-                $stmt = $dbh->prepare($sql);
-                $result = $stmt->execute();
-
-                // If the query did not run successfully, add an error message to the list
-                if ($result === FALSE) {
-
-                    $errors[] = "An unexpected error occurred getting the progress report (number of critiques given)";
-                    $this->debug($stmt->errorInfo());
-                    $this->auditlog("getAllProgressReports error", $stmt->errorInfo());
-
-
-                } else {
-
-
-                    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    $progressReport['numberofcritiquesmade'] = $rows;
-
-                    // Initialize each user to zero comments
-                    foreach ($progressReport['progress'] as &$user) {
-                        $user['numberofcritiquesmade'] = "0";
-                    }
-
-                    // Populate the real values
-                    foreach ($progressReport['numberofcritiquesmade'] as $row) {
-                        foreach ($progressReport['progress'] as &$user) {
-                            if (strtolower($row['registrationcode']) == strtolower($user['registrationcode']) && $row['userid'] == $user['userid']) {
-                                $user['numberofcritiquesmade'] += $row['critiquecount'];
-                            }
-                        }
-                    }
-                }
-
-
-                $sql = "SELECT things.thingregistrationcode AS registrationcode, COUNT(*) AS numberofcomments FROM comments " .
-                "LEFT JOIN users ON users.userid = comments.commentuserid " .
-                "LEFT JOIN things ON things.thingid = comments.commentthingid " .
-                "GROUP BY registrationcode";
-
-
-                $stmt = $dbh->prepare($sql);
-                $result = $stmt->execute();
-
-                // If the query did not run successfully, add an error message to the list
-                if ($result === FALSE) {
-
-                    $errors[] = "An unexpected error occurred getting the progress report (number of comments made)";
-                    $this->debug($stmt->errorInfo());
-                    $this->auditlog("getProgressReport error", $stmt->errorInfo());
-
-
-                } else {
-
-
-                    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    $progressReport['numberofcritiquesexpected'] = $rows;
-
-                    // Initialize each user to zero comments
-                    foreach ($progressReport['progress'] as &$user) {
-                        $user['numberofcritiquesexpected'] = "0";
-                    }
-
-                    // Populate the real values
-                    foreach ($progressReport['numberofcritiquesexpected'] as $row) {
-                        foreach ($progressReport['progress'] as &$user) {
-                            if (strtolower($row['registrationcode']) == strtolower($user['registrationcode'])) {
-                                $user['numberofcritiquesexpected'] = $row['numberofcomments'];
-                            }
-                        }
-                    }
-                }
-
-                // Close the connection
-                $dbh = NULL;
-
+                /*
                 $labels = array(array(
                     "registrationcode"=>"registrationcode",
                     "userid"=>"userid",
@@ -3134,6 +2935,7 @@ class Application {
                     "numberofcritiquesexpected"=>"numberofcritiquesexpected"
                 ));
                 array_splice($progressReport['progress'], 0, 0, $labels);
+                */
 
                 return $progressReport;
             }

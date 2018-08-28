@@ -23,8 +23,8 @@ $regcodes = $app->getRegistrationCodes($errors);
 if (isset($_GET['downloadprogress'])) {
     $progressReports = $app->getAllProgressReports($errors);
 
-    $app->outputCSV($progressReports['progress']);
-
+    //$app->outputCSV($progressReports['progress']);
+    echo json_encode($progressReports);
     exit();
 
 }
