@@ -3297,7 +3297,7 @@ class Application {
                 $sql = "SELECT students.studentid, studentname, COUNT(u.userid), GROUP_CONCAT(registrationcode) AS regcodes " .
                     "FROM students " .
                     "LEFT JOIN users u ON u.studentid = students.studentid " .
-                    "LEFT JOIN userregistrations ON userregistrations.userid = users.userid " .
+                    "LEFT JOIN userregistrations ON userregistrations.userid = u.userid " .
                     "GROUP BY studentname, studentid";
                 $stmt = $dbh->prepare($sql);
                 $result = $stmt->execute();
