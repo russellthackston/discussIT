@@ -189,6 +189,7 @@ function displayCritiques(critiques, commentid, vote) {
 	var ups = statsElement.getElementsByClassName("up");
 	var downs = statsElement.getElementsByClassName("down");
 	var totals = statsElement.getElementsByClassName("total");
+	var novote = statsElement.getElementsByClassName("novote");
 	if (vote == "up") {
 		for (var i = 0; i < ups.length; i++) {
 			var num = parseInt(ups[i].innerHTML);
@@ -207,6 +208,9 @@ function displayCritiques(critiques, commentid, vote) {
 		var num = parseInt(totals[i].innerHTML);
 		num++;
 		totals[i].innerHTML = "" + num;
+	}
+	for (var i = 0; i < novote.length; i++) {
+		novote[i].innerHTML = "";
 	}
 	statsElement.style.display = "inline";
 
