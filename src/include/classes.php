@@ -2005,12 +2005,12 @@ class Application {
             }
 
             // Check to see if the comment period has closed for a discussion
-            public function isCommentingClosed($thingid, &$errors) {
+            public function isThingFieldInPast($thingid, $field, &$errors) {
 
                 // Get the associated thing and closure date/times
                 $thing = $this->getThing($thingid, $errors);
                 // Expected format: "2018-08-19 15:30:00"
-                $close = DateTime::createFromFormat('Y-m-d H:i:s', $thing['commentsclosedate'], new DateTimeZone('America/New_York'));
+                $close = DateTime::createFromFormat('Y-m-d H:i:s', $thing[$field], new DateTimeZone('America/New_York'));
 
                 // Get local date/time
                 $localtime = new DateTime("now", new DateTimeZone('America/New_York') );
@@ -2019,6 +2019,16 @@ class Application {
                 }
                 return FALSE;
 
+            }
+
+            // Check to see if the comment period has closed for a discussion
+            public function isCommentingClosed($thingid, &$errors) {
+                return $this->isThingFieldInPast($thingid, 'commentsclosedate', $errors);
+            }
+
+            // Check to see if the comment period has closed for a discussion
+            public function isCritiquingClosed($thingid, &$errors) {
+                return $this->isThingFieldInPast($thingid, 'critiquesclosedate', $errors);
             }
 
             // Adds a new comment to the database

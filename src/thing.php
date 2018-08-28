@@ -98,6 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
+$critiquingClosed = $app->isCritiquingClosed($thingid, $errors);
 $hasCommented = FALSE;
 $comments = $app->getComments($thingid, $errors);
 foreach ($comments as $comment) {
@@ -161,7 +162,7 @@ foreach ($comments as $comment) {
                                     -- <?php echo $author; ?> on <?php echo $comment['commentposted']; ?>
                                 </span>
                                 <?php
-                                    if (!$comment['voted'] && !$isadmin) {
+                                    if (!$critiquingClosed && !$comment['voted'] && !$isadmin) {
                                         $hideStats = TRUE;
                                     } else {
                                         $hideStats = FALSE;
@@ -197,7 +198,7 @@ foreach ($comments as $comment) {
                                 </p>
                             <?php } ?>
 
-                            <?php if (!$comment['voted'] && !$isadmin) { ?>
+                            <?php if (!$critiquingClosed && !$comment['voted'] && !$isadmin) { ?>
 
                                 <div class="votingform" id="votingform-<?php echo $comment['commentid']; ?>" data-commentid="<?php echo $comment['commentid']; ?>">
                                     <input type="button" name="showup" onclick="showup(this);" value="Contributes" class="up" data-commentid="<?php echo $comment['commentid']; ?>">
