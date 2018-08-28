@@ -3395,6 +3395,47 @@ class Application {
                     return FALSE;
                 }
             }
+
+            // Updates a single user in the database and will return the $errors array listing any errors encountered
+            public function addStudent($studentid, $studentname, &$errors) {
+
+                $user = NULL;
+
+                if (empty($studentid)) {
+                    $errors[] = "Missing userid";
+                }
+                if (empty($studentname)) {
+                    $errors[] = "Missing student name";
+                }
+
+                if(sizeof($errors) == 0) {
+
+                    // Connect to the database
+                    $dbh = $this->getConnection();
+                    $sql = 	"INSERT INTO students (studentid, studentname) VALUES (:studentid, :studentname)";
+                    $stmt = $dbh->prepare($sql);
+                    $stmt->bindParam(":studentid", $studentid);
+                    $stmt->bindParam(":studentname", $studentname);
+                    $result = $stmt->execute();
+                    if ($result === FALSE) {
+                        $errors[] = "An unexpected error occurred creating the student record. ";
+                        $this->debug($stmt->errorInfo());
+                        $this->auditlog("addStudent error", $stmt->errorInfo());
+                    } else {
+                        $this->auditlog("addStudent", "success");
+                    }
+                    $dbh = NULL;
+                } else {
+                    $this->auditlog("addStudent validation error", $errors);
+                }
+
+                // Return TRUE if there are no errors, otherwise return FALSE
+                if (sizeof($errors) == 0){
+                    return TRUE;
+                } else {
+                    return FALSE;
+                }
+            }
         }
 
         ?>

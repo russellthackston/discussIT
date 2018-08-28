@@ -334,7 +334,6 @@ function showEditStudent(elem) {
 }
 
 function saveStudent(elem) {
-	// Send the vote to the server
 	var href = replacePage(window.location.href, "editstudent.php");
 	var studentid = elem.getAttribute('data-studentid');
 	var studentname = document.getElementById('student-name-textfield-' + studentid).value;
@@ -353,6 +352,48 @@ function saveStudent(elem) {
 			console.log(this.responseText);
 			obj = JSON.parse(this.responseText);
 			document.getElementById('student-name-' + studentid).innerHTML = obj.studentname;
+		} else {
+			console.log(this);
+		}
+	};
+	xhttp.open("post", href, true);
+	xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	xhttp.send(JSON.stringify(data));
+
+}
+
+function addStudent() {
+	var studentid = document.getElementById('newstudentid').value;
+	var studentname = document.getElementById('newstudentname').value;
+	var data = {
+		"studentid" : studentid,
+		"studentname" : studentname
+	};
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			console.log(this.responseText);
+			obj = JSON.parse(this.responseText);
+			var formrow = document.getElementById('newstudent');
+
+			var newstudentrow = document.createElement('tr');
+			var namecell = document.createElement('td');
+			var isregcell = document.createElement('td');
+			var idcell = document.createElement('td');
+			var regcell = document.createElement('td');
+
+			namecell.appendChild(document.createTextNode(obj.studentname));
+			isregcell.appendChild(document.createTextNode('?'));
+			idcell.appendChild(document.createTextNode(obj.studentid));
+			regcell.appendChild(document.createTextNode('?'));
+
+			newstudentrow.appendChild(namecell);
+			newstudentrow.appendChild(isregcell);
+			newstudentrow.appendChild(idcell);
+			newstudentrow.appendChild(regcell);
+
+			formrow.parentNode.insertBefore(newstudentrow, formrow.nextSibling);
 		} else {
 			console.log(this);
 		}

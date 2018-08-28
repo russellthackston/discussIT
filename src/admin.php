@@ -100,6 +100,15 @@ $students = $app->getStudents($errors);
                             <th>Student ID</th>
                             <th>Registrations</th>
                         </tr>
+                        <tr id="newstudent">
+                            <td><input name="newstudentname" id="newstudentname"></td>
+                            <td>--</td>
+                            <td><input name="newstudentid" id="newstudentid"></td>
+                            <td>
+                                <input name="newregcode" id="newregcode">
+                                <input type="button" value="Add" onclick="addStudent();">
+                            </td>
+                        </tr>
                         <?php foreach($students as $student) { ?>
                             <tr class="student">
                                 <td>
