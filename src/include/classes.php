@@ -2901,7 +2901,7 @@ class Application {
 
                 // Connect to the database
                 $dbh = $this->getConnection();
-                $sql = "SELECT userregistrations.registrationcode, users.userid, users.studentid, users.studentname " .
+                $sql = "SELECT userregistrations.registrationcode, users.userid, users.studentid, students.studentname " .
                     "FROM users " .
                     "LEFT JOIN userregistrations ON users.userid = userregistrations.userid " .
                     "LEFT JOIN students ON students.studentid = users.studentid " .
