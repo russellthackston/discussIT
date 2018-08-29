@@ -2878,18 +2878,24 @@ class Application {
                 $progressReport['commentquality'] = 0;
 
                 if ($progressReport['numberofgradedtopics'] != 0) {
-                    $progressReport['commentinggrade'] = round(100 * $progressReport['numberofgradedcommentsmade'] / $progressReport['numberofgradedtopics']) . "%";
+                    $progressReport['commentinggradedecimal'] = $progressReport['numberofgradedcommentsmade'] / $progressReport['numberofgradedtopics'];
+                    $progressReport['commentinggrade'] = round(100 * $progressReport['commentinggradedecimal']) . "%";
                 } else {
+                    $progressReport['commentinggradedecimal'] = 0;
                     $progressReport['commentinggrade'] = "No graded topics";
                 }
                 if ($progressReport['numberofgradedcritiquesexpected'] != 0) {
-                    $progressReport['critiquinggrade'] = round(100 * $progressReport['numberofgradedcritiquesgiven'] / $progressReport['numberofgradedcritiquesexpected']) . "%";
+                    $progressReport['critiquinggradedecimal'] = $progressReport['numberofgradedcritiquesgiven'] / $progressReport['numberofgradedcritiquesexpected'];
+                    $progressReport['critiquinggrade'] = round(100 * $progressReport['critiquinggradedecimal']) . "%";
                 } else {
+                    $progressReport['critiquinggradedecimal'] = 0;
                     $progressReport['critiquinggrade'] = "No graded critiques received";
                 }
                 if ($progressReport['numberofgradedcritiquesreceived'] != 0) {
-                    $progressReport['commentquality'] = round(100 * $progressReport['gradedupvotes'] / $progressReport['numberofgradedcritiquesreceived']) . "%";
+                    $progressReport['commentqualitydecimal'] = $progressReport['gradedupvotes'] / $progressReport['numberofgradedcritiquesreceived'];
+                    $progressReport['commentquality'] = round(100 * $progressReport['commentqualitydecimal']) . "%";
                 } else {
+                    $progressReport['commentqualitydecimal'] = 0;
                     $progressReport['commentquality'] = "No graded critiques received";
                 }
 
