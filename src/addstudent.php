@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $registrationcode = $data->regcode;
     $result = $app->addStudent($studentid, $studentname, $registrationcode, $errors);
     if ($result) {
-    	echo json_encode(array('studentname' => $studentname, 'studentid' => $studentid, 'regcode' => $registrationcode, 'regcode' => 'Unknown'));
+    	echo json_encode(array('studentname' => $studentname, 'studentid' => $studentid, 'regcode' => $registrationcode, 'isreg' => 'Unknown'));
     } else {
         echo json_encode(array('studentname' => 'Error'));
     }
