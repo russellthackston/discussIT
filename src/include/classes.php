@@ -2701,8 +2701,6 @@ class Application {
                     $progressReport['ungradedupvotes'] = 0;
                     $progressReport['ungradeddownvotes'] = 0;
                     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    $progressReport['up'] = 0;
-                    $progressReport['down'] = 0;
                     foreach ($rows as $row) {
                         if ($row['includeingrading']) {
                             if ($row['addstodiscussion']) {
