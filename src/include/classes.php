@@ -2585,7 +2585,7 @@ class Application {
                 commentquality (gradedupvotes/numberofgradedcritiquesreceived)
                 */
 
-                $progressReport = array("userid"=>$userid, "studentid"=>$studentid, "registrationcode"=>$registrationcode);
+                $progressReport = array("userid"=>$userid, "studentid"=>$studentid, "studentname"=>$studentname, "registrationcode"=>$registrationcode);
 
                 if (empty($userid)) {
                     $errors[] = "Missing user ID";
