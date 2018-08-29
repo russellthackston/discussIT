@@ -411,7 +411,7 @@ function addStudent() {
 function deleteStudent(elem) {
 	var href = replacePage(window.location.href, "deletestudent.php");
 	var studentid = elem.getAttribute('data-studentid');
-	var studentname = elem.getElementById('student-name-' + studentid);
+	var studentname = document.getElementById('student-name-' + studentid);
 	var row = document.getElementById('student-row-' + studentid);
 	var data = {
 		"studentid" : studentid
