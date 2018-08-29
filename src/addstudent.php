@@ -21,9 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data = json_decode($entityBody);
     $studentid = $data->studentid;
     $studentname = $data->studentname;
-    $result = $app->addStudent($studentid, $studentname, $errors);
+    $registrationcode = $data->regcode;
+    $result = $app->addStudent($studentid, $studentname, $registrationcode, $errors);
     if ($result) {
-    	echo json_encode(array('studentname' => $studentname, 'studentid' => $studentid));
+    	echo json_encode(array('studentname' => $studentname, 'studentid' => $studentid, 'regcode' => $registrationcode, 'regcode' => 'Unknown'));
     } else {
         echo json_encode(array('studentname' => 'Error'));
     }

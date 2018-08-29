@@ -366,10 +366,15 @@ function addStudent() {
 	var href = replacePage(window.location.href, "addstudent.php");
 	var studentid = document.getElementById('newstudentid').value;
 	var studentname = document.getElementById('newstudentname').value;
+	var regcode = document.getElementById('newregcode').value;
 	var data = {
 		"studentid" : studentid,
-		"studentname" : studentname
+		"studentname" : studentname,
+		"regcode" : regcode
 	};
+	studentid.value = "";
+	studentname.value = "";
+	regcode.value = "";
 
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -385,9 +390,9 @@ function addStudent() {
 			var regcell = document.createElement('td');
 
 			namecell.appendChild(document.createTextNode(obj.studentname));
-			isregcell.appendChild(document.createTextNode('?'));
+			isregcell.appendChild(document.createTextNode(obj.isreg));
 			idcell.appendChild(document.createTextNode(obj.studentid));
-			regcell.appendChild(document.createTextNode('?'));
+			regcell.appendChild(document.createTextNode(obj.regcode));
 
 			newstudentrow.appendChild(namecell);
 			newstudentrow.appendChild(isregcell);

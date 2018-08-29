@@ -3397,7 +3397,7 @@ class Application {
             }
 
             // Updates a single user in the database and will return the $errors array listing any errors encountered
-            public function addStudent($studentid, $studentname, &$errors) {
+            public function addStudent($studentid, $studentname, $registrationcode, &$errors) {
 
                 $user = NULL;
 
