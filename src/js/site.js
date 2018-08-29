@@ -364,13 +364,13 @@ function saveStudent(elem) {
 
 function addStudent() {
 	var href = replacePage(window.location.href, "addstudent.php");
-	var studentid = document.getElementById('newstudentid').value;
-	var studentname = document.getElementById('newstudentname').value;
-	var regcode = document.getElementById('newregcode').value;
+	var studentid = document.getElementById('newstudentid');
+	var studentname = document.getElementById('newstudentname');
+	var regcode = document.getElementById('newregcode');
 	var data = {
-		"studentid" : studentid,
-		"studentname" : studentname,
-		"regcode" : regcode
+		"studentid" : studentid.value,
+		"studentname" : studentname.value,
+		"regcode" : regcode.value
 	};
 	studentid.value = "";
 	studentname.value = "";
