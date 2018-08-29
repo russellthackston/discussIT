@@ -95,12 +95,14 @@ $students = $app->getStudents($errors);
                     <h3>Student List</h3>
                     <table class="students">
                         <tr>
+                            <th>Delete</th>
                             <th>Name</th>
                             <th>Registered?</th>
                             <th>Student ID</th>
                             <th>Registrations</th>
                         </tr>
                         <tr id="newstudent">
+                            <td>&nbsp;</td>
                             <td><input name="newstudentname" id="newstudentname"></td>
                             <td>--</td>
                             <td><input name="newstudentid" id="newstudentid"></td>
@@ -110,7 +112,10 @@ $students = $app->getStudents($errors);
                             </td>
                         </tr>
                         <?php foreach($students as $student) { ?>
-                            <tr class="student">
+                            <tr class="student" id="student-row-<?php echo $student['studentid']; ?>">
+                                <td>
+                                    <input type="button" id="student-del-button-<?php echo $student['studentid']; ?>" data-studentid="<?php echo $student['studentid']; ?>" value="Delete" onclick="deleteStudent(this)">
+                                </td>
                                 <td>
                                     <span onclick="showEditStudent(this);" id="student-name-<?php echo $student['studentid']; ?>" data-studentid="<?php echo $student['studentid']; ?>">
                                         <?php echo $student['studentname']; ?>

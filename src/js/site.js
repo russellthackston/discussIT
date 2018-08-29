@@ -340,7 +340,6 @@ function saveStudent(elem) {
 	document.getElementById('student-name-' + studentid).style.display = "inline";
 	document.getElementById('student-name-textfield-' + studentid).style.display = "none";
 	document.getElementById('student-edit-button-' + studentid).style.display = "none";
-	console.log(href);
 	var data = {
 		"studentid" : studentid,
 		"studentname" : studentname
@@ -379,7 +378,6 @@ function addStudent() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			console.log(this.responseText);
 			obj = JSON.parse(this.responseText);
 			var formrow = document.getElementById('newstudent');
 
@@ -402,6 +400,26 @@ function addStudent() {
 			formrow.parentNode.insertBefore(newstudentrow, formrow.nextSibling);
 		} else {
 			console.log(this);
+		}
+	};
+	xhttp.open("post", href, true);
+	xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	xhttp.send(JSON.stringify(data));
+
+}
+
+function deleteStudent(elem) {
+	var href = replacePage(window.location.href, "deletestudent.php");
+	var studentid = elem.getAttribute('data-studentid');
+	var row = document.getElementById('student-row-' + studentid);
+	var data = {
+		"studentid" : studentid
+	};
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			row.remove();
 		}
 	};
 	xhttp.open("post", href, true);

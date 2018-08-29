@@ -3436,6 +3436,43 @@ class Application {
                     return FALSE;
                 }
             }
+
+            // Updates a single user in the database and will return the $errors array listing any errors encountered
+            public function deleteStudent($studentid, &$errors) {
+
+                $user = NULL;
+
+                if (empty($studentid)) {
+                    $errors[] = "Missing userid";
+                }
+
+                if(sizeof($errors) == 0) {
+
+                    // Connect to the database
+                    $dbh = $this->getConnection();
+                    $sql = 	"DELETE FROM students WHERE studentid = :studentid";
+                    $stmt = $dbh->prepare($sql);
+                    $stmt->bindParam(":studentid", $studentid);
+                    $result = $stmt->execute();
+                    if ($result === FALSE) {
+                        $errors[] = "An unexpected error occurred deleting the student record. ";
+                        $this->debug($stmt->errorInfo());
+                        $this->auditlog("deleteStudent error", $stmt->errorInfo());
+                    } else {
+                        $this->auditlog("deleteStudent", "success");
+                    }
+                    $dbh = NULL;
+                } else {
+                    $this->auditlog("deleteStudent validation error", $errors);
+                }
+
+                // Return TRUE if there are no errors, otherwise return FALSE
+                if (sizeof($errors) == 0){
+                    return TRUE;
+                } else {
+                    return FALSE;
+                }
+            }
         }
 
         ?>
