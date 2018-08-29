@@ -2544,9 +2544,12 @@ class Application {
                 return $attachmenttypeid;
             }
 
-            public function getProgressReport($userid, $registrationcode, &$errors) {
+            public function getProgressReport($userid, $studentid, $studentname, $registrationcode, &$errors) {
 
                 /*
+                userid
+                studentid
+                registrationcode
                 numberoftopics
                 numberofgradedtopics
                 numberofungradedtopics
@@ -2582,7 +2585,7 @@ class Application {
                 commentquality (gradedupvotes/numberofgradedcritiquesreceived)
                 */
 
-                $progressReport = array("userid"=>$userid, "registrationcode"=>$registrationcode);
+                $progressReport = array("userid"=>$userid, "studentid"=>$studentid, "registrationcode"=>$registrationcode);
 
                 if (empty($userid)) {
                     $errors[] = "Missing user ID";
@@ -2898,8 +2901,10 @@ class Application {
 
                 // Connect to the database
                 $dbh = $this->getConnection();
-                $sql = "SELECT userregistrations.registrationcode, users.userid " .
-                    "FROM users LEFT JOIN userregistrations ON users.userid = userregistrations.userid " .
+                $sql = "SELECT userregistrations.registrationcode, users.userid, users.studentid, users.studentname " .
+                    "FROM users " .
+                    "LEFT JOIN userregistrations ON users.userid = userregistrations.userid " .
+                    "LEFT JOIN students ON students.studentid = users.studentid " .
                     "GROUP BY registrationcode, userid";
                 $stmt = $dbh->prepare($sql);
                 $result = $stmt->execute();
@@ -2914,7 +2919,7 @@ class Application {
                 }
 
                 foreach ($students as $student) {
-                    $studentReport = $this->getProgressReport($student['userid'], $student['registrationcode'], $errors);
+                    $studentReport = $this->getProgressReport($student['userid'], $student['studentid'], $student['studentname'], $student['registrationcode'], $errors);
                     $progressReport[] = $studentReport;
                 }
 
