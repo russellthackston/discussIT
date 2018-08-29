@@ -9,7 +9,7 @@ $critiquesAlert = FALSE;
 // Check for user session
 $user = $app->getSessionUser($errors);
 if ($user != NULL) {
-	 
+
 	$loggedinuserid = $user["userid"];
 	$loggedinusername = $user["username"];
 	$loggedinuserregistrationcode = $user['registrationcode'];
@@ -18,7 +18,7 @@ if ($user != NULL) {
 	if ($loggedinuserid != NULL) {
 		$loggedin = TRUE;
 		$isadmin = $app->isAdmin($errors, $loggedinuserid);
-		$progressReport = $app->getProgressReport($loggedinuserid, $loggedinuserregistrationcode, $errors);
+		$progressReport = $app->getProgressReport($loggedinuserid, NULL, NULL, $loggedinuserregistrationcode, $errors);
 		if ($progressReport != NULL) {
 			if ($progressReport['numberofuncommentedtopics'] > 0) {
 				$commentsAlert = TRUE;
@@ -30,7 +30,7 @@ if ($user != NULL) {
 	}
 
 } else {
-	
+
 	$loggedinuserid = NULL;
 
 }

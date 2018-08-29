@@ -99,7 +99,7 @@ $user = $app->getUser($userid, $errors);
 $regs = $app->getUserRegistrations($userid, $errors);
 
 // Load the progress report for the user being edited
-$progressReport = $app->getProgressReport($userid, $loggedinuserregistrationcode, $errors);
+$progressReport = $app->getProgressReport($userid, NULL, NULL, $loggedinuserregistrationcode, $errors);
 
 ?>
 
