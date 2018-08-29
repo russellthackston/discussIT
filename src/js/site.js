@@ -411,10 +411,16 @@ function addStudent() {
 function deleteStudent(elem) {
 	var href = replacePage(window.location.href, "deletestudent.php");
 	var studentid = elem.getAttribute('data-studentid');
+	var studentname = document.getElementById('newstudentname');
 	var row = document.getElementById('student-row-' + studentid);
 	var data = {
 		"studentid" : studentid
 	};
+
+	var r = confirm("Are you sure you want to delete '" + studentname.value + "'");
+	if (r != true) {
+	    return;
+	}
 
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
