@@ -417,7 +417,7 @@ function deleteStudent(elem) {
 		"studentid" : studentid
 	};
 
-	var r = confirm("Are you sure you want to delete '" + trim(studentname.innerHTML) + "'");
+	var r = confirm("Are you sure you want to delete '" + studentname.innerHTML.trim() + "'");
 	if (r != true) {
 	    return;
 	}
