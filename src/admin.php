@@ -55,6 +55,7 @@ $attachmentTypes = $app->getAttachmentTypes($errors);
 $reports = $app->getReports($errors);
 $students = $app->getStudents($errors);
 
+$loggedInUser = $app->getSessionUser($errors);
 $roll = $app->getRollcall($loggedInUser['registrationcode'], $errors);
 $present = 0;
 $notpresent = 0;
