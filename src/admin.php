@@ -115,7 +115,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) {
             			<tr>
             				<th>Name</th>
             			<?php foreach($roll as $student) { ?>
-            				<tr class="<?php if ($student['present'] == 0) { echo "notpresent"; } ?>"<?php } ?>>
+            				<tr class="<?php if ($student['present'] == 0) { echo "notpresent"; } ?>">
             					<td><?php echo $student['studentname']; ?></td>
             				</tr>
             			<?php } ?>
