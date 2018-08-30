@@ -383,16 +383,19 @@ function addStudent() {
 			var formrow = document.getElementById('newstudent');
 
 			var newstudentrow = document.createElement('tr');
+			var deletecell = document.createElement('td');
 			var namecell = document.createElement('td');
 			var isregcell = document.createElement('td');
 			var idcell = document.createElement('td');
 			var regcell = document.createElement('td');
 
+			deletecell.appendChild(document.createTextNode("&nbsp;"));
 			namecell.appendChild(document.createTextNode(obj.studentname));
 			isregcell.appendChild(document.createTextNode(obj.isreg));
 			idcell.appendChild(document.createTextNode(obj.studentid));
 			regcell.appendChild(document.createTextNode(obj.regcode));
 
+			newstudentrow.appendChild(deletecell);
 			newstudentrow.appendChild(namecell);
 			newstudentrow.appendChild(isregcell);
 			newstudentrow.appendChild(idcell);
