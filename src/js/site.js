@@ -410,10 +410,7 @@ function addStudent() {
 
 			formrow.parentNode.insertBefore(newstudentrow, formrow.nextSibling);
 
-			deletebutton.addEventListener("click", function(){
-				var elem = document.getElementById('student-del-button-' + studentid.value);
-				deleteStudent(elem);
-			});
+			deletebutton.addEventListener("click", deleteStudent(deletebutton));
 
 		} else {
 			console.log(this);
@@ -425,7 +422,8 @@ function addStudent() {
 
 }
 
-function deleteStudent(elem) {
+function deleteStudent(evt) {
+	var elem = evt.target;
 	var href = replacePage(window.location.href, "deletestudent.php");
 	var studentid = elem.getAttribute('data-studentid');
 	var studentname = document.getElementById('student-name-' + studentid);
