@@ -1002,6 +1002,7 @@ class Application {
                     if ($sessionid != null) {
 
                         setcookie('impersonate', '1', time()+60*60*24*30);
+                        setcookie('adminid', $_COOKIE['sessionid'], time()+60*60*24*30);
                         setcookie('sessionid', $sessionid, time()+60*60*24*30);
                         $this->auditlog("session", "session hijacked: $sessionid for user = $userid");
                         header("Location: list.php");
@@ -1190,7 +1191,8 @@ class Application {
                 } else {
 
                     // Clear the cookie but do not actually delete the user's session, since we're not really the user
-                    setcookie('sessionid', '', time()-3600);
+                    setcookie('sessionid', $_COOKIE['adminid'], time()+60*60*24*30);
+                    setcookie('adminid', '', time()-3600);
                     setcookie('impersonate', '', time()-3600);
                     $this->auditlog("logout", "(impersonate) successful: $sessionid");
 
