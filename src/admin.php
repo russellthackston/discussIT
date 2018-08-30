@@ -14,6 +14,7 @@ $errors = array();
 // NOTE: passing optional parameter TRUE which indicates the user must be an admin
 $app->protectPage($errors, TRUE);
 
+$tabs = array("userreports", "rollcall", "progressreports", "userlist", "studentlist", "attachmenttypes");
 $loggedInUser = $app->getSessionUser($errors);
 $regcodes = $app->getRegistrationCodes($errors);
 
@@ -33,6 +34,10 @@ if (isset($_GET['downloadprogress'])) {
 // If someone is adding a new attachment type
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+    if (isset($_POST['tab']) && in_array($_POST['tab'], $tabs) {
+        $tab = $_POST['tab'];
+    }
+
     if ($_POST['attachmenttype'] == "add") {
 
         $name = $_POST['name'];;
@@ -48,8 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
-$tabs = array("userreports", "rollcall", "progressreports", "userlist", "studentlist", "attachmenttypes");
-if (isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) {
+if (!isset($tab) && isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) {
     $tab = $_GET['tab'];
 } else {
     $tab = "userreports";
@@ -126,6 +130,7 @@ if ($tab == 'rollcall') {
                 <?php if ($tab == 'rollcall') { ?>
                 <div id="rollcall">
                 	<div><?php echo $rollmessage; ?></div>
+                    <a href="admin.php?rollcall&snapshot=roll">Take Snapshot</a>
             		<table id="rollcalltable">
             			<tr>
             				<th>Name</th>
@@ -139,7 +144,7 @@ if ($tab == 'rollcall') {
                 <?php } ?>
                 <?php if ($tab == 'progressreports') { ?>
                 <div id="progressreports">
-                    <a href="admin.php?downloadprogress" class="no-barba">Download progress report</a>
+                    <a href="admin.php?tab=progressreports&downloadprogress" class="no-barba">Download progress report</a>
                 </div>
                 <?php } ?>
                 <?php if ($tab == 'studentlist') { ?>
@@ -235,6 +240,7 @@ if ($tab == 'rollcall') {
                             <input id="extension" name="extension" type="text" placeholder="Extension" required="required">
                             <br/>
                             <input type="hidden" name="attachmenttype" value="add" />
+                            <input type="hidden" name="tab" value="attachmenttypes" />
                             <input type="submit" name="addattachmenttype" value="Add type" />
                         </form>
                     </div>
