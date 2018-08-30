@@ -14,11 +14,13 @@ $errors = array();
 // NOTE: passing optional parameter TRUE which indicates the user must be an admin
 $app->protectPage($errors, TRUE);
 
-// Attempt to obtain the list of users
-$users = $app->getUsers($errors);
-
-// Get a list of registration codes
+$loggedInUser = $app->getSessionUser($errors);
 $regcodes = $app->getRegistrationCodes($errors);
+
+if (isset($_GET['hijack'])) {
+    $userid = $_GET['hijack'];
+    $app->impersonate($userid, $errors);
+}
 
 if (isset($_GET['downloadprogress'])) {
     $progressReports = $app->getAllProgressReports($errors);
@@ -26,11 +28,6 @@ if (isset($_GET['downloadprogress'])) {
     $app->outputCSV($progressReports);
     exit();
 
-}
-
-if (isset($_GET['hijack'])) {
-    $userid = $_GET['hijack'];
-    $app->impersonate($userid, $errors);
 }
 
 // If someone is adding a new attachment type
@@ -51,28 +48,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
-$attachmentTypes = $app->getAttachmentTypes($errors);
-$reports = $app->getReports($errors);
-$students = $app->getStudents($errors);
-
-$loggedInUser = $app->getSessionUser($errors);
-$roll = $app->getRollcall($loggedInUser['registrationcode'], $errors);
-$present = 0;
-$notpresent = 0;
-foreach($roll as $r) {
-    if ($r['present'] == 1) {
-        $present = $present + 1;
-    } else {
-        $notpresent = $notpresent + 1;
-    }
-}
-$rollmessage = $present . " student present and " . $notpresent . " absent.";
-
 $tabs = array("userreports", "rollcall", "progressreports", "userlist", "studentlist", "attachmenttypes");
 if (isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) {
     $tab = $_GET['tab'];
 } else {
     $tab = "userreports";
+}
+
+
+if ($tab == 'userlist') {
+    $users = $app->getUsers($errors);
+}
+
+if ($tab == 'attachmenttypes') {
+     $attachmentTypes = $app->getAttachmentTypes($errors);
+}
+
+if ($tab == 'userreports') {
+    $reports = $app->getReports($errors);
+}
+
+if ($tab == 'studentlist') {
+    $students = $app->getStudents($errors);
+}
+
+if ($tab == 'rollcall') {
+
+    $roll = $app->getRollcall($loggedInUser['registrationcode'], $errors);
+    $present = 0;
+    $notpresent = 0;
+    foreach($roll as $r) {
+        if ($r['present'] == 1) {
+            $present = $present + 1;
+        } else {
+            $notpresent = $notpresent + 1;
+        }
+    }
+    $rollmessage = $present . " student present and " . $notpresent . " absent.";
 }
 
 ?>
@@ -89,15 +101,16 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) {
                 <?php include 'include/messages.php'; ?>
                 <div id="tabs">
                     <ul>
-                        <li onclick="showAdminTab(this);" data-tab="userreports">User Reports</li>
-                        <li onclick="showAdminTab(this);" data-tab="rollcall">Roll call</li>
-                        <li onclick="showAdminTab(this);" data-tab="progressreports">Progress Reports</li>
-                        <li onclick="showAdminTab(this);" data-tab="userlist">User List</li>
-                        <li onclick="showAdminTab(this);" data-tab="studentlist">Student List</li>
-                        <li onclick="showAdminTab(this);" data-tab="attachmenttypes">Attachment Types</li>
+                        <li><a href="admin.php?tab=userreports">User Reports</a></li>
+                        <li><a href="admin.php?tab=rollcall">Roll call</a></li>
+                        <li><a href="admin.php?tab=progressreports">Progress Reports</a></li>
+                        <li><a href="admin.php?tab=userlist">User List</a></li>
+                        <li><a href="admin.php?tab=studentlist">Student List</a></li>
+                        <li><a href="admin.php?tab=attachmenttypes">Attachment Types</a></li>
                     </ul>
                 </div>
-                <div id="userreports" <?php if ($tab != 'userreports') { ?>style="display: none;"<?php } ?>>
+                <?php if ($tab == 'userreports') { ?>
+                <div id="userreports">
                     <h3>User Reports</h3>
                     <ul class="reports">
                         <?php foreach($reports as $report) { ?>
@@ -109,7 +122,9 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) {
                         <?php } ?>
                     </ul>
                 </div>
-                <div id="rollcall" <?php if ($tab != 'rollcall') { ?>style="display: none;"<?php } ?>>
+                <?php } ?>
+                <?php if ($tab == 'rollcall') { ?>
+                <div id="rollcall">
                 	<div><?php echo $rollmessage; ?></div>
             		<table id="rollcalltable">
             			<tr>
@@ -121,10 +136,14 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) {
             			<?php } ?>
             		</table>
                 </div>
-                <div id="progressreports" <?php if ($tab != 'progressreports') { ?>style="display: none;"<?php } ?>>
+                <?php } ?>
+                <?php if ($tab == 'progressreports') { ?>
+                <div id="progressreports">
                     <a href="admin.php?downloadprogress" class="no-barba">Download progress report</a>
                 </div>
-                <div id="studentlist" <?php if ($tab != 'studentlist') { ?>style="display: none;"<?php } ?>>
+                <?php } ?>
+                <?php if ($tab == 'studentlist') { ?>
+                <div id="studentlist">
                     <h3>Student List</h3>
                     <table class="students">
                         <tr>
@@ -169,7 +188,9 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) {
                         <?php } ?>
                     </table>
                 </div>
-                <div id="userlist" <?php if ($tab != 'userlist') { ?>style="display: none;"<?php } ?>>
+                <?php } ?>
+                <?php if ($tab == 'userlist') { ?>
+                <div id="userlist">
                     <h3>User List</h3>
                     <label for="regcodefilter">Filter:</label>
                     <select name="regcodefilter" id="regcodefilter" onchange="filterByRegCode()">
@@ -193,7 +214,9 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) {
                         <?php } ?>
                     </ul>
                 </div>
-                <div id="attachmenttypes" <?php if ($tab != 'attachmenttypes') { ?>style="display: none;"<?php } ?>>
+                <?php } ?>
+                <?php if ($tab == 'attachmenttypes') { ?>
+                <div id="attachmenttypes">
                     <h3>Valid Attachment Types</h3>
                     <ul class="attachmenttypes">
                         <?php foreach($attachmentTypes as $attachmentType) { ?>
@@ -216,6 +239,7 @@ if (isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) {
                         </form>
                     </div>
                 </div>
+                <?php } ?>
             </main>
         </div>
     </div>
