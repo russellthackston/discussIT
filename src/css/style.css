@@ -477,7 +477,7 @@ div#tabs ul li.active {
 }
 
 div#tabs ul li a:visited, a:link{
-	text-decoration: none;
+	color: #404052;
 }
 
 table.students, table.students tr td, table.students tr th {
