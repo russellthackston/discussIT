@@ -364,15 +364,16 @@ function saveStudent(elem) {
 
 function addStudent() {
 	var href = replacePage(window.location.href, "addstudent.php");
-	var studentid = document.getElementById('newstudentid');
+	var studentidelem = document.getElementById('newstudentid');
 	var studentname = document.getElementById('newstudentname');
 	var regcode = document.getElementById('newregcode');
+	studentid = studentidelem.value;
 	var data = {
-		"studentid" : studentid.value,
+		"studentid" : studentid,
 		"studentname" : studentname.value,
 		"regcode" : regcode.value
 	};
-	studentid.value = "";
+	studentidelem.value = "";
 	studentname.value = "";
 	regcode.value = "";
 
@@ -383,7 +384,7 @@ function addStudent() {
 			var formrow = document.getElementById('newstudent');
 
 			var newstudentrow = document.createElement('tr');
-			newstudentrow.id = 'student-row-' + studentid.value;
+			newstudentrow.id = 'student-row-' + obj.studentid;
 			var deletecell = document.createElement('td');
 			var namecell = document.createElement('td');
 			var isregcell = document.createElement('td');
@@ -393,13 +394,13 @@ function addStudent() {
 			//<input onclick="deleteStudent(this)">
 			var deletebutton = document.createElement('input');
 			deletebutton.type = 'button';
-			deletebutton.id = 'student-del-button-' + studentid.value;
-			deletebutton.setAttribute('data-studentid', studentid.value);
+			deletebutton.id = 'student-del-button-' + obj.studentid;
+			deletebutton.setAttribute('data-studentid', obj.studentid);
 			deletebutton.value = 'Delete';
 
 			deletecell.appendChild(deletebutton);
 			namecell.appendChild(document.createTextNode(obj.studentname));
-			namecell.id = 'student-name-' + studentid.value;
+			namecell.id = 'student-name-' + obj.studentid;
 			isregcell.appendChild(document.createTextNode(obj.isreg));
 			idcell.appendChild(document.createTextNode(obj.studentid));
 			regcell.appendChild(document.createTextNode(obj.regcode));
