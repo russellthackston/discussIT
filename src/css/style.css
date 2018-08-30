@@ -474,7 +474,7 @@ div#tabs ul li {
 }
 
 div#tabs ul li.active {
-	background:  var(--springBud);
+	background:  var(--springGreen);
 }
 
 table.students, table.students tr td, table.students tr th {
