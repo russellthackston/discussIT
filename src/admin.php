@@ -55,6 +55,18 @@ $attachmentTypes = $app->getAttachmentTypes($errors);
 $reports = $app->getReports($errors);
 $students = $app->getStudents($errors);
 
+$roll = $app->getRollcall($loggedInUser['registrationcode'], $errors);
+$present = 0;
+$notpresent = 0;
+foreach($roll as $r) {
+    if ($r['present'] == 1) {
+        $present = $present + 1;
+    } else {
+        $notpresent = $notpresent + 1;
+    }
+}
+$rollmessage = $present . " student present and " . $notpresent . " absent.";
+
 ?>
 
 <!doctype html>
@@ -70,6 +82,7 @@ $students = $app->getStudents($errors);
                 <div id="tabs">
                     <ul>
                         <li onclick="showAdminTab(this);" data-tab="userreports">User Reports</li>
+                        <li onclick="showAdminTab(this);" data-tab="rollcall">Roll call</li>
                         <li onclick="showAdminTab(this);" data-tab="progressreports">Progress Reports</li>
                         <li onclick="showAdminTab(this);" data-tab="userlist">User List</li>
                         <li onclick="showAdminTab(this);" data-tab="studentlist">Student List</li>
@@ -87,6 +100,18 @@ $students = $app->getStudents($errors);
                             <li>No user report found</li>
                         <?php } ?>
                     </ul>
+                </div>
+                <div id="rollcall" style="display: none;">
+                	<div><?php echo $rollmessage; ?></div>
+            		<table id="rollcalltable">
+            			<tr>
+            				<th>Name</th>
+            			<?php foreach($roll as $student) { ?>
+            				<tr class="<?php if ($student['present'] == 0) { echo "notpresent"; } ?>">
+            					<td><?php echo $student['studentname']; ?></td>
+            				</tr>
+            			<?php } ?>
+            		</table>
                 </div>
                 <div id="progressreports" style="display: none;">
                     <a href="admin.php?downloadprogress" class="no-barba">Download progress report</a>
