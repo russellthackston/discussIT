@@ -68,6 +68,13 @@ foreach($roll as $r) {
 }
 $rollmessage = $present . " student present and " . $notpresent . " absent.";
 
+$tabs = array("userreports", "rollcall", "progressreports", "userlist", "studentlist", "attachmenttypes");
+if (isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) {
+    $tab = $_GET['tab'];
+} else {
+    $tab = "userreports";
+}
+
 ?>
 
 <!doctype html>
@@ -90,7 +97,7 @@ $rollmessage = $present . " student present and " . $notpresent . " absent.";
                         <li onclick="showAdminTab(this);" data-tab="attachmenttypes">Attachment Types</li>
                     </ul>
                 </div>
-                <div id="userreports">
+                <div id="userreports" <?php if ($tab != 'userreports') { ?>style="display: none;"<?php } ?>>
                     <h3>User Reports</h3>
                     <ul class="reports">
                         <?php foreach($reports as $report) { ?>
@@ -102,22 +109,22 @@ $rollmessage = $present . " student present and " . $notpresent . " absent.";
                         <?php } ?>
                     </ul>
                 </div>
-                <div id="rollcall" style="display: none;">
+                <div id="rollcall" <?php if ($tab != 'rollcall') { ?>style="display: none;"<?php } ?>>
                 	<div><?php echo $rollmessage; ?></div>
             		<table id="rollcalltable">
             			<tr>
             				<th>Name</th>
             			<?php foreach($roll as $student) { ?>
-            				<tr class="<?php if ($student['present'] == 0) { echo "notpresent"; } ?>">
+            				<tr class="<?php if ($student['present'] == 0) { echo "notpresent"; } ?>"<?php } ?>>
             					<td><?php echo $student['studentname']; ?></td>
             				</tr>
             			<?php } ?>
             		</table>
                 </div>
-                <div id="progressreports" style="display: none;">
+                <div id="progressreports" <?php if ($tab != 'progressreports') { ?>style="display: none;"<?php } ?>>
                     <a href="admin.php?downloadprogress" class="no-barba">Download progress report</a>
                 </div>
-                <div id="studentlist" style="display: none;">
+                <div id="studentlist" <?php if ($tab != 'studentlist') { ?>style="display: none;"<?php } ?>>
                     <h3>Student List</h3>
                     <table class="students">
                         <tr>
@@ -162,7 +169,7 @@ $rollmessage = $present . " student present and " . $notpresent . " absent.";
                         <?php } ?>
                     </table>
                 </div>
-                <div id="userlist" style="display: none;">
+                <div id="userlist" <?php if ($tab != 'userlist') { ?>style="display: none;"<?php } ?>>
                     <h3>User List</h3>
                     <label for="regcodefilter">Filter:</label>
                     <select name="regcodefilter" id="regcodefilter" onchange="filterByRegCode()">
@@ -186,7 +193,7 @@ $rollmessage = $present . " student present and " . $notpresent . " absent.";
                         <?php } ?>
                     </ul>
                 </div>
-                <div id="attachmenttypes" style="display: none;">
+                <div id="attachmenttypes" <?php if ($tab != 'attachmenttypes') { ?>style="display: none;"<?php } ?>>
                     <h3>Valid Attachment Types</h3>
                     <ul class="attachmenttypes">
                         <?php foreach($attachmentTypes as $attachmentType) { ?>
