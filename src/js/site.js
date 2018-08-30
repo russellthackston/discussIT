@@ -319,6 +319,7 @@ function toggleVoteSummary(elem) {
 
 function showAdminTab(elem) {
 	document.getElementById('userreports').style.display = "none";
+	document.getElementById('rollcall').style.display = "none";
 	document.getElementById('progressreports').style.display = "none";
 	document.getElementById('userlist').style.display = "none";
 	document.getElementById('studentlist').style.display = "none";
