@@ -473,6 +473,10 @@ div#tabs ul li {
     padding: 5px;
 }
 
+div#tabs ul li.active {
+	background:  var(--springBud);
+}
+
 table.students, table.students tr td, table.students tr th {
 	border: 1px solid black;
 }

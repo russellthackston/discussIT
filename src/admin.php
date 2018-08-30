@@ -105,12 +105,12 @@ if ($tab == 'rollcall') {
                 <?php include 'include/messages.php'; ?>
                 <div id="tabs">
                     <ul>
-                        <li><a href="admin.php?tab=userreports">User Reports</a></li>
-                        <li><a href="admin.php?tab=rollcall">Roll call</a></li>
-                        <li><a href="admin.php?tab=progressreports">Progress Reports</a></li>
-                        <li><a href="admin.php?tab=userlist">User List</a></li>
-                        <li><a href="admin.php?tab=studentlist">Student List</a></li>
-                        <li><a href="admin.php?tab=attachmenttypes">Attachment Types</a></li>
+                        <li <?php if ($tab == 'userreports') { ?>class="active"<?php } ?>><a href="admin.php?tab=userreports">User Reports</a></li>
+                        <li <?php if ($tab == 'rollcall') { ?>class="active"<?php } ?>><a href="admin.php?tab=rollcall">Roll call</a></li>
+                        <li <?php if ($tab == 'progressreports') { ?>class="active"<?php } ?>><a href="admin.php?tab=progressreports">Progress Reports</a></li>
+                        <li <?php if ($tab == 'userlist') { ?>class="active"<?php } ?>><a href="admin.php?tab=userlist">User List</a></li>
+                        <li <?php if ($tab == 'studentlist') { ?>class="active"<?php } ?>><a href="admin.php?tab=studentlist">Student List</a></li>
+                        <li <?php if ($tab == 'attachmenttypes') { ?>class="active"<?php } ?>><a href="admin.php?tab=attachmenttypes">Attachment Types</a></li>
                     </ul>
                 </div>
                 <?php if ($tab == 'userreports') { ?>
