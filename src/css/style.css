@@ -455,7 +455,7 @@ td.calendar-day, td.calendar-day-np {
 	display: none;
 }
 
-table#rollcall tr.notpresent {
+table#rollcalltable tr.notpresent {
 	color: red;
 }
 
