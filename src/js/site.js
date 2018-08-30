@@ -389,7 +389,14 @@ function addStudent() {
 			var idcell = document.createElement('td');
 			var regcell = document.createElement('td');
 
-			deletecell.appendChild(document.createTextNode("&nbsp;"));
+			//<input onclick="deleteStudent(this)">
+			var deletebutton = document.createElement('input');
+			deletebutton.type = 'button';
+			deletebutton.id = 'student-del-button-' + studentid.value;
+			deletebutton.setAttribute('data-studentid', studentid.value);
+			deletebutton.value = 'Delete';
+
+			deletecell.appendChild(deletebutton);
 			namecell.appendChild(document.createTextNode(obj.studentname));
 			isregcell.appendChild(document.createTextNode(obj.isreg));
 			idcell.appendChild(document.createTextNode(obj.studentid));
@@ -402,6 +409,12 @@ function addStudent() {
 			newstudentrow.appendChild(regcell);
 
 			formrow.parentNode.insertBefore(newstudentrow, formrow.nextSibling);
+
+			deletebutton.addEventListener("click", function(){
+				var elem = document.getElementById('student-del-button-' + studentid.value);
+				deleteStudent(elem);
+			});
+
 		} else {
 			console.log(this);
 		}
