@@ -383,6 +383,7 @@ function addStudent() {
 			var formrow = document.getElementById('newstudent');
 
 			var newstudentrow = document.createElement('tr');
+			newstudentrow.id = 'student-row-' + studentid.value;
 			var deletecell = document.createElement('td');
 			var namecell = document.createElement('td');
 			var isregcell = document.createElement('td');
@@ -398,6 +399,7 @@ function addStudent() {
 
 			deletecell.appendChild(deletebutton);
 			namecell.appendChild(document.createTextNode(obj.studentname));
+			namecell.id = 'student-name-' + studentid.value;
 			isregcell.appendChild(document.createTextNode(obj.isreg));
 			idcell.appendChild(document.createTextNode(obj.studentid));
 			regcell.appendChild(document.createTextNode(obj.regcode));
@@ -410,7 +412,7 @@ function addStudent() {
 
 			formrow.parentNode.insertBefore(newstudentrow, formrow.nextSibling);
 
-			deletebutton.addEventListener("click", deleteStudent(deletebutton));
+			deletebutton.addEventListener("click", deleteStudent, false);
 
 		} else {
 			console.log(this);
@@ -423,7 +425,10 @@ function addStudent() {
 }
 
 function deleteStudent(evt) {
-	var elem = evt.target;
+	var elem = evt;
+	if (evt.target) {
+		elem = evt.target;
+	}
 	var href = replacePage(window.location.href, "deletestudent.php");
 	var studentid = elem.getAttribute('data-studentid');
 	var studentname = document.getElementById('student-name-' + studentid);

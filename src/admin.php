@@ -171,7 +171,7 @@ if ($tab == 'rollcall') {
                         <?php foreach($students as $student) { ?>
                             <tr class="student" id="student-row-<?php echo $student['studentid']; ?>">
                                 <td>
-                                    <input type="button" id="student-del-button-<?php echo $student['studentid']; ?>" data-studentid="<?php echo $student['studentid']; ?>" value="Delete" onclick="deleteStudent(this)">
+                                    <input type="button" id="student-del-button-<?php echo $student['studentid']; ?>" data-studentid="<?php echo $student['studentid']; ?>" value="Delete" onclick="deleteStudent(this);">
                                 </td>
                                 <td>
                                     <span onclick="showEditStudent(this);" id="student-name-<?php echo $student['studentid']; ?>" data-studentid="<?php echo $student['studentid']; ?>">
