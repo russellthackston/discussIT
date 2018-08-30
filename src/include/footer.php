@@ -14,9 +14,7 @@ if ($user != null) {
 		<?php } ?>
 		<br>
 		<?php if (isset($loggedinusername) && $loggedinusername != null) { ?>
-			<?php if ($isadmin) { ?>
-			<a href="rollcall.php">Rollcall</a>
-			<?php } else { ?>
+			<?php if (!$isadmin) { ?>
 			<input type="submit" name="rollcall" value="Roll call" id="rollcall" onclick="rollcall(this);" />
 			<?php } ?>
 			<br>
