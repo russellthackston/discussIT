@@ -34,14 +34,14 @@ if (isset($_GET['downloadprogress'])) {
 // If someone is adding a new attachment type
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    if (isset($_POST['tab']) && in_array($_POST['tab'], $tabs) {
+    if (isset($_POST['tab']) && in_array($_POST['tab'], $tabs)) {
         $tab = $_POST['tab'];
     }
 
     if ($_POST['attachmenttype'] == "add") {
 
-        $name = $_POST['name'];;
-        $extension = $_POST['extension'];;
+        $name = $_POST['name'];
+        $extension = $_POST['extension'];
 
         $attachmenttypeid = $app->newAttachmentType($name, $extension, $errors);
 
