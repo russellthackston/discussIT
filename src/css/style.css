@@ -466,8 +466,6 @@ div#tabs ul {
 
 div#tabs ul li {
 	display: inline-block;
-	margin: 5px 5px 0px 5px;
-	border: 1px solid black;
 	border-bottom-width: 0px;
     border-radius: 13px 13px 0px 0px;
     padding: 5px 15px 5px 15px;
