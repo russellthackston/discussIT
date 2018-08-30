@@ -469,12 +469,13 @@ div#tabs ul li {
 	margin: 5px 5px 0px 5px;
 	border: 1px solid black;
 	border-bottom-width: 0px;
-    border-radius: 5px 5px 0px 0px;
-    padding: 5px;
+    border-radius: 13px 13px 0px 0px;
+    padding: 5px 15px 5px 15px;
+	background: var(--springGreen);
 }
 
 div#tabs ul li.active {
-	background:  var(--springGreen);
+	background: rgb(237,244,217);
 }
 
 table.students, table.students tr td, table.students tr th {
