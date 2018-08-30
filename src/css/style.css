@@ -469,7 +469,7 @@ div#tabs ul li {
 	border-bottom-width: 0px;
     border-radius: 13px 13px 0px 0px;
     padding: 5px 15px 5px 15px;
-	background: var(--springGreen);
+	background: #afc76a;
 }
 
 div#tabs ul li.active {
