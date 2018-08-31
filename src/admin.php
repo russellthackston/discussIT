@@ -166,7 +166,7 @@ if ($tab == 'rollcall') {
                         <form action="admin.php" method="post" name="attendanceform">
                         <select id="attendancedate" name="attendancedate">
         					<?php foreach($attendancedates as $date) { ?>
-        					<option value="<?php echo $date; ?>"><?php echo $date; ?></option>
+        					<option value="<?php echo $date['rolltaken']; ?>"><?php echo $date['rolltaken']; ?></option>
         					<?php } ?>
         				</select>
                         <input type="hidden" name="tab" value="reports">
