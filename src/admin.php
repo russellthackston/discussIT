@@ -135,7 +135,7 @@ if ($tab == 'rollcall') {
                 <?php if ($tab == 'rollcall') { ?>
                 <div id="rollcall">
                 	<div><?php echo $rollmessage; ?></div>
-                    <a href="admin.php?rollcall&snapshot=roll">Take Snapshot</a>
+                    <a href="admin.php?tab=rollcall&snapshot=roll">Take Snapshot</a>
             		<table id="rollcalltable">
             			<tr>
             				<th>Name</th>
