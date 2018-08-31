@@ -14,7 +14,7 @@ $errors = array();
 // NOTE: passing optional parameter TRUE which indicates the user must be an admin
 $app->protectPage($errors, TRUE);
 
-$tabs = array("userreports", "rollcall", "progressreports", "userlist", "studentlist", "attachmenttypes");
+$tabs = array("userreports", "rollcall", "reports", "userlist", "studentlist", "attachmenttypes");
 $loggedInUser = $app->getSessionUser($errors);
 $regcodes = $app->getRegistrationCodes($errors);
 
@@ -112,7 +112,7 @@ if ($tab == 'rollcall') {
                     <ul>
                         <li <?php if ($tab == 'userreports') { ?>class="active"<?php } ?>><a href="admin.php?tab=userreports">User Reports</a></li>
                         <li <?php if ($tab == 'rollcall') { ?>class="active"<?php } ?>><a href="admin.php?tab=rollcall">Roll call</a></li>
-                        <li <?php if ($tab == 'progressreports') { ?>class="active"<?php } ?>><a href="admin.php?tab=progressreports">Progress Reports</a></li>
+                        <li <?php if ($tab == 'reports') { ?>class="active"<?php } ?>><a href="admin.php?tab=reports">Reports</a></li>
                         <li <?php if ($tab == 'userlist') { ?>class="active"<?php } ?>><a href="admin.php?tab=userlist">User List</a></li>
                         <li <?php if ($tab == 'studentlist') { ?>class="active"<?php } ?>><a href="admin.php?tab=studentlist">Student List</a></li>
                         <li <?php if ($tab == 'attachmenttypes') { ?>class="active"<?php } ?>><a href="admin.php?tab=attachmenttypes">Attachment Types</a></li>
@@ -147,9 +147,9 @@ if ($tab == 'rollcall') {
             		</table>
                 </div>
                 <?php } ?>
-                <?php if ($tab == 'progressreports') { ?>
-                <div id="progressreports">
-                    <a href="admin.php?tab=progressreports&downloadprogress" class="no-barba">Download progress report</a>
+                <?php if ($tab == 'reports') { ?>
+                <div id="reports">
+                    <a href="admin.php?tab=reports&downloadprogress" class="no-barba">Download progress report</a>
                 </div>
                 <?php } ?>
                 <?php if ($tab == 'studentlist') { ?>
