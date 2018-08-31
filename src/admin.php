@@ -38,7 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $tab = $_POST['tab'];
     }
 
-    if ($_POST['attachmenttype'] == "add") {
+    if (isset($_POST['tabaction']) && $_POST['tabaction'] == 'downloadattendance') {
+        $attendancedata = $_POST['attendancedate'];
+        $attendancedata = $app->getAttendanceData($date, $errors);
+        $app->outputCSV($attendancedata);
+    }
+
+    if (isset($_POST['attachmenttype']) && $_POST['attachmenttype'] == "add") {
 
         $name = $_POST['name'];
         $extension = $_POST['extension'];
@@ -75,6 +81,10 @@ if ($tab == 'attachmenttypes') {
 
 if ($tab == 'userreports') {
     $reports = $app->getReports($errors);
+}
+
+if ($tab == 'reports') {
+    $attendancedates = $app->getAttendanceDates($errors);
 }
 
 if ($tab == 'studentlist') {
@@ -149,7 +159,22 @@ if ($tab == 'rollcall') {
                 <?php } ?>
                 <?php if ($tab == 'reports') { ?>
                 <div id="reports">
-                    <a href="admin.php?tab=reports&downloadprogress" class="no-barba">Download progress report</a>
+                    <div>
+                        <a href="admin.php?tab=reports&downloadprogress" class="no-barba">Download progress report</a>
+                    </div>
+                    <div>
+                        <form action="admin.php" method="post" name="attendanceform">
+                        <select id="attendancedate" name="attendancedate">
+        					<?php foreach($attendancedates as $date) { ?>
+        					<option value="<?php echo $date; ?>"><?php echo $date; ?></option>
+        					<?php } ?>
+        				</select>
+                        <input type="hidden" name="tab" value="reports">
+                        <input type="hidden" name="tabaction" value="downloadattendance">
+                        <input type="submit" name="attendance" value="Download attendance" id="attendance">
+                    </form>
+                    </div>
+
                 </div>
                 <?php } ?>
                 <?php if ($tab == 'studentlist') { ?>

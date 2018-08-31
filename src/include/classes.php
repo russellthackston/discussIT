@@ -3228,6 +3228,74 @@ class Application {
 
             }
 
+            public function getAttendanceDates(&$errors) {
+
+                $dates = array();
+
+                // Connect to the database
+                $dbh = $this->getConnection();
+
+                // Construct a SQL statement to get the roll
+                $sql = "SELECT rolltaken, count(rolltaken) " .
+                    "FROM rollcallarchive " .
+                    "GROUP BY rolltaken";
+
+                $stmt = $dbh->prepare($sql);
+                $stmt->bindParam(":regcode", $registrationcode);
+                $result = $stmt->execute();
+
+                // If the query did not run successfully, add an error message to the list
+                if ($result === FALSE) {
+
+                    $errors[] = "An unexpected error occurred getting the attendance dates.";
+                    $this->debug($stmt->errorInfo());
+                    $this->auditlog("getAttendanceDates error", $stmt->errorInfo());
+
+                } else {
+
+                    $dates = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                }
+
+                $dbh = NULL;
+
+                return $dates;
+
+            }
+
+            public function getAttendanceData($date, &$errors) {
+
+                $roll = array();
+
+                // Connect to the database
+                $dbh = $this->getConnection();
+
+                // Construct a SQL statement to get the roll
+                $sql = "SELECT * " .
+                    "FROM rollcallarchive " .
+                    "WHERE rolltaken = :rolltaken";
+
+                $stmt = $dbh->prepare($sql);
+                $stmt->bindParam(":rolltaken", $date);
+                $result = $stmt->execute();
+
+                // If the query did not run successfully, add an error message to the list
+                if ($result === FALSE) {
+
+                    $errors[] = "An unexpected error occurred getting the attendance dates.";
+                    $this->debug($stmt->errorInfo());
+                    $this->auditlog("getAttendanceData error", $stmt->errorInfo());
+
+                } else {
+
+                    $roll = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                }
+
+                $dbh = NULL;
+
+                return $roll;
+
+            }
+
             public function build_html_calendar($year, $month, $events = null) {
 
                 // CSS classes
