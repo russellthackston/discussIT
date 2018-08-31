@@ -39,8 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (isset($_POST['tabaction']) && $_POST['tabaction'] == 'downloadattendance') {
-        $attendancedata = $_POST['attendancedate'];
-        $attendancedata = $app->getAttendanceData($date, $errors);
+        $attendancedate = $_POST['attendancedate'];
+        $attendancedata = $app->getAttendanceData($attendancedate, $errors);
         $app->outputCSV($attendancedata);
         exit();
     }
