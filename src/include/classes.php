@@ -3194,7 +3194,8 @@ class Application {
                 $dbh = $this->getConnection();
 
                 // Construct a SQL statement to get the roll
-                $sql = "INSERT INTO rollcallarchive (SELECT now() AS rolltaken, " .
+                $sql = "INSERT INTO rollcallarchive " .
+                    "(SELECT convert_tz(now(), @@session.time_zone, 'America/New_York') AS rolltaken, " .
                     "users.userid, users.studentid AS studentid, " .
                     "students.studentname AS studentname, " .
                     "IFNULL(rollcall.callsubmitted > DATE_SUB(NOW(), INTERVAL 5 MINUTE), 0) AS present " .
