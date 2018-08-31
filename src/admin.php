@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $attendancedata = $_POST['attendancedate'];
         $attendancedata = $app->getAttendanceData($date, $errors);
         $app->outputCSV($attendancedata);
+        exit();
     }
 
     if (isset($_POST['attachmenttype']) && $_POST['attachmenttype'] == "add") {
