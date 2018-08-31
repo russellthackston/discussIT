@@ -53,6 +53,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
+if (isset($_GET['snapshot']) && $_GET['snapshot'] == 'roll') {
+    $app->snapshotRollcall($loggedInUser['registrationcode'], $errors);
+    $message = "Snapshot recorded";
+}
+
 if (!isset($tab) && isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) {
     $tab = $_GET['tab'];
 } else {

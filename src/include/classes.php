@@ -9,7 +9,7 @@
 
 class Application {
 
-    private $codeversion = 2;
+    private $codeversion = 3;
 
     public function setup() {
 
@@ -3149,9 +3149,6 @@ class Application {
 
             public function getRollcall($registrationcode, &$errors) {
 
-                // Declare an errors array
-                $errors = [];
-
                 // Connect to the database
                 $dbh = $this->getConnection();
 
@@ -3188,6 +3185,46 @@ class Application {
                 $dbh = NULL;
 
                 return $roll;
+
+            }
+
+            public function snapshotRollcall($registrationcode, &$errors) {
+
+                // Connect to the database
+                $dbh = $this->getConnection();
+
+                // Construct a SQL statement to get the roll
+                $sql = "INSERT INTO rollcallarchive (SELECT now() AS rolltaken, " .
+                    "users.userid, users.studentid AS studentid, " .
+                    "students.studentname AS studentname, " .
+                    "IFNULL(rollcall.callsubmitted > DATE_SUB(NOW(), INTERVAL 5 MINUTE), 0) AS present " .
+                    "FROM users  " .
+                    "LEFT JOIN rollcall ON rollcall.userid = users.userid  " .
+                    "LEFT JOIN students ON users.studentid = students.studentid  " .
+                    "LEFT JOIN userregistrations ON users.userid = userregistrations.userid " .
+                    "WHERE userregistrations.registrationcode = :regcode " .
+                    "AND users.isadmin <> 1 " .
+                    "AND students.studentid > 100000000 " .
+                    "GROUP BY users.userid " .
+                    "ORDER BY studentname ASC)";
+
+                $stmt = $dbh->prepare($sql);
+                $stmt->bindParam(":regcode", $registrationcode);
+                $result = $stmt->execute();
+
+                // If the query did not run successfully, add an error message to the list
+                if ($result === FALSE) {
+
+                    $errors[] = "An unexpected error occurred getting the roll.";
+                    $this->debug($stmt->errorInfo());
+                    $this->auditlog("getRollcall error", $stmt->errorInfo());
+
+                } else {
+
+
+                }
+
+                $dbh = NULL;
 
             }
 
