@@ -14,7 +14,7 @@ $errors = array();
 // NOTE: passing optional parameter TRUE which indicates the user must be an admin
 $app->protectPage($errors, TRUE);
 
-// If someone is adding a new attachment type
+// If someone is adding a new student
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $entityBody = file_get_contents('php://input');
