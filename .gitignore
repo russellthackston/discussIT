@@ -2,4 +2,4 @@
 .project
 .settings
 .ftpconfig
-
+.DS_Store
