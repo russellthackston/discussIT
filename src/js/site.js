@@ -262,19 +262,26 @@ function toggleMoreInfo(elem) {
 
 function rollcall(elem) {
 
-	// Get the vote details and display a processing message
+	// Get the rollcall button element
 	var messageElem = document.getElementById("rollcallresult");
-
-	// Send the vote to the server
+	
+	// Get the rollcall URL
 	var href = replacePage(window.location.href, "rollcall.php");
 
+	//Get current button label and color
+	var buttonLabel = messageElem.innerHTML;
+	var messageElemColor = messageElem.style.color;
+
+	//Send Rollcall to server
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			messageElem.innerHTML = this.responseText;
+			messageElem.style.color = "red";
 			console.log(this.responseText);
 			var timer = setInterval(function () {
-		        messageElem.innerHTML = "";
+		        messageElem.innerHTML = buttonLabel;
+		        messageElem.style.color = messageElemColor;
 		    }, 5000);
 		}
 	};

@@ -9,17 +9,16 @@ if ($user != null) {
 	<p class="footer">
 		Copyright &copy; <?php echo date("Y"); ?> Russell Thackston, Laura Thackston
 		<br>
+		<br>
 		<?php if (isset($loggedinusername) && $loggedinusername != null) { ?>
 		You are logged in as <?php echo $loggedinusername; ?>.
 		<?php } ?>
+		
+		
 		<br>
 		<?php if (isset($loggedinusername) && $loggedinusername != null) { ?>
-			<?php if (!$isadmin) { ?>
-			<input type="submit" name="rollcall" value="Roll call" id="rollcall" onclick="rollcall(this);" />
-			<?php } ?>
-			<br>
-			<span id="rollcallresult"></span>
 			<?php if (sizeof($regs) > 1) { ?>
+				<br>
 				<br>
 				<label for="switchregcode">Switch Course</label>
 				<select id="switchregcode" name="switchregcode" onchange="switchregcode()">
@@ -29,16 +28,18 @@ if ($user != null) {
 				</select>
 			<?php } ?>
 		<?php } ?>
+	
 	</p>
+	
 	<?php
-	if ($_COOKIE['debug'] == "true") {
-		if (isset($debugMessages)) {
-			print("<pre>");
-			foreach ($debugMessages as $msg) {
-				var_dump($msg);
+		if ($_COOKIE['debug'] == "true") {
+			if (isset($debugMessages)) {
+				print("<pre>");
+				foreach ($debugMessages as $msg) {
+					var_dump($msg);
+				}
+				print("</pre>");
 			}
-			print("</pre>");
 		}
-	}
 	?>
 </footer>

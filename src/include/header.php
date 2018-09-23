@@ -40,24 +40,46 @@ if ($user != NULL) {
 	<header>
 		<nav aria-labelledby="mainmenulabel">
 			<h2 id="mainmenulabel" class="visuallyhidden">Main Menu</h2>
-			<ul>
-			<?php if (!$loggedin) { ?>
-				<li><a href="index.php">Home</a></li>
-				<li><a href="register.php">Register</a></li>
-				<li><a href="login.php">Login</a></li>
+			<ul id="menuList"> 
+			<?php
+				//If the user is not logged in, show Home, Register and Login	
+				if (!$loggedin) { ?>
+					<li><a href="index.php">Home</a></li>
+					
+					<li><a href="register.php">Register</a></li>
+					
+					<li><a href="login.php">Login</a></li>
 			<?php } ?>
-			<?php if ($loggedin) { ?>
+			<?php if ($loggedin) { 
+					//If the user is logged in, show Topics and Profile
+			?>
 				<li class="<?php if ($critiquesAlert) { echo " critiquesAlert "; } else if ($commentsAlert) { echo " commentsAlert "; } ?>">
 					<a href="list.php">Topics</a>
 				</li>
 				<li><a href="editprofile.php">Profile</a></li>
-				<?php if ($isadmin) { ?>
+
+				<?php if ($isadmin) { 
+						//If the user is logged in and is an admin, show Admin
+				?>
 					<li><a href="admin.php">Admin</a></li>
-				<?php } else { ?>
+
+				<?php } else { 
+						//If the user is logged in and not the admin, Help, Rollcall
+				?>
 					<li><a href="fileviewer.php?file=include/help.txt">Help</a></li>
-				<?php } ?>
+			  		
+			  		<li><a id="rollcallresult" href="#" onclick='return rollcall(this);'>Roll Call</a></i>
+				<?php } 
+					
+				//If the user is logged in, show Logout	
+				?>
+				
+				
 				<li><a href="logout.php" class="no-barba">Logout</a></li>
 			<?php } ?>
+			
+						
+
 			</ul>
 		</nav>
 		<div class="clear"></div>
