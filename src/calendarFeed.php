@@ -42,52 +42,44 @@ if(count($events) == 0) {
 
 // If all that passed, we should be able to generate an ICS file
 
-// Set Content-Type to text/calendar
-header('Content-Type: text/calendar');
 
+function generateEventCalendar($events) {
+  // Set Content-Type to text/calendar
+  header('Content-Type: text/calendar');
+  // Print the ICS header
+  echo "BEGIN:VCALENDAR\r\n";
+  echo "PRODID:-//discussIT//NONSGML 1.0//EN\r\n";
+  echo "VERSION: 2.0\r\n";
+  echo "METHOD:PUBLISH\r\n";
+  echo "X-WR-CALNAME:discussIT calendar for $regcode\r\n";
+  foreach ($events as $event) {
+    // Set some helper variables
+    $moduleName = $event['thingname'];
+    /// Format the event dates (convert SQL timestamp to sorta-ISO 8601)
+    $openDate = date('Ymd\THis', strtotime($event['commentsopendate']));
+    $commentsCloseDate = date('Ymd\THis', strtotime($event['commentsclosedate']));
+    $critiquesCloseDate = date('Ymd\THis', strtotime($event['critiquesclosedate']));
+    // Create the module open event
+    generateEvent("MODOPEN_$modulename", "$moduleName opens", $regcode, $openDate, $openDate);
+    // Create the module comments close event
+    generateEvent("COMCLOSE_$modulename", "$moduleName comments close", $regcode, $commentsCloseDate, $commentsCloseDate);
+    // Create the module critiques close event
+    generateEvent("CRTCLOSE_$modulename", "$moduleName critiques close", $regcode, $critiquesCloseDate, $critiquesCloseDate);
+  }
+  // Print the ICS footer
+  echo "END:VCALENDAR";
+}
 
-// Print the ICS header
-echo "BEGIN:VCALENDAR\r\n";
-echo "PRODID:-//discussIT//NONSGML 1.0//EN\r\n";
-echo "VERSION: 2.0\r\n";
-echo "METHOD:PUBLISH\r\n";
-echo "X-WR-CALNAME:discussIT calendar for $regcode\r\n";
-// Iterate over each calendar event. We'll be creating VEVENTs for each module for the opening, comment closing, and critique closing.
-foreach ($events as $event) {
-  // Set some helper variables
-  $moduleName = $event['thingname'];
-  /// Format the event dates (convert SQL timestamp to ISO 8601)
-  $opendate = date('Ymd\THis', strtotime($event['commentsopendate']));
-  $commentsclosedate = date('Ymd\THis', strtotime($event['commentsclosedate']));
-  $critiquesclosedate = date('Ymd\THis', strtotime($event['critiquesclosedate']));
-  // Create the module open event
+function generateEvent($uid,$summary,$location,$start,$end) {
   echo "BEGIN:VEVENT\r\n";
-  echo "UID:COMMENTSOPEN_$moduleName\r\n";
-  echo "SUMMARY:$moduleName opens\r\n";
-  echo "LOCATION:$regcode\r\n";
-  echo "DTSTAMP:$opendate\r\n";
-  echo "DTSTART:$opendate\r\n";
-  echo "DTEND:$opendate\r\n";
-  echo "END:VEVENT\r\n";
-  // Create the module comment closing event
-  echo "BEGIN:VEVENT\r\n";
-  echo "UID:COMMENTSCLOSE_$moduleName\r\n";
-  echo "SUMMARY:$moduleName comments close\r\n";
-  echo "LOCATION:$regcode\r\n";
-  echo "DTSTAMP:$commentsclosedate\r\n";
-  echo "DTSTART:$commentsclosedate\r\n";
-  echo "DTEND:$commentsclosedate\r\n";
-  echo "END:VEVENT\r\n";
-  // Create the module critique closing event
-  echo "BEGIN:VEVENT\r\n";
-  echo "UID:CRITIQUESCLOSE_$moduleName\r\n";
-  echo "SUMMARY:$moduleName critiques close\r\n";
-  echo "LOCATION:$regcode\r\n";
-  echo "DTSTAMP:$critiquesclosedate\r\n";
-  echo "DTSTART:$critiquesclosedate\r\n";
-  echo "DTEND:$critiquesclosedate\r\n";
+  echo "UID:$uid\r\n";
+  echo "SUMMARY:$summary\r\n";
+  echo "LOCATION:$location\r\n";
+  echo "DTSTAMP:$start\r\n";
+  echo "DTSTART:$start\r\n";
+  echo "DTEND:$end\r\n";
   echo "END:VEVENT\r\n";
 }
-// Print the ICS footer
-echo "END:VCALENDAR";
+
+generateEventCalendar($events);
 ?>
