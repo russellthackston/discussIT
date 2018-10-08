@@ -1299,14 +1299,19 @@ class Application {
             }
 
             // Get a list of all things from the database and will return the $errors array listing any errors encountered
-            public function getCalendar(&$errors) {
+            public function getCalendar(&$errors, $regcode=null) {
 
                 // Assume an empty list of things
                 $things = array();
 
-                // Get the logged in user
-                $loggedinuser = $this->getSessionUser($errors);
-                $registrationcode = $loggedinuser["registrationcode"];
+                // If the regcode is not null, use that instead
+                if (!is_null($regcode)) {
+                  $registrationcode = $regcode;
+                } else {
+                  // Otherwise, get the logged in user
+                  $loggedinuser = $this->getSessionUser($errors);
+                  $registrationcode = $loggedinuser["registrationcode"];
+                }
 
                 // Connect to the database
                 $dbh = $this->getConnection();
