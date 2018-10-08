@@ -42,7 +42,7 @@ if(count($events) == 0) {
 
 // If all that passed, we should be able to generate an ICS file
 
-// Generates an ICS VCALENDAR object for each event in the event calendar..
+// Generates and echos a ICS file with events for each module in the calendar.
 function generateEventCalendar($events, $regcode) {
   // Set Content-Type to text/calendar
   header('Content-Type: text/calendar');
@@ -71,7 +71,7 @@ function generateEventCalendar($events, $regcode) {
   echo "END:VCALENDAR";
 }
 
-// Generates an ICS VEVENT object.
+// Generates an ICS VEVENT object with the given parameters.
 function generateEvent($uid,$summary,$location,$start,$end) {
   echo "BEGIN:VEVENT\r\n";
   echo "UID:$uid\r\n";
@@ -83,5 +83,6 @@ function generateEvent($uid,$summary,$location,$start,$end) {
   echo "END:VEVENT\r\n";
 }
 
+// Generate an event calendar given the current regcode and that regcode's events
 generateEventCalendar($events, $regcode);
 ?>
