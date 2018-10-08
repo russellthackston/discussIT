@@ -43,7 +43,7 @@ if(count($events) == 0) {
 // If all that passed, we should be able to generate an ICS file
 
 
-function generateEventCalendar($events) {
+function generateEventCalendar($events, $regcode) {
   // Set Content-Type to text/calendar
   header('Content-Type: text/calendar');
   // Print the ICS header
@@ -52,6 +52,7 @@ function generateEventCalendar($events) {
   echo "VERSION: 2.0\r\n";
   echo "METHOD:PUBLISH\r\n";
   echo "X-WR-CALNAME:discussIT calendar for $regcode\r\n";
+  // For each calendar event, make some events
   foreach ($events as $event) {
     // Set some helper variables
     $moduleName = $event['thingname'];
@@ -60,11 +61,11 @@ function generateEventCalendar($events) {
     $commentsCloseDate = date('Ymd\THis', strtotime($event['commentsclosedate']));
     $critiquesCloseDate = date('Ymd\THis', strtotime($event['critiquesclosedate']));
     // Create the module open event
-    generateEvent("MODOPEN_$modulename", "$moduleName opens", $regcode, $openDate, $openDate);
+    generateEvent("MODOPEN_$moduleName", "$regcode - $moduleName opens", $regcode, $openDate, $openDate);
     // Create the module comments close event
-    generateEvent("COMCLOSE_$modulename", "$moduleName comments close", $regcode, $commentsCloseDate, $commentsCloseDate);
+    generateEvent("COMCLOSE_$moduleName", "$regcode - $moduleName comments close", $regcode, $commentsCloseDate, $commentsCloseDate);
     // Create the module critiques close event
-    generateEvent("CRTCLOSE_$modulename", "$moduleName critiques close", $regcode, $critiquesCloseDate, $critiquesCloseDate);
+    generateEvent("CRTCLOSE_$moduleName", "$regcode - $moduleName critiques close", $regcode, $critiquesCloseDate, $critiquesCloseDate);
   }
   // Print the ICS footer
   echo "END:VCALENDAR";
@@ -81,5 +82,5 @@ function generateEvent($uid,$summary,$location,$start,$end) {
   echo "END:VEVENT\r\n";
 }
 
-generateEventCalendar($events);
+generateEventCalendar($events, $regcode);
 ?>
