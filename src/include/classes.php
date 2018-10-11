@@ -100,6 +100,10 @@ class Application {
         $stmt = $dbh->prepare($sql);
         $stmt->execute();
     }
+    
+    public function getVersion() {
+	    return $this->codeversion;
+    }
 
     // Writes a message to the debug message array for printing in the footer.
     public function debug($message) {

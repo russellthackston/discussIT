@@ -354,8 +354,8 @@ if ($tab == 'rollcall') {
     </div>
     <?php include 'include/footer.php'; ?>
     <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/site.js"></script>
-    <script src="js/barba.js"></script>
-    <script src="js/mybarba.js"></script>
+    <script src="js/site.js?v=<?php echo $app->getVersion(); ?>"></script>
+    <script src="js/barba.js?v=<?php echo $app->getVersion(); ?>"></script>
+    <script src="js/mybarba.js?v=<?php echo $app->getVersion(); ?>"></script>
 </body>
 </html>
