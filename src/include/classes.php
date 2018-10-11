@@ -105,6 +105,13 @@ class Application {
 	    return $this->codeversion;
     }
 
+    public function includeJavascript($files) {
+	    for ($i = 0; $i < sizeof($files); $i++) {
+			echo '<script src="js/'.$files[$i].'.js&v='$this->getVersion()'"></script>';
+			echo PHP_EOL;
+		}
+    }
+
     // Writes a message to the debug message array for printing in the footer.
     public function debug($message) {
         global $debugMessages;
