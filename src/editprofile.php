@@ -232,9 +232,6 @@ $progressReport = $app->getProgressReport($userid, NULL, NULL, $loggedinuserregi
 	</div>
 	</div>
 	<?php include 'include/footer.php'; ?>
-	<script src="js/jquery-3.3.1.min.js"></script>
-	<script src="js/site.js"></script>
-	<script src="js/barba.js"></script>
-	<script src="js/mybarba.js"></script>
+	<?php $app->includeJavascript(array('jquery-3.3.1.min','site','barba','mybarba')); ?>
 </body>
 </html>
