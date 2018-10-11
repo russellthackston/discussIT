@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 					<label for="code">Course:</label>
 					<br/>
-					<select id="code" name="code">
+					<select id="code" name="code" autocomplete="off">
 						<?php foreach($justCodes as $code) { ?>
 						<option value="<?php echo $code; ?>" <?php if ($code == $myCode) { echo "selected='selected'"; } ?> ><?php echo $code; ?></option>
 						<?php } ?>

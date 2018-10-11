@@ -171,7 +171,7 @@ if ($tab == 'rollcall') {
                     </div>
                     <div>
                         <form action="admin.php" method="post" name="attendanceform">
-                        <select id="attendancedate" name="attendancedate">
+                        <select id="attendancedate" name="attendancedate" autocomplete="off">
         					<?php foreach($attendancedates as $date) { ?>
         					<option value="<?php echo $date['rolltaken']; ?>"><?php echo $date['rolltaken']; ?></option>
         					<?php } ?>
@@ -301,7 +301,7 @@ if ($tab == 'rollcall') {
                 <div id="userlist">
                     <h3>User List</h3>
                     <label for="regcodefilter">Filter:</label>
-                    <select name="regcodefilter" id="regcodefilter" onchange="filterByRegCode()">
+                    <select name="regcodefilter" id="regcodefilter" onchange="filterByRegCode()" autocomplete="off">
                         <option value="nofilter">All members</option>
                         <?php foreach ($regcodes as $regcode) { ?>
                             <option value="<?php echo $regcode['registrationcode']; ?>"><?php echo $regcode['registrationcode']; ?></option>

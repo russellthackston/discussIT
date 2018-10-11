@@ -9,7 +9,7 @@
 
 class Application {
 
-    private $codeversion = 5;
+    private $codeversion = 6;
     private $user = null;
 
     public function setup() {
@@ -450,8 +450,8 @@ class Application {
                 $userid = bin2hex(random_bytes(16));
 
                 // Construct a SQL statement to perform the insert operation
-                $sql = "INSERT INTO users (userid, username, passwordhash, email, studentid) " .
-                "VALUES (:userid, :username, :passwordhash, :email, :studentid)";
+                $sql = "INSERT INTO users (userid, username, passwordhash, email, studentid, timezone) " .
+                "VALUES (:userid, :username, :passwordhash, :email, :studentid, 'America/New_York')";
 
                 // Run the SQL insert and capture the result code
                 $stmt = $dbh->prepare($sql);
@@ -943,7 +943,8 @@ class Application {
                 $dbh = $this->getConnection();
 
                 // Construct a SQL statement to perform the insert operation
-                $sql = "SELECT usersessionid, usersessions.userid, email, username, usersessions.registrationcode, isadmin, registrationcodes.description " .
+                $sql = "SELECT usersessionid, usersessions.userid, email, username, usersessions.registrationcode, " . 
+                "isadmin, registrationcodes.description, timezone " .
                 "FROM usersessions " .
                 "LEFT JOIN users on usersessions.userid = users.userid " .
                 "LEFT JOIN registrationcodes on usersessions.registrationcode = registrationcodes.registrationcode " .
@@ -2330,7 +2331,7 @@ class Application {
             }
 
             // Updates a single user in the database and will return the $errors array listing any errors encountered
-            public function updateUser($userid, $username, $password, $isadminDB, &$errors) {
+            public function updateUser($userid, $username, $password, $isadminDB, $timezone, &$errors) {
 
                 // Assume no user exists for this user id
                 $user = NULL;
@@ -2367,6 +2368,9 @@ class Application {
                         if (!empty($password)) {
                             $this->validatePassword($password, $errors);
                         }
+                        if (isset($timezone) && !in_array($timezone, timezone_identifiers_list())) {
+	                        $timezone = "America/New_York";
+                        }
 
                         // Only try to update the data into the database if there are no validation errors
                         if (sizeof($errors) == 0) {
@@ -2381,8 +2385,8 @@ class Application {
                             $sql = 	"UPDATE users SET username=:username  " .
                             ($loggedinuserid != $userid ? ", isadmin=:isAdmin " : "") .
                             (!empty($password) ? ", passwordhash=:passwordhash" : "") .
+                            (!empty($timezone) ? ", timezone=:timezone" : "") .
                             " WHERE userid = :userid";
-
 
                             $stmt = $dbh->prepare($sql);
                             $stmt->bindParam(":username", $username);
@@ -2392,6 +2396,9 @@ class Application {
                             }
                             if (!empty($password)) {
                                 $stmt->bindParam(":passwordhash", $passwordhash);
+                            }
+                            if (!empty($timezone)) {
+                                $stmt->bindParam(":timezone", $timezone);
                             }
                             $stmt->bindParam(":userid", $userid);
                             $result = $stmt->execute();
