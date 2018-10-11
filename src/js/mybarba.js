@@ -68,6 +68,18 @@ Barba.Pjax.start();
  */
 Barba.Dispatcher.on('newPageReady', function(currentStatus, oldStatus, container) {
 	console.log(container);
+	console.log(document);
+
+	var navAnchors = document.getElementById("menuList").getElementsByTagName("a");
+	var i;
+	for (i = 0; i < navAnchors.length; i++) { 
+	    navAnchors[i].classList.remove("navActive");
+	}
+	var navID = container.getAttribute("data-id");
+	if (navID){
+		document.getElementById(navID).classList.add("navActive");		
+	}
+		
 	if (container.hasAttribute("data-page")) {
 		if (container.getAttribute("data-page") == "report") {
 			setupMoreInfo();

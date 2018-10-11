@@ -1,4 +1,6 @@
 <?php
+//set currentPage
+$currentPage = "navHelp";
 
 // Import the application classes
 require_once('include/classes.php');
@@ -18,7 +20,7 @@ $name = $_GET["file"];
 <body>
 	<?php include 'include/header.php'; ?>
 	<div id="barba-wrapper">
-	<div class="barba-container">
+	<div class="barba-container" data-id="navHelp">
 	<main id="wrapper">
 		<h2>User Guide</h2>
 		<div>

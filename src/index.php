@@ -1,5 +1,8 @@
 <?php
 
+//set currentPage
+$currentPage = "navHome";
+
 // Import the application classes
 require_once('include/classes.php');
 
@@ -15,9 +18,10 @@ $app->setup();
 <body>
 	<?php include 'include/header.php'; ?>
 	<div id="barba-wrapper">
-	<div class="barba-container">
+	<div class="barba-container" data-id="navHome">
 	<main id="wrapper">
 		<h2>IT 3234 Class Discussions</h2>
+
 		<p>
 			This private discussion site is for students
 			enrolled in Dr. Thackston's IT courses.

@@ -9,26 +9,12 @@ if ($user != null) {
 	<p class="footer">
 		Copyright &copy; <?php echo date("Y"); ?> Russell Thackston, Laura Thackston
 		<br>
+		Background courtesy of 1001FreeDownloads.com
 		<br>
-		<?php if (isset($loggedinusername) && $loggedinusername != null) { ?>
-		You are logged in as <?php echo $loggedinusername; ?>.
-		<?php } ?>
-		
-		
 		<br>
-		<?php if (isset($loggedinusername) && $loggedinusername != null) { ?>
-			<?php if (sizeof($regs) > 1) { ?>
-				<br>
-				<br>
-				<label for="switchregcode">Switch Course</label>
-				<select id="switchregcode" name="switchregcode" onchange="switchregcode()">
-					<?php foreach($regs as $code) { ?>
-					<option value="<?php echo $code; ?>" <?php if ($code == $loggedinuserregistrationcode) { echo "selected='selected'"; } ?> ><?php echo $code; ?></option>
-					<?php } ?>
-				</select>
-			<?php } ?>
+		<?php if (isset($app->getSessionUser($errors)["username"]) && $app->getSessionUser($errors)["username"] != null) { ?>
+		You are logged in as <?php echo $app->getSessionUser($errors)["username"]; ?>.
 		<?php } ?>
-	
 	</p>
 	
 	<?php

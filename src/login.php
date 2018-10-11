@@ -1,4 +1,6 @@
 <?php
+//set currentPage
+$currentPage = "navLogin";
 
 // Import the application classes
 require_once('include/classes.php');
@@ -71,7 +73,7 @@ if (isset($_GET['register']) && $_GET['register']== 'success') {
 <body>
 	<?php include 'include/header.php'; ?>
 	<div id="barba-wrapper">
-	<div class="barba-container">
+	<div class="barba-container" data-id="navLogin">
 	<main id="wrapper">
 		<h2>Login</h2>
 	

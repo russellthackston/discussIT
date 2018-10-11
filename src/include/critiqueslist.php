@@ -1,3 +1,7 @@
+<?php
+	
+?>
+
 <ul class="critiques">
     <?php
     foreach ($critiques as $critique) {
@@ -6,7 +10,7 @@
                 <span class="critiquetext"><?php echo $critique['critiquetext']; ?></span>
                 <?php
                 $critauthor = $critique['publicusername'];
-                if ($loggedinuser['isadmin'] != 0 || $critique['username'] == $loggedinusername) {
+                if ($app->getSessionUser($errors)['isadmin'] != 0 || $critique['username'] == $app->getSessionUser($errors)["username"]) {
                     if (!empty($comment['studentname'])) {
                         $critauthor = $critauthor . " (" . $critique['studentname'] . ")";
                     } else {

@@ -9,7 +9,8 @@
 
 class Application {
 
-    private $codeversion = 3;
+    private $codeversion = 5;
+    private $user = null;
 
     public function setup() {
 
@@ -916,9 +917,11 @@ class Application {
         // Retrieves an existing session from the database for the specified user
         public function getSessionUser(&$errors, $suppressLog=FALSE) {
 
-            // Get the session id cookie from the browser
+			if($this->user != null){
+				return $this->user;
+			} 
+            // Get the session id cookie from the browse
             $sessionid = NULL;
-            $user = NULL;
 
             // Check for a valid session ID
             if (isset($_COOKIE['sessionid'])) {
@@ -929,9 +932,10 @@ class Application {
                 $dbh = $this->getConnection();
 
                 // Construct a SQL statement to perform the insert operation
-                $sql = "SELECT usersessionid, usersessions.userid, email, username, usersessions.registrationcode, isadmin " .
+                $sql = "SELECT usersessionid, usersessions.userid, email, username, usersessions.registrationcode, isadmin, registrationcodes.description " .
                 "FROM usersessions " .
                 "LEFT JOIN users on usersessions.userid = users.userid " .
+                "LEFT JOIN registrationcodes on usersessions.registrationcode = registrationcodes.registrationcode " .
                 "WHERE usersessionid = :sessionid AND expires > now()";
 
 
@@ -952,7 +956,7 @@ class Application {
 
                 } else {
 
-                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $this->user = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 }
 
@@ -961,13 +965,13 @@ class Application {
 
             }
 
-            return $user;
+            return $this->user;
 
         }
 
         // Retrieves the most recent session from the database for the specified user
         public function impersonate($userid, &$errors) {
-
+	        
             // Array of sessions
             $sessionid = null;
 
@@ -1010,12 +1014,14 @@ class Application {
 
                     }
 
-                }
+	            }
 
             }
 
             // Close the connection
             $dbh = NULL;
+            
+            return FALSE;
 
         }
 
@@ -1318,6 +1324,7 @@ class Application {
                 "(critiquesclosedate < now()) as critiquesclosed " .
                 "FROM things " .
                 "WHERE thingregistrationcode = :registrationcode " .
+                "and commentsopendate >= DATE_ADD(LAST_DAY(DATE_SUB(CURDATE(), interval 1 month)), interval 1 day) " .
                 "ORDER BY things.commentsopendate ASC";
 
 
@@ -2913,6 +2920,7 @@ class Application {
                     "FROM users " .
                     "LEFT JOIN userregistrations ON users.userid = userregistrations.userid " .
                     "LEFT JOIN students ON students.studentid = users.studentid " .
+                    "WHERE users.testaccount = 0 " .
                     "GROUP BY registrationcode, userid";
                 $stmt = $dbh->prepare($sql);
                 $result = $stmt->execute();
@@ -2938,6 +2946,44 @@ class Application {
                 array_splice($progressReport, 0, 0, array($labels));
 
                 return $progressReport;
+            }
+            
+            protected function initGradesArray() {
+	            return array("F"=>0, "D"=>0, "C"=>0, "B"=>0, "A"=>0);
+            }
+            
+            protected function assignGrade($grade, $key, &$histogram) {
+	            if ($grade[$key] >= 0.9) {
+		            $histogram[$key]['A']++;
+	            } else if ($grade[$key] >= 0.8) {
+		            $histogram[$key]['B']++;
+	            } else if ($grade[$key] >= 0.7) {
+		            $histogram[$key]['C']++;
+	            } else if ($grade[$key] >= 0.6) {
+		            $histogram[$key]['D']++;
+	            } else {
+		            $histogram[$key]['F']++;
+	            }
+            }
+            
+            public function getGradeHistograms(&$errors) {
+	            // Get everyone's grades
+	            $grades = $this->getAllProgressReports($errors);
+	            
+	            $histogram = array(
+		            "commentinggradedecimal"=>$this->initGradesArray(),
+		            "critiquinggradedecimal"=>$this->initGradesArray(),
+		            "commentqualitydecimal"=>$this->initGradesArray()
+	            );
+	            
+	            foreach($grades as $grade) {
+		            $this->assignGrade($grade, 'commentinggradedecimal', $histogram);
+		            $this->assignGrade($grade, 'critiquinggradedecimal', $histogram);
+		            $this->assignGrade($grade, 'commentqualitydecimal', $histogram);
+	            }
+	            
+	            return $histogram;
+	            
             }
 
             public function outputCSV($data) {
@@ -3312,7 +3358,7 @@ class Application {
                 $today = date('Y-m-d', mktime(0, 0, 0, date('m', time()), date('d', time()), date('Y', time())));
 
                 // Table headings
-                $headings = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+                $headings = ['Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat', 'Sun'];
 
                 // Start: draw table
                 $calendar =

@@ -263,7 +263,8 @@ function toggleMoreInfo(elem) {
 function rollcall(elem) {
 
 	// Get the rollcall button element
-	var messageElem = document.getElementById("rollcallresult");
+	var messageElem = document.getElementById("navRollCall");
+	var srcElem = document.getElementById("present");
 	
 	// Get the rollcall URL
 	var href = replacePage(window.location.href, "rollcall.php");
@@ -277,11 +278,13 @@ function rollcall(elem) {
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			messageElem.innerHTML = this.responseText;
-			messageElem.style.color = "red";
+			messageElem.classList.add("here");
+			srcElem.classList.add("here");
 			console.log(this.responseText);
-			var timer = setInterval(function () {
+			var timer = setTimeout(function () {
 		        messageElem.innerHTML = buttonLabel;
-		        messageElem.style.color = messageElemColor;
+   				messageElem.classList.remove("here");
+				srcElem.classList.remove("here");
 		    }, 5000);
 		}
 	};
@@ -460,4 +463,21 @@ function deleteStudent(evt) {
 	xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 	xhttp.send(JSON.stringify(data));
 
+}
+
+
+function toggleHotdog(){
+	var items = document.getElementsByClassName("phoneMenu");
+	var i;
+	for (i = 0; i < items.length; i++) { 
+		console.log(items[i]);
+	    if (items[i].classList.contains("menuHidden")){
+		    items[i].classList.add("menuVisable");
+   		    items[i].classList.remove("menuHidden");
+
+		} else if (items[i].classList.contains("menuVisable")){
+		    items[i].classList.remove("menuVisable");
+   		    items[i].classList.add("menuHidden");
+		}		
+	}
 }

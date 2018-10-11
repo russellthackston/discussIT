@@ -1,5 +1,8 @@
 <?php
 
+//set currentPage
+$currentPage = "navAdmin";
+
 // Import the application classes
 require_once('include/classes.php');
 
@@ -20,7 +23,9 @@ $regcodes = $app->getRegistrationCodes($errors);
 
 if (isset($_GET['hijack'])) {
     $userid = $_GET['hijack'];
-    $app->impersonate($userid, $errors);
+    if ($app->impersonate($userid, $errors) == FALSE) {
+	    $message = "No active session";
+    }
 }
 
 if (isset($_GET['downloadprogress'])) {
@@ -86,6 +91,7 @@ if ($tab == 'userreports') {
 
 if ($tab == 'reports') {
     $attendancedates = $app->getAttendanceDates($errors);
+    $histogram = $app->getGradeHistograms($errors);
 }
 
 if ($tab == 'studentlist') {
@@ -115,7 +121,7 @@ if ($tab == 'rollcall') {
 <body>
     <?php include 'include/header.php'; ?>
     <div id="barba-wrapper">
-        <div class="barba-container">
+        <div class="barba-container" data-id="navAdmin">
             <main id="wrapper">
                 <h2>Admin Functions</h2>
                 <?php include 'include/messages.php'; ?>
@@ -175,6 +181,72 @@ if ($tab == 'rollcall') {
                         <input type="submit" name="attendance" value="Download attendance" id="attendance">
                     </form>
                     </div>
+
+					<span class="chart">
+						<?php
+							$chartheight = max(
+								$histogram['commentinggradedecimal']['A'],
+								$histogram['commentinggradedecimal']['B'],
+								$histogram['commentinggradedecimal']['C'],
+								$histogram['commentinggradedecimal']['D'],
+								$histogram['commentinggradedecimal']['F']);
+						?>
+	                    <span class="histogram">
+						<?php foreach($histogram['commentinggradedecimal'] as $grade=>$count) { ?>
+							<?php $height = strval(($count / $chartheight) * 100); ?>
+							<span style="height: <?php echo $height; ?>%" class="histobar" data-label="<?php echo $grade; ?>" data-count="<?php echo $count; ?>">
+								<span class="visuallyhidden">
+									<?php echo $grade; ?>:<?php echo $count['commentinggradedecimal']; ?>
+								</span>
+							</span>
+						<?php } ?>
+	                    </span>
+						<h4>Commenting</h4>
+					</span>
+
+					<span class="chart">
+						<?php
+							$chartheight = max(
+								$histogram['critiquinggradedecimal']['A'],
+								$histogram['critiquinggradedecimal']['B'],
+								$histogram['critiquinggradedecimal']['C'],
+								$histogram['critiquinggradedecimal']['D'],
+								$histogram['critiquinggradedecimal']['F']);
+						?>
+	                    <span class="histogram">
+						<?php foreach($histogram['critiquinggradedecimal'] as $grade=>$count) { ?>
+							<?php $height = strval(($count / $chartheight) * 100); ?>
+							<span style="height: <?php echo $height; ?>%" class="histobar" data-label="<?php echo $grade; ?>" data-count="<?php echo $count; ?>">
+								<span class="visuallyhidden">
+									<?php echo $grade; ?>:<?php echo $count['critiquinggradedecimal']; ?>
+								</span>
+							</span>
+						<?php } ?>
+	                    </span>
+						<h4>Critiquing</h4>
+					</span>
+
+					<span class="chart">
+						<?php
+							$chartheight = max(
+								$histogram['commentqualitydecimal']['A'],
+								$histogram['commentqualitydecimal']['B'],
+								$histogram['commentqualitydecimal']['C'],
+								$histogram['commentqualitydecimal']['D'],
+								$histogram['commentqualitydecimal']['F']);
+						?>
+	                    <span class="histogram">
+						<?php foreach($histogram['commentqualitydecimal'] as $grade=>$count) { ?>
+							<?php $height = strval(($count / $chartheight) * 100); ?>
+							<span style="height: <?php echo $height; ?>%" class="histobar" data-label="<?php echo $grade; ?>" data-count="<?php echo $count; ?>">
+								<span class="visuallyhidden">
+									<?php echo $grade; ?>:<?php echo $count['commentqualitydecimal']; ?>
+								</span>
+							</span>
+						<?php } ?>
+	                    </span>
+						<h4>Commenting Quality</h4>
+					</span>
 
                 </div>
                 <?php } ?>
