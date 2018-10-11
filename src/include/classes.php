@@ -1867,18 +1867,25 @@ class Application {
 
             // Adds a new thing to the database
             public function addThing($name, $description, $registrationcode, $attachment,
-            $commentsopendate, $commentsclosedate, $critiquesclosedate,
-            $includeingrading, &$errors) {
+	            $commentsopendate, $commentsclosedate, $critiquesclosedate,
+	            $includeingrading, &$errors) {
 
                 // Get the user id from the session
                 $user = $this->getSessionUser($errors);
                 $userid = $user["userid"];
 
-                // Validate the user input
+                // Validate the user input and that user is an admin/instructor
                 if (empty($userid)) {
                     $errors[] = "Missing user ID. Not logged in?";
                 }
-                $this->validateThing($name, $description, $commentsopendate, $commentsclosedate, $critiquesclosedate, $errors);
+                if (!$this->isAdmin($errors, $userid)) {
+	                $errors[] = "Security exception. Only instructors may create topics.";
+                }
+
+                // Only try to validate the data if there are no security errors
+                if (sizeof($errors) == 0) {
+	                $this->validateThing($name, $description, $commentsopendate, $commentsclosedate, $critiquesclosedate, $errors);
+	            }
 
                 // Only try to insert the data into the database if there are no validation errors
                 if (sizeof($errors) == 0) {
