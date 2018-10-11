@@ -2222,7 +2222,7 @@ class Application {
 
 
                 //$sql = "SELECT userid, username, email, isadmin FROM users ORDER BY username";
-                $sql = "SELECT users.userid, username, email, isadmin, GROUP_CONCAT(registrationcode) AS regcodes, students.studentname " .
+                $sql = "SELECT users.userid, username, email, isadmin, GROUP_CONCAT(registrationcode) AS regcodes, students.studentname, timezone " .
                 "FROM users LEFT JOIN userregistrations ON users.userid = userregistrations.userid " .
                 "LEFT JOIN students ON users.studentid = students.studentid 	" .
                 "GROUP BY students.studentname";
@@ -2290,7 +2290,7 @@ class Application {
                         $dbh = $this->getConnection();
 
 
-                        $sql = "SELECT userid, username, email, isadmin FROM users " .
+                        $sql = "SELECT userid, username, email, isadmin, timezone FROM users " .
                         "WHERE userid = :userid";
 
 

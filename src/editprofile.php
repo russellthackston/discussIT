@@ -102,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 
 $user = $app->getUser($userid, $errors);
+$loggedinusertimezone = $user['timezone'];
 $regs = $app->getUserRegistrations($userid, $errors);
 
 // Load the progress report for the user being edited
