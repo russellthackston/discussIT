@@ -18,6 +18,7 @@ $app->protectPage($errors);
 // Get the logged in user
 $loggedInUser = $app->getSessionUser($errors);
 $loggedinuserregistrationcode = $loggedInUser['registrationcode'];
+$loggedinusertimezone = $loggedInUser['timezone'];
 $isAdmin = $app->isAdmin($errors, $loggedInUser['userid']);
 
 // Declare local variables
@@ -192,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		</ul>
 		<div class="calendar">
 			<a href="calendar.php" class="note">[View full calendar]</a>
-			<a href="calendarFeed.php?regcode=<?php echo $loggedinuserregistrationcode; ?>" class="note no-barba">[iCal link]</a>
+			<a href="calendarFeed.php?timezone=<?php echo $loggedinusertimezone; ?>&regcode=<?php echo $loggedinuserregistrationcode; ?>" class="note no-barba">[iCal link]</a>
 		</div>
 		<?php if ($isAdmin) { ?>
 		<h3>New Discussion</h3>

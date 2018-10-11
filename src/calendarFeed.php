@@ -26,6 +26,13 @@ if( !isset($_GET['regcode']) ) {
   exit();
 }
 
+// setup the timezone
+if (!isset($_GET['timezone']) || !in_array($_GET['timezone'], timezone_identifiers_list())) {
+	$timezone = "America/New_York";
+} else {
+	$timezone = $_GET['timezone'];
+}
+
 // Get the regcode from the GET params
 $regcode = $_GET['regcode'];
 
