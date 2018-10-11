@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$adminemail = $_POST['adminemail'];
 	$regcode = $_POST['regcode'];
 	$starttime = $_POST['starttime'];
-  $endtime = $_POST['endtime'];
+	$endtime = $_POST['endtime'];
 
 	// Validate user input
 	if (empty($servername) || empty($serverdb) || empty($serverusername) || empty($serverpassword) ||
