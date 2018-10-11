@@ -1,4 +1,4 @@
-If the discussion is highlighted green on the Discussions page, that means that you have not commented yet.  If there are no highlighted discussions on the Discussions page, then you are up to date on your comments.
+If the discussion is highlighted blue on the Discussions page, that means that you have not commented yet.  If there are no highlighted discussions on the Discussions page, then you are up to date on your comments.
 <br>
 <br>
 You have until the Comments Close date to make a comment.  If you don't make a comment, you will not get credit for the Discussion. <b>This is a homework grade.</b>
@@ -11,3 +11,13 @@ Neither Comments nor Critiques are editable/deletable, except by an administrato
 <br>
 <br>
 Visit your <a href="editprofile.php">profile page</a> to see your progress and grades, or to edit your user information.
+<br>
+<br>
+Release Notes 10/10/18:
+<ul>
+	<li>Updated Color Scheme</li>
+	<li>Created responsive menu icons</li>
+	<li>Moved Rollcall to menu</li>
+	<li>Moved switch class to menu</li>
+	<li>Changed icons for comments and critiques</li>
+</ul>

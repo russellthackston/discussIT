@@ -1,4 +1,7 @@
 <?php
+	
+//set currentPage
+$currentPage = "navProfile";
 
 // Import the application classes
 require_once('include/classes.php');
@@ -109,7 +112,7 @@ $progressReport = $app->getProgressReport($userid, NULL, NULL, $loggedinuserregi
 <body>
 	<?php include 'include/header.php'; ?>
 	<div id="barba-wrapper">
-	<div class="barba-container">
+	<div class="barba-container" data-id="navProfile">
 	<main id="wrapper">
 		<?php if (isset($progressReport) && sizeof($progressReport) > 0) { ?>
 		<h2>Stats for <?php echo $username; ?></h2>
@@ -229,9 +232,6 @@ $progressReport = $app->getProgressReport($userid, NULL, NULL, $loggedinuserregi
 	</div>
 	</div>
 	<?php include 'include/footer.php'; ?>
-	<script src="js/jquery-3.3.1.min.js"></script>
-	<script src="js/site.js"></script>
-	<script src="js/barba.js"></script>
-	<script src="js/mybarba.js"></script>
+	<?php $app->includeJavascript(array('jquery-3.3.1.min','site','barba','mybarba')); ?>
 </body>
 </html>

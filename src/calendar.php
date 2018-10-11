@@ -29,93 +29,102 @@ $critiquesclosedate = "";
 // Attempt to obtain the list of things
 $things = $app->getCalendar($errors);
 
-$events = array();
-$firstdate = time(PHP_INT_MAX);
-$lastdate = time(0);
-foreach ($things as $thing) {
-
-	// process the comments open date
-	$commentsopendate = strtotime($thing['commentsopendate']);
-	if ($commentsopendate < $firstdate) {
-		$firstdate = $commentsopendate;
+if (sizeof($things) > 0) {
+	
+	$events = array();
+	$firstdate = time(PHP_INT_MAX);
+	$lastdate = time(0);
+	foreach ($things as $thing) {
+	
+		// process the comments open date
+		$commentsopendate = strtotime($thing['commentsopendate']);
+		if ($commentsopendate < $firstdate) {
+			$firstdate = $commentsopendate;
+		}
+		if ($commentsopendate > $lastdate) {
+			$lastdate = $commentsopendate;
+		}
+		$key = date("Y-m-d", $commentsopendate);
+		$dayevents = "";
+		if (array_key_exists($key, $events)) {
+			$dayevents = $events[$key]['text'];
+		}
+		$dayevents .= $thing['thingname'] . " opens<hr>";
+		$events[$key]['text'] = $dayevents;
+	
+		// process the comments close date
+		$commentsclosedate = strtotime($thing['commentsclosedate']);
+		if ($commentsclosedate < $firstdate) {
+			$firstdate = $commentsclosedate;
+		}
+		if ($commentsclosedate > $lastdate) {
+			$lastdate = $commentsclosedate;
+		}
+		$key = date("Y-m-d", $commentsclosedate);
+		$dayevents = "";
+		if (array_key_exists($key, $events)) {
+			$dayevents = $events[$key]['text'];
+		}
+		$dayevents .= $thing['thingname'] . " comments close<hr>";
+		$events[$key]['text'] = $dayevents;
+	
+		// process the critiques close date
+		$critiquesclosedate = strtotime($thing['critiquesclosedate']);
+		if ($critiquesclosedate < $firstdate) {
+			$firstdate = $critiquesclosedate;
+		}
+		if ($critiquesclosedate > $lastdate) {
+			$lastdate = $critiquesclosedate;
+		}
+		$key = date("Y-m-d", $critiquesclosedate);
+		$dayevents = "";
+		if (array_key_exists($key, $events)) {
+			$dayevents = $events[$key]['text'];
+		}
+		$dayevents .= $thing['thingname'] . " critiques close<hr>";
+		$events[$key]['text'] = $dayevents;
+	
 	}
-	if ($commentsopendate > $lastdate) {
-		$lastdate = $commentsopendate;
+	
+	// Clear out trailing <hr> tags
+	foreach ($events as &$event) {
+		if (endsWith($event['text'], "<hr>")) {
+			$event['text'] = substr($event['text'], 0, strlen($event['text']) - 4);
+		}
 	}
-	$key = date("Y-m-d", $commentsopendate);
-	$dayevents = "";
-	if (array_key_exists($key, $events)) {
-		$dayevents = $events[$key]['text'];
-	}
-	$dayevents .= $thing['thingname'] . " opens<hr>";
-	$events[$key]['text'] = $dayevents;
-
-	// process the comments close date
-	$commentsclosedate = strtotime($thing['commentsclosedate']);
-	if ($commentsclosedate < $firstdate) {
-		$firstdate = $commentsclosedate;
-	}
-	if ($commentsclosedate > $lastdate) {
-		$lastdate = $commentsclosedate;
-	}
-	$key = date("Y-m-d", $commentsclosedate);
-	$dayevents = "";
-	if (array_key_exists($key, $events)) {
-		$dayevents = $events[$key]['text'];
-	}
-	$dayevents .= $thing['thingname'] . " comments close<hr>";
-	$events[$key]['text'] = $dayevents;
-
-	// process the critiques close date
-	$critiquesclosedate = strtotime($thing['critiquesclosedate']);
-	if ($critiquesclosedate < $firstdate) {
-		$firstdate = $critiquesclosedate;
-	}
-	if ($critiquesclosedate > $lastdate) {
-		$lastdate = $critiquesclosedate;
-	}
-	$key = date("Y-m-d", $critiquesclosedate);
-	$dayevents = "";
-	if (array_key_exists($key, $events)) {
-		$dayevents = $events[$key]['text'];
-	}
-	$dayevents .= $thing['thingname'] . " critiques close<hr>";
-	$events[$key]['text'] = $dayevents;
-
-}
-
-// Clear out trailing <hr> tags
-foreach ($events as &$event) {
-	if (endsWith($event['text'], "<hr>")) {
-		$event['text'] = substr($event['text'], 0, strlen($event['text']) - 4);
-	}
-}
-
-$firstdateshort = date("Y-m", $firstdate);
-$lastdateshort = date("Y-m", $lastdate);
-
-$calendarHtml = "";
-do {
-	// build the calendar html
+	
+	$firstdateshort = date("Y-m", $firstdate);
+	$lastdateshort = date("Y-m", $lastdate);
+	
+	$calendarHtml = "";
+	do {
+		
+		// Move to next month
+		if ($firstdateshort != $lastdateshort) {
+			// build the calendar html
+			$calendarHtml .= "<h2>";
+			$calendarHtml .= date("F", $firstdate);
+			$calendarHtml .= " ";
+			$calendarHtml .= date("Y", $firstdate);
+			$calendarHtml .= "</h2>";
+			$calendarHtml .= $app->build_html_calendar(date("Y", $firstdate), date("m", $firstdate), $events);
+			$firstdate = strtotime("+1 month", $firstdate);
+			$firstdateshort = date("Y-m", $firstdate);
+		} else {
+			break;
+		}
+	} while ($firstdateshort != $lastdateshort);
+	
+	// Catch the last month
 	$calendarHtml .= "<h2>";
 	$calendarHtml .= date("F", $firstdate);
 	$calendarHtml .= " ";
 	$calendarHtml .= date("Y", $firstdate);
 	$calendarHtml .= "</h2>";
 	$calendarHtml .= $app->build_html_calendar(date("Y", $firstdate), date("m", $firstdate), $events);
-	
-	// Move to next month
-	$firstdate = strtotime("+1 month", $firstdate);
-	$firstdateshort = date("Y-m", $firstdate);
-} while ($firstdateshort != $lastdateshort);
 
-// Catch the last month
-$calendarHtml .= "<h2>";
-$calendarHtml .= date("F", $firstdate);
-$calendarHtml .= " ";
-$calendarHtml .= date("Y", $firstdate);
-$calendarHtml .= "</h2>";
-$calendarHtml .= $app->build_html_calendar(date("Y", $firstdate), date("m", $firstdate), $events);
+}
+
 
 ?>
 
@@ -129,6 +138,7 @@ $calendarHtml .= $app->build_html_calendar(date("Y", $firstdate), date("m", $fir
 	<main id="wrapper">
 		<h2>Calendar</h2>
 		<?php include('include/messages.php'); ?>
+		<?php if (sizeof($things) > 0) { ?>
 		<table class="agenda">
 			<tr>
 				<th>Name</th>
@@ -146,13 +156,13 @@ $calendarHtml .= $app->build_html_calendar(date("Y", $firstdate), date("m", $fir
 			<?php } ?>
 		</table>
 		<?php echo $calendarHtml; ?>
+		<?php } else { ?>
+		<h3>No events found.</h3>
+		<?php } ?>
 	</main>
 	</div>
 	</div>
 	<?php include 'include/footer.php'; ?>
-	<script src="js/jquery-3.3.1.min.js"></script>
-	<script src="js/site.js"></script>
-	<script src="js/barba.js"></script>
-	<script src="js/mybarba.js"></script>
+	<?php $app->includeJavascript(array('jquery-3.3.1.min','site','barba','mybarba')); ?>
 </body>
 </html>

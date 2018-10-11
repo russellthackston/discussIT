@@ -1,4 +1,6 @@
 <?php
+//set currentPage
+$currentPage = "navHelp";
 
 // Import the application classes
 require_once('include/classes.php');
@@ -18,7 +20,7 @@ $name = $_GET["file"];
 <body>
 	<?php include 'include/header.php'; ?>
 	<div id="barba-wrapper">
-	<div class="barba-container">
+	<div class="barba-container" data-id="navHelp">
 	<main id="wrapper">
 		<h2>User Guide</h2>
 		<div>
@@ -28,9 +30,6 @@ $name = $_GET["file"];
 	</div>
 	</div>
 	<?php include 'include/footer.php'; ?>
-	<script src="js/jquery-3.3.1.min.js"></script>
-	<script src="js/site.js"></script>
-	<script src="js/barba.js"></script>
-	<script src="js/mybarba.js"></script>
+	<?php $app->includeJavascript(array('jquery-3.3.1.min','site','barba','mybarba')); ?>
 </body>
 </html>

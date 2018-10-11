@@ -1,4 +1,7 @@
 <?php
+	
+//set currentPage
+$currentPage = "navRegister";
 
 // Import the application classes
 require_once('include/classes.php');
@@ -49,7 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
 	<?php include 'include/header.php'; ?>
 	<div id="barba-wrapper">
-	<div class="barba-container">
+	<div class="barba-container" data-id="navRegister">
+
 	<main id="wrapper">
 		<h2>Register</h2>
 		<?php include('include/messages.php'); ?>
@@ -73,9 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	</div>
 	</div>
 	<?php include 'include/footer.php'; ?>
-	<script src="js/jquery-3.3.1.min.js"></script>
-	<script src="js/site.js"></script>
-	<script src="js/barba.js"></script>
-	<script src="js/mybarba.js"></script>
+	<?php $app->includeJavascript(array('jquery-3.3.1.min','site','barba','mybarba')); ?>
 </body>
 </html>
