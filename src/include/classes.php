@@ -107,7 +107,7 @@ class Application {
 
     public function includeJavascript($files) {
 	    for ($i = 0; $i < sizeof($files); $i++) {
-			echo '<script src="js/'.$files[$i].'.js&v='$this->getVersion()'"></script>';
+		    echo "<script src='js/" . $files[$i] . ".js&v=" . $this->getVersion() . "'></script>";
 			echo PHP_EOL;
 		}
     }
