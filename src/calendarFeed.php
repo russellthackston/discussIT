@@ -46,6 +46,10 @@ if(count($events) == 0) {
 function generateEventCalendar($events, $regcode) {
   // Set Content-Type to text/calendar
   header('Content-Type: text/calendar');
+  // Set Content-Disposition to attachment and .ics extension
+  // This will save it as the correct file extension and allow for better
+  // browser behavior when downloading the file directly
+  header('Content-Disposition: attachment; filename="'.$regcode.'.ics"');
   // Print the ICS header
   echo "BEGIN:VCALENDAR\r\n";
   echo "PRODID:-//discussIT//NONSGML 1.0//EN\r\n";
