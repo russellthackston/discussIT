@@ -193,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		</ul>
 		<div class="calendar">
 			<a href="calendar.php" class="note">[View full calendar]</a>
-			<a href="calendarFeed.php?timezone=<?php echo $loggedinusertimezone; ?>&regcode=<?php echo $loggedinuserregistrationcode; ?>" class="note no-barba">[iCal link]</a>
+			<a href="calendarFeed.php?timezone=<?php echo $loggedinusertimezone; ?>&regcode=<?php echo $loggedinuserregistrationcode; ?>&v=<?php echo $app->getVersion(); ?>" class="note no-barba">[iCal link]</a>
 		</div>
 		<?php if ($isAdmin) { ?>
 		<h3>New Discussion</h3>
