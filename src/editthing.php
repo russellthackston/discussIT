@@ -1,5 +1,8 @@
 <?php
 
+// Import utility functions
+require_once('include/functions.php');
+
 // Import the application classes
 require_once('include/classes.php');
 
@@ -126,17 +129,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 					<label for="commentsopendate">Comments Open Date:</label>
 					<br/>
-					<input type="datetime-local" name="commentsopendate" id="commentsopendate" value="<?php echo $commentsopendate; ?>" required="required" />
+					<input type="datetime-local" name="commentsopendate" id="commentsopendate" value="<?php echo formatMysqlDateTimeToDateTimeLocal($commentsopendate); ?>" required="required" />
 					<br/>
 
 					<label for="commentsclosedate">Comments Close Date:</label>
 					<br/>
-					<input type="datetime-local" name="commentsclosedate" id="commentsclosedate" value="<?php echo $commentsclosedate; ?>" required="required" />
+					<input type="datetime-local" name="commentsclosedate" id="commentsclosedate" value="<?php echo formatMysqlDateTimeToDateTimeLocal($commentsclosedate); ?>" required="required" />
 					<br/>
 
 					<label for="critiquesclosedate">Critiques Close Date:</label>
 					<br/>
-					<input type="datetime-local" name="critiquesclosedate" id="critiquesclosedate" value="<?php echo $critiquesclosedate; ?>" required="required" />
+					<input type="datetime-local" name="critiquesclosedate" id="critiquesclosedate" value="<?php echo formatMysqlDateTimeToDateTimeLocal($critiquesclosedate); ?>" required="required" />
 					<br/>
 
 					<label for="includeingrading">Include in grade calculation:</label>
@@ -146,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 					<label for="code">Course:</label>
 					<br/>
-					<select id="code" name="code">
+					<select id="code" name="code" autocomplete="off">
 						<?php foreach($justCodes as $code) { ?>
 						<option value="<?php echo $code; ?>" <?php if ($code == $myCode) { echo "selected='selected'"; } ?> ><?php echo $code; ?></option>
 						<?php } ?>

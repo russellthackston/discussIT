@@ -26,6 +26,13 @@ if( !isset($_GET['regcode']) ) {
   exit();
 }
 
+// setup the timezone
+if (!isset($_GET['timezone']) || !in_array($_GET['timezone'], timezone_identifiers_list())) {
+	$timezone = "America/New_York";
+} else {
+	$timezone = $_GET['timezone'];
+}
+
 // Get the regcode from the GET params
 $regcode = $_GET['regcode'];
 
@@ -57,9 +64,9 @@ function generateEventCalendar($events, $regcode) {
     // Set some helper variables
     $moduleName = $event['thingname'];
     /// Format the event dates (convert SQL timestamp to sorta-ISO 8601)
-    $openDate = date('Ymd\THis', strtotime($event['commentsopendate']));
-    $commentsCloseDate = date('Ymd\THis', strtotime($event['commentsclosedate']));
-    $critiquesCloseDate = date('Ymd\THis', strtotime($event['critiquesclosedate']));
+    $openDate = date('Ymd\THis', strtotime($event['commentsopendateUTC']));
+    $commentsCloseDate = date('Ymd\THis', strtotime($event['commentsclosedateUTC']));
+    $critiquesCloseDate = date('Ymd\THis', strtotime($event['critiquesclosedateUTC']));
     // Create the module open event
     generateEvent("MODOPEN_$moduleName", "$regcode - $moduleName opens", $regcode, $openDate, $openDate);
     // Create the module comments close event

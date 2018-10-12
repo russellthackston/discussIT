@@ -21,11 +21,13 @@ $userid = "";
 $username = "";
 $isadminFlag = FALSE;
 $registrationCode = "";
+$timezone = "";
 
 $loggedinuser = $app->getSessionUser($errors);
 $loggedinuserid = $loggedinuser["userid"];
 $loggedinusersessionid = $loggedinuser["usersessionid"];
 $loggedinuserregistrationcode = $loggedinuser['registrationcode'];
+$loggedinusertimezone = $loggedinuser['timezone'];
 
 // If someone is accessing this page for the first time, try and grab the userid from the GET request
 // then pull the user's details from the database
@@ -57,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		$userid   = $_POST['userid'];
 		$username = $_POST['username'];
 		$password = $_POST['password'];
+		$timezone = $_POST['timezone'];
 		if (isset($_POST['isadmin']) && $_POST['isadmin'] == "isadmin") {
 			$isadminFlag = TRUE;
 		} else {
@@ -71,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		}
 
 		// Attempt to update the user information.
-		$result = $app->updateUser($userid, $username, $password, $isadminFlag, $errors);
+		$result = $app->updateUser($userid, $username, $password, $isadminFlag, $timezone, $errors);
 
 		// Display message upon success.
 		if ($result == TRUE){
@@ -99,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 
 $user = $app->getUser($userid, $errors);
+$loggedinusertimezone = $user['timezone'];
 $regs = $app->getUserRegistrations($userid, $errors);
 
 // Load the progress report for the user being edited
@@ -195,9 +199,17 @@ $progressReport = $app->getProgressReport($userid, NULL, NULL, $loggedinuserregi
 					<br/>
 
 					<label for="registrationcode">Current Course</label>
-					<select id="registrationcode" name="registrationcode">
+					<select id="registrationcode" name="registrationcode" autocomplete="off">
 						<?php foreach($regs as $code) { ?>
-						<option value="<?php echo $code; ?>" <?php if ($code == $loggedinuserregistrationcode) { echo "selected='selected'"; } ?> ><?php echo $code; ?></option>
+						<option value="<?php echo $code; ?>" <?php if ($code == $loggedinuserregistrationcode) { echo " selected='selected' "; } ?> ><?php echo $code; ?></option>
+						<?php } ?>
+					</select>
+					<br/>
+
+					<label for="timezone">Timezone</label>
+					<select id="timezone" name="timezone" autocomplete="off">
+						<?php foreach(timezone_identifiers_list() as $tz) { ?>
+						<option value="<?php echo $tz; ?>" <?php if ($tz == $loggedinusertimezone) { echo " selected='selected' "; } ?> ><?php echo $tz; ?></option>
 						<?php } ?>
 					</select>
 					<br/>
