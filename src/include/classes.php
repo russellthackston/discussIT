@@ -1336,13 +1336,16 @@ class Application {
 
 
                 $sql = "SELECT thingname, commentsopendate, commentsclosedate, critiquesclosedate, " .
-                "(commentsopendate > now()) as notopen, " .
-                "(commentsclosedate < now()) as commentsclosed, " .
-                "(critiquesclosedate < now()) as critiquesclosed " .
-                "FROM things " .
-                "WHERE thingregistrationcode = :registrationcode " .
-                "and commentsopendate >= DATE_ADD(LAST_DAY(DATE_SUB(CURDATE(), interval 1 month)), interval 1 day) " .
-                "ORDER BY things.commentsopendate ASC";
+	                "(commentsopendate > now()) as notopen, " .
+	                "(commentsclosedate < now()) as commentsclosed, " .
+	                "(critiquesclosedate < now()) as critiquesclosed, " . 
+	                "convert_tz(commentsopendate,'America/New_York','UTC') as commentsopendateUTC, " .
+	                "convert_tz(commentsclosedate,'America/New_York','UTC') as commentsclosedateUTC, " .
+	                "convert_tz(critiquesclosedate,'America/New_York','UTC') as critiquesclosedateUTC " .
+	                "FROM things " .
+	                "WHERE thingregistrationcode = :registrationcode " .
+	                "and commentsopendate >= DATE_ADD(LAST_DAY(DATE_SUB(CURDATE(), interval 1 month)), interval 1 day) " .
+	                "ORDER BY things.commentsopendate ASC";
 
 
                 $stmt = $dbh->prepare($sql);
