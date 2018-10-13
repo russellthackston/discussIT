@@ -70,6 +70,10 @@ Barba.Dispatcher.on('newPageReady', function(currentStatus, oldStatus, container
 	console.log(container);
 	console.log(document);
 
+	/* Scroll to the top of the page */
+	window.scrollTo(0,0);
+
+	/* Update the current menu option in navigation */
 	var navAnchors = document.getElementById("menuList").getElementsByTagName("a");
 	var i;
 	for (i = 0; i < navAnchors.length; i++) { 
@@ -79,7 +83,8 @@ Barba.Dispatcher.on('newPageReady', function(currentStatus, oldStatus, container
 	if (navID){
 		document.getElementById(navID).classList.add("navActive");		
 	}
-		
+
+	/* Fire page-specific javascript events */
 	if (container.hasAttribute("data-page")) {
 		if (container.getAttribute("data-page") == "report") {
 			setupMoreInfo();
