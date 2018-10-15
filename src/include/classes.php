@@ -2718,12 +2718,14 @@ class Application {
                 }
 
                 // Get the number of critiques received on this user's comments under this registration code
-                $sql = "SELECT includeingrading, addstodiscussion, COUNT(addstodiscussion) AS numcritiques " .
+                $sql = "SELECT includeingrading, isadmin, addstodiscussion, COUNT(addstodiscussion) AS numcritiques " .
                 "FROM critiques " .
                 "LEFT JOIN comments ON comments.commentid = critiques.critiquecommentid " .
                 "LEFT JOIN things ON comments.commentthingid = things.thingid  " .
-                "WHERE commentuserid = :commentuserid AND LOWER(things.thingregistrationcode) = LOWER(:regcode)  " .
-                "GROUP BY includeingrading, addstodiscussion";
+                "LEFT JOIN users ON users.userid = critiques.critiqueuserid " .
+                "WHERE commentuserid = :commentuserid " . 
+                "AND LOWER(things.thingregistrationcode) = LOWER(:regcode)  " .
+                "GROUP BY includeingrading, isadmin, addstodiscussion";
 
 
                 $stmt = $dbh->prepare($sql);
@@ -2743,15 +2745,25 @@ class Application {
 
                     $progressReport['gradedupvotes'] = 0;
                     $progressReport['gradeddownvotes'] = 0;
+                    $progressReport['gradedadminupvotes'] = 0;
+                    $progressReport['gradedadmindownvotes'] = 0;
                     $progressReport['ungradedupvotes'] = 0;
                     $progressReport['ungradeddownvotes'] = 0;
                     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     foreach ($rows as $row) {
                         if ($row['includeingrading']) {
                             if ($row['addstodiscussion']) {
-                                $progressReport['gradedupvotes'] = $row['numcritiques'];
+	                            if ($row['isadmin'] == "0") {
+	                            	$progressReport['gradedupvotes'] = $row['numcritiques'];
+	                            } else {
+		                            $progressReport['gradedadminupvotes'] = $row['numcritiques'];   
+	                            }
                             } else {
-                                $progressReport['gradeddownvotes'] = $row['numcritiques'];
+	                            if ($row['isadmin'] == "0") {
+	                                $progressReport['gradeddownvotes'] = $row['numcritiques'];
+	                            } else {
+		                            $progressReport['gradedadmindownvotes'] = $row['numcritiques'];   
+	                            }
                             }
                         } else {
                             if ($row['addstodiscussion']) {
@@ -2762,20 +2774,20 @@ class Application {
                         }
                     }
                     $progressReport['numberofgradedcritiquesreceived'] =
-                    $progressReport['gradedupvotes'] +
-                    $progressReport['gradeddownvotes'];
+	                    $progressReport['gradedupvotes'] +
+	                    $progressReport['gradeddownvotes'];
                     $progressReport['numberofungradedcritiquesreceived'] =
-                    $progressReport['ungradedupvotes'] +
-                    $progressReport['ungradeddownvotes'];
+	                    $progressReport['ungradedupvotes'] +
+	                    $progressReport['ungradeddownvotes'];
                     $progressReport['numberofcritiquesreceived'] =
-                    $progressReport['numberofgradedcritiquesreceived'] +
-                    $progressReport['numberofungradedcritiquesreceived'];
+	                    $progressReport['numberofgradedcritiquesreceived'] +
+	                    $progressReport['numberofungradedcritiquesreceived'];
                     $progressReport['numberofpositivecritiquesreceived'] =
-                    $progressReport['gradedupvotes'] +
-                    $progressReport['ungradedupvotes'];
+	                    $progressReport['gradedupvotes'] +
+	                    $progressReport['ungradedupvotes'];
                     $progressReport['numberofnegativecritiquesreceived'] =
-                    $progressReport['gradeddownvotes'] +
-                    $progressReport['ungradeddownvotes'];
+	                    $progressReport['gradeddownvotes'] +
+	                    $progressReport['ungradeddownvotes'];
                 }
 
                 // Get the number of critiques made by this user for this registration code
@@ -2918,6 +2930,7 @@ class Application {
                 $progressReport['commentinggrade'] = 0;
                 $progressReport['critiquinggrade'] = 0;
                 $progressReport['commentquality'] = 0;
+                $progressReport['admincritiquinggrade'] = 0;
 
                 if ($progressReport['numberofgradedtopics'] != 0) {
                     $progressReport['commentinggradedecimal'] = $progressReport['numberofgradedcommentsmade'] / $progressReport['numberofgradedtopics'];
@@ -2939,6 +2952,12 @@ class Application {
                 } else {
                     $progressReport['commentqualitydecimal'] = 0;
                     $progressReport['commentquality'] = "No graded critiques received";
+                }
+                $totalAdminVotes = $progressReport['gradedadminupvotes'] + $progressReport['gradedadmindownvotes'];
+                if ($totalAdminVotes != 0) {
+                    $progressReport['admincritiquinggradedecimal'] = $progressReport['gradedadminupvotes'] / $totalAdminVotes;
+                } else {
+                    $progressReport['admincritiquinggradedecimal'] = 0;
                 }
 
                 return $progressReport;
@@ -3490,7 +3509,7 @@ class Application {
 
                 // Connect to the database
                 $dbh = $this->getConnection();
-                $sql = "SELECT students.studentid, studentname, COUNT(u.userid) AS regcount, GROUP_CONCAT(registrationcode) AS regcodes " .
+                $sql = "SELECT students.studentid, studentname, COUNT(u.userid) AS regcount, GROUP_CONCAT(registrationcode SEPARATOR ', ') AS regcodes " .
                     "FROM students " .
                     "LEFT JOIN users u ON u.studentid = students.studentid " .
                     "LEFT JOIN userregistrations ON userregistrations.userid = u.userid " .

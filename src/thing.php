@@ -145,7 +145,7 @@ foreach ($comments as $comment) {
                     foreach ($comments as $comment) {
                         $index++;
                         $author = $comment['publicusername'];
-                        if ($loggedinuser['isadmin'] != 0 || $comment['mine']) {
+                        if ($isadmin || $comment['mine']) {
                             if (!empty($comment['studentname'])) {
                                 $author = $author . " (" . $comment['studentname'] . ")";
                             } else {
@@ -162,7 +162,7 @@ foreach ($comments as $comment) {
                                     -- <?php echo $author; ?> on <?php echo $comment['commentposted']; ?>
                                 </span>
                                 <?php
-                                    if (!$critiquingClosed && !$comment['voted'] && !$isadmin) {
+                                    if ((!$critiquingClosed && !$comment['voted']) || ($isadmin && !$comment['voted'])) {
                                         $hideStats = TRUE;
                                     } else {
                                         $hideStats = FALSE;
@@ -202,7 +202,7 @@ foreach ($comments as $comment) {
                                 </p>
                             <?php } ?>
 
-                            <?php if (!$critiquingClosed && !$comment['voted'] && !$isadmin) { ?>
+                            <?php if ((!$critiquingClosed && !$comment['voted']) || ($isadmin && !$comment['voted'])) { ?>
 
                                 <div class="votingform" id="votingform-<?php echo $comment['commentid']; ?>" data-commentid="<?php echo $comment['commentid']; ?>">
                                     <input type="button" name="showup" onclick="showup(this);" value="Contributes" class="up" data-commentid="<?php echo $comment['commentid']; ?>">
@@ -228,7 +228,7 @@ foreach ($comments as $comment) {
 
                             <?php } ?>
 
-                            <div class="critiques" id="critiques-<?php echo $comment['commentid']; ?>" <?php if (!$isadmin && !$comment['voted']) { echo " style='display: none;'"; } ?>>
+                            <div class="critiques" id="critiques-<?php echo $comment['commentid']; ?>" <?php if (!$critiquingClosed && !$comment['voted']) { echo " style='display: none;'"; } ?>>
                                 <?php $critiques = $comment['critiques']; ?>
                                 <?php require('include/critiqueslist.php'); ?>
                             </div>
