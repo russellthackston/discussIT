@@ -3018,7 +3018,7 @@ class Application {
 	            }
             }
             
-            public function getGradeHistograms(&$errors) {
+            public function getGradeCharts(&$errors) {
 	            // Get everyone's grades
 	            $grades = $this->getAllProgressReports($errors);
 	            
