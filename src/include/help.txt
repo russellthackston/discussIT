@@ -1,23 +1,78 @@
-If the discussion is highlighted blue on the Discussions page, that means that you have not commented yet.  If there are no highlighted discussions on the Discussions page, then you are up to date on your comments.
+<h2>User Guide</h2>
+Welcome to the DiscussIT website.
+The purpose of this site is all allow students to demonstrate practical knowledge of a lecture topic by posting a comment
+that other students will "critique" by indicating whether or not the comment contributes to the discussion. 
+Every student is expected to comment on every topic posted and critique everyone else's comments.
 <br>
 <br>
-You have until the Comments Close date to make a comment.  If you don't make a comment, you will not get credit for the Discussion. <b>This is a homework grade.</b>
+<h3>Topics</h3>
+The Topics page lists all current and past discussion topics. Each topic has a specific date/time that the discussion begins ("comments open"), discussion ends ("comments close"), and critiquing ends ("critiques close"). A topic may be graded, meaning the quality of your comment and your participation in critiquing will be evaluated.
 <br>
 <br>
-You have until the Critiques Close date to critique everyone else's comments. If you don't critique everyone's comments, <i>your homework grade will be penalized.</i>
+If a particular topic is highlighted in dark blue on the Discussions page, that means that you have not commented yet. 
+If there are no highlighted discussions on the Discussions page, then you are up to date on your comments.
+<br>
+<br>
+At the bottom of the topics list, you will find a link to a calendar listing all topics by their open and close dates. 
+You will also find a link to an iCal feed. This link can be used to add the open and close dates to your personal calendar (see iCal section below).
+<br>
+<br>
+You may click on a topic to view other students' comments, add your own comment, and critique comments.
+<br>
+<br>
+<h3>Commenting and Critiquing</h3>
+As soon as a topic opens for commenting, you may view the topic and add your own comment. 
+Please note, however, that you are not allowed to add your comment until you have read and critiqued all comments already posted by other students.
+This helps reduce the number of duplicate comments and allows you to expand upon the work of others.
+<br>
+<br>
+To critique another student's comment, carefully read the comment and click either the "Contributes" or "Does not contribute" button.
+<br>
+<br>
+If you click "Contributes" you have the option of providing a comment on the critique. 
+This is a good time to let others know why you thought the comment stood out from the other comments, though it is not required. 
+Next, click the "Save positive critique" button to submit your critique.
+<br>
+<br>
+If you click "Does not contribute" you will be required to provide a comment on the critique. 
+You must provide a short description of why you believe this student's comment does not add to the discussion. 
+Next, click the "Save negative critique" button to submit your critique.
+<br>
+<br>
+Once you have critiqued the posted comments of other students, you may provide your own comment. 
+Scroll to the bottom of the topic page and enter your comment into the text box.
+You have the option of providing an attachment, such as an image or PDF, in support of your comment.
+<br>
+<br>
+If the commenting text box is not showing on the page, you have likely missed the cut-off date/time for commenting.
+If you don't provide a comment by the cut-off, you will not get credit for the discussion and <i>your grade will be impacted.</i>
+<br>
+<br>
+It's likely that other students will post comments after you have posted yours.
+You are responsible for critiquing these comments, as well.
+I recommend revisiting the topic once the commenting period closes.
+<br>
+<br>
+You have until the Critiques Close date to critique everyone else's comments. 
+If you don't critique everyone's comments, <i>your grade will be impacted.</i>
 <br>
 <br>
 Neither Comments nor Critiques are editable/deletable, except by an administrator. No, I won't make you an administrator.
 <br>
 <br>
-Visit your <a href="editprofile.php">profile page</a> to see your progress and grades, or to edit your user information.
+<h3>Profile and Grades</h3>
+Visit your <a href="editprofile.php">profile page</a> to see your progress and grades, register for another course, or to edit your user information.
 <br>
 <br>
-Release Notes 10/10/18:
-<ul>
-	<li>Updated Color Scheme</li>
-	<li>Created responsive menu icons</li>
-	<li>Moved Rollcall to menu</li>
-	<li>Moved switch class to menu</li>
-	<li>Changed icons for comments and critiques</li>
-</ul>
+<h3>Roll Call</h3>
+Your instructor may take attendance using the roll call feature.
+When prompted, click the Roll Call button at the top of the page.
+The button label will switch to the word "Present!" briefly to let you know your attendance has been counted.
+<br>
+<br>
+<h3>Switching Classes</h3>
+If you have registered for more than one class, you will see a menu option at the top of the page labelled "Switch." 
+Click this button will cycle to your next registered course.
+<br>
+<br>
+<h3><a href="fileviewer.php?file=include/releasenotes.txt">Release notes</a></h3>
