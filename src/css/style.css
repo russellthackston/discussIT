@@ -429,6 +429,14 @@ span.critiquetext {
 	font-size: .85em;
 }
 
+span.critiqueoverride {
+	font-size: .75em;
+}
+
+.overridden {
+	text-decoration: line-through;
+}
+
 input[type="button"].up {
 	background-color: lightgreen;
 	margin-right: 5px;

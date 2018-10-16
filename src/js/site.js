@@ -481,3 +481,55 @@ function toggleHotdog(){
 		}		
 	}
 }
+
+function undoOverride(elem) {
+	console.log(elem); /*data-href*/
+	var href = replacePage(window.location.href, "overridecritique.php") + 
+		"?action=undo&id=" + elem.getAttribute('data-id');
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			console.log(this.responseText);
+			if (this.responseText == "Success") {
+				console.log(elem.parentElement);
+				console.log(elem.parentElement.parentElement);
+				console.log(elem.parentElement.parentElement.getElementsByTagName("span")[0]);
+				elem.parentElement.parentElement.getElementsByTagName("span")[0].classList.remove('overridden')
+			} else {
+				alert("Error. See console.");
+			}
+		} else {
+			console.log(this);
+		}
+	};
+	xhttp.open("get", href, true);
+	xhttp.send();
+}
+
+function override(elem) {
+	console.log(elem); /*data-href*/
+	var href = replacePage(window.location.href, "overridecritique.php") + 
+		"?action=override&id=" + elem.getAttribute('data-id');
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			console.log(this.responseText);
+			if (this.responseText == "Success") {
+				console.log(elem.parentElement);
+				console.log(elem.parentElement.parentElement);
+				console.log(elem.parentElement.parentElement.getElementsByTagName("span")[0]);
+				elem.parentElement.parentElement.getElementsByTagName("span")[0].classList.add('overridden')
+			} else {
+				alert("Error. See console.");
+			}
+		} else {
+			console.log(this);
+		}
+	};
+	xhttp.open("get", href, true);
+	xhttp.send();
+
+}
+
+
+

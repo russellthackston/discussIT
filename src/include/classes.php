@@ -1767,6 +1767,114 @@ class Application {
                 return $critiques;
 
             }
+            
+            // Override a negative critique
+            public function overrideCritique($critiqueid, &$errors) {
+	            
+	            $result = FALSE;
+	            
+                // Get the user id from the session
+                $user = $this->getSessionUser($errors);
+                $userid = $user["userid"];
+
+                // Validate the user input and that user is an admin/instructor
+                if (empty($critiqueid)) {
+                    $errors[] = "Missing critique ID";
+                }
+                if (!$this->isAdmin($errors, $userid)) {
+	                $errors[] = "Security exception. Only instructors may override critiques.";
+                }
+
+                // Only try to validate the data if there are no security errors
+                if (sizeof($errors) == 0) {
+					
+                    // Connect to the database
+                    $dbh = $this->getConnection();
+
+
+                    $sql = "UPDATE critiques SET overriddenby = :userid " . 
+                    	"WHERE critiqueid = :critiqueid";
+
+                    $stmt = $dbh->prepare($sql);
+                    $stmt->bindParam(":userid", $userid);
+                    $stmt->bindParam(":critiqueid", $critiqueid);
+                    $result = $stmt->execute();
+
+                    // If the query did not run successfully, add an error message to the list
+                    if ($result === FALSE) {
+
+                        $errors[] = "An unexpected error occurred overriding the critique.";
+                        $this->debug($stmt->errorInfo());
+                        $this->auditlog("overrideCritique error", $stmt->errorInfo());
+
+                        // If the query ran successfully, then return true
+                    } else {
+
+						$result = TRUE;
+
+                    }
+
+                    // Close the connection
+                    $dbh = NULL;
+
+	            }
+
+				return $result;
+
+            }
+
+            // Undo an override of a negative critique
+            public function undoOverrideCritique($critiqueid, &$errors) {
+	            
+	            $result = FALSE;
+	            
+                // Get the user id from the session
+                $user = $this->getSessionUser($errors);
+                $userid = $user["userid"];
+
+                // Validate the user input and that user is an admin/instructor
+                if (empty($critiqueid)) {
+                    $errors[] = "Missing critique ID";
+                }
+                if (!$this->isAdmin($errors, $userid)) {
+	                $errors[] = "Security exception. Only instructors may override critiques.";
+                }
+
+                // Only try to validate the data if there are no security errors
+                if (sizeof($errors) == 0) {
+
+                    // Connect to the database
+                    $dbh = $this->getConnection();
+
+
+                    $sql = "UPDATE critiques SET overriddenby = NULL " . 
+                    	"WHERE critiqueid = :critiqueid";
+
+                    $stmt = $dbh->prepare($sql);
+                    $stmt->bindParam(":critiqueid", $critiqueid);
+                    $result = $stmt->execute();
+
+                    // If the query did not run successfully, add an error message to the list
+                    if ($result === FALSE) {
+
+                        $errors[] = "An unexpected error occurred undoing the override of the critique.";
+                        $this->debug($stmt->errorInfo());
+                        $this->auditlog("overrideCritique error", $stmt->errorInfo());
+
+                        // If the query ran successfully, then return true
+                    } else {
+
+						$result = TRUE;
+
+                    }
+
+                    // Close the connection
+                    $dbh = NULL;
+	            }
+	            
+	            return $result;
+	            
+            }
 
             // Handles the saving of uploaded attachments and the creation of a corresponding record in the attachments table.
             public function saveAttachment($dbh, $attachment, &$errors) {
