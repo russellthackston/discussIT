@@ -9,7 +9,7 @@
 
 class Application {
 
-    private $codeversion = 6;
+    private $codeversion = 7;
     private $user = null;
 
     public function setup() {
@@ -1720,7 +1720,7 @@ class Application {
 
                     $sql = "SELECT critiqueid, critiquetext, " .
                     "convert_tz(critiques.critiqueposted,@@session.time_zone,'America/New_York') as critiqueposted, " .
-                    "username, addstodiscussion, critiqueuserid, studentname " .
+                    "username, addstodiscussion, critiqueuserid, studentname, overriddenby " .
                     "FROM critiques " .
                     "LEFT JOIN users ON critiques.critiqueuserid = users.userid " .
                     "LEFT JOIN students ON students.studentid = users.studentid " .
@@ -2718,14 +2718,15 @@ class Application {
                 }
 
                 // Get the number of critiques received on this user's comments under this registration code
-                $sql = "SELECT includeingrading, isadmin, addstodiscussion, COUNT(addstodiscussion) AS numcritiques " .
-                "FROM critiques " .
-                "LEFT JOIN comments ON comments.commentid = critiques.critiquecommentid " .
-                "LEFT JOIN things ON comments.commentthingid = things.thingid  " .
-                "LEFT JOIN users ON users.userid = critiques.critiqueuserid " .
-                "WHERE commentuserid = :commentuserid " . 
-                "AND LOWER(things.thingregistrationcode) = LOWER(:regcode)  " .
-                "GROUP BY includeingrading, isadmin, addstodiscussion";
+                $sql = "SELECT includeingrading, isadmin, addstodiscussion, " . 
+	                "IF(ISNULL(overriddenby),'NO','YES') AS overridden, COUNT(addstodiscussion) AS numcritiques " .
+	                "FROM critiques " .
+	                "LEFT JOIN comments ON comments.commentid = critiques.critiquecommentid " .
+	                "LEFT JOIN things ON comments.commentthingid = things.thingid  " .
+	                "LEFT JOIN users ON users.userid = critiques.critiqueuserid " .
+	                "WHERE commentuserid = :commentuserid " . 
+	                "AND LOWER(things.thingregistrationcode) = LOWER(:regcode)  " .
+	                "GROUP BY includeingrading, isadmin, addstodiscussion, overridden";
 
 
                 $stmt = $dbh->prepare($sql);
@@ -2751,25 +2752,41 @@ class Application {
                     $progressReport['ungradeddownvotes'] = 0;
                     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     foreach ($rows as $row) {
+	                    # Topic is graded
                         if ($row['includeingrading']) {
+	                        # Upvoted
                             if ($row['addstodiscussion']) {
+	                            # Not an admin vote
 	                            if ($row['isadmin'] == "0") {
-	                            	$progressReport['gradedupvotes'] = $row['numcritiques'];
+	                            	$progressReport['gradedupvotes'] += $row['numcritiques'];
+	                            # Admin vote
 	                            } else {
-		                            $progressReport['gradedadminupvotes'] = $row['numcritiques'];   
+		                            $progressReport['gradedadminupvotes'] += $row['numcritiques'];   
 	                            }
+	                        # Downvoted
                             } else {
+	                            # Not an admin vote
 	                            if ($row['isadmin'] == "0") {
-	                                $progressReport['gradeddownvotes'] = $row['numcritiques'];
+		                            # Overridden by an admin to be an upvote
+		                            if ($row['overridden'] == "YES") {
+		                            	$progressReport['gradedupvotes'] += $row['numcritiques'];
+		                            # Not overridden by an admin
+		                            } else {
+		                                $progressReport['gradeddownvotes'] += $row['numcritiques'];
+		                            }
+	                            # Admin vote
 	                            } else {
-		                            $progressReport['gradedadmindownvotes'] = $row['numcritiques'];   
+		                            $progressReport['gradedadmindownvotes'] += $row['numcritiques'];   
 	                            }
                             }
+                        # Topic is not graded
                         } else {
+	                        # Upvoted
                             if ($row['addstodiscussion']) {
-                                $progressReport['ungradedupvotes'] = $row['numcritiques'];
+                                $progressReport['ungradedupvotes'] += $row['numcritiques'];
+                            # Downvoted
                             } else {
-                                $progressReport['ungradeddownvotes'] = $row['numcritiques'];
+                                $progressReport['ungradeddownvotes'] += $row['numcritiques'];
                             }
                         }
                     }
