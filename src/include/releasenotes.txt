@@ -4,6 +4,7 @@
 	<li>UI overhaul (various changes)</li>
 	<li>Added iCal usage instructions</li>
 	<li>Trim user input to remove leading and trailing whitespace</li>
+	<li>Fixed site title</li>
 	<li>Switching courses now stays on the same page</li>
 	<li>Added admin dashboard</li>
 	<li>Style instructor critiques differently from students</li>
