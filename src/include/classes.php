@@ -9,7 +9,7 @@
 
 class Application {
 
-    private $codeversion = 7;
+    private $codeversion = 8;
     private $user = null;
 
     public function setup() {
