@@ -673,6 +673,10 @@ span.chart h4 {
 	color: red;
 }
 
+.download{
+	text-decoration: none;
+}
+
 .ical{
 	font-size: 10px;
 }

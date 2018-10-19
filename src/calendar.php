@@ -141,10 +141,10 @@ if (sizeof($things) > 0) {
 	<main id="wrapper">
 		<h2>
 			Calendar
-			<a href="calendarFeed.php?regcode=<?php echo $loggedinuserregistrationcode; ?>&v=<?php echo $app->getVersion(); ?>" class="note no-barba">
+			<a href="calendarFeed.php?regcode=<?php echo $loggedinuserregistrationcode; ?>&v=<?php echo $app->getVersion(); ?>" class="note no-barba download">
 				<i class="fa fa-download menuIcons" style="margin-top: 2px; font-size:27px"></i>
 			</a>
-			<a id="navHelp" href="fileviewer.php?file=include/ical.txt" class="ical screenMenu <?php if ($currentPage == "navHelp"){echo "navActive";}?>">what is this?</a>
+			<a href="fileviewer.php?file=include/ical.txt" class="ical">What is this?</a>
 		</h2>
 		<?php include('include/messages.php'); ?>
 		<?php if (sizeof($things) > 0) { ?>
