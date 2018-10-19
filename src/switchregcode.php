@@ -51,10 +51,14 @@ if (isset($_GET['regcode'])) {
 // Update the reg code
 $result = $app->updateSession($loggedinuserid, $loggedinusersessionid, $regcode, $errors);
 
-	
+$referer = $_SERVER['HTTP_REFERER'];
+$referer = explode("?",end(explode("/", $referer)))[0];
+if (!isset($referer) || empty($referer) || in_array($referer, array("thing.php",""))) {
+	header("Location: list.php");
+} else {
+	header("Location: ".$_SERVER['HTTP_REFERER']);
+}
 
-
-header("Location: list.php?regcode=switch&x=$regcode");
 exit();
 
 ?>
