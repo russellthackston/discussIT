@@ -455,6 +455,10 @@ span.critiqueoverride {
 	font-size: .75em;
 }
 
+ul.critiques li.critique.instructor, ul.critiques li.critique.instructor{
+	color: #c07608;
+}
+
 .overridden {
 	text-decoration: line-through;
 }

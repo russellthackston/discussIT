@@ -1701,7 +1701,7 @@ class Application {
 
     }
 
-    // Get a list of comments from the database
+    // Get a list of critiques from the database
     public function getCritiques($commentid, &$errors) {
 
         // Assume an empty list of comments
@@ -1726,7 +1726,7 @@ class Application {
 
             $sql = "SELECT critiqueid, critiquetext, " .
             "convert_tz(critiques.critiqueposted,@@session.time_zone,'America/New_York') as critiqueposted, " .
-            "username, addstodiscussion, critiqueuserid, studentname, overriddenby " .
+            "username, addstodiscussion, critiqueuserid, studentname, overriddenby, isadmin " .
             "FROM critiques " .
             "LEFT JOIN users ON critiques.critiqueuserid = users.userid " .
             "LEFT JOIN students ON students.studentid = users.studentid " .
@@ -1757,9 +1757,13 @@ class Application {
                     } else {
                         $critique['mine'] = FALSE;
                     }
-                    $critique['publicusername'] = "Critiquer #" . $counter;
+                    
+                    if ($critique['isadmin'] == 1){ 
+	                    $critique['publicusername'] = "Instructor";
+                    }else{
+	                   	$critique['publicusername'] = "Critiquer #" . $counter;
+	                }
                     $counter++;
-
                 }
 
             }
