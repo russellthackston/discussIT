@@ -22,7 +22,6 @@ $name = $_GET["file"];
 	<div id="barba-wrapper">
 	<div class="barba-container" data-id="navHelp">
 	<main id="wrapper">
-		<h2>User Guide</h2>
 		<div>
 			<?php echo $app->getFile($name); ?>
 		</div>

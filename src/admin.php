@@ -258,7 +258,7 @@ if ($tab == 'rollcall') {
                             ?>
                             <li class="user">
                                 <a href="editprofile.php?userid=<?php echo $user['userid']; ?>" data-regcodes="<?php echo $user['regcodes']; ?>"><?php echo $user['studentname']; ?></a>
-                                <a href="admin.php?hijack=<?php echo $user['userid']; ?>" class="commentdesc no-barba">[Impersonate]</a>
+                                <a href="admin.php?tab=userlist&hijack=<?php echo $user['userid']; ?>" class="commentdesc no-barba">[Impersonate]</a>
                             </li>
                         <?php } ?>
                     </ul>
