@@ -76,6 +76,13 @@ if ($user != NULL) {
 					</a>
 				</li>
 				
+				<li> 
+					<a id="navCal" href="calendar.php" class="screenMenu <?php if ($currentPage == "navCal"){echo "navActive";}?>">Calendar</a>
+					<a href="calendar.php" class="phoneMenu menuHidden">
+						<i class="fa fa-calendar menuIcons" style="margin-top: 2px; font-size:27px"></i>
+					</a>
+				</li>	
+						
 				<li>
 					<a id="navProfile" href="editprofile.php" class="screenMenu <?php if ($currentPage == "navProfile"){echo "navActive";}?>">Profile</a>
 					<a href="editprofile.php" class="phoneMenu menuHidden">
@@ -155,11 +162,11 @@ if ($user != NULL) {
 			</ul>
 		</nav>
 		<div class="clear"></div>
-		
-		<span id="logoContainer">
-			<a id="navTopics" href="list.php">
-				<img id="logo" src="css/images/logoTypewrite.png" alt="Discuss I.T. logo">
-				<span id="title"><?php if (isset($app->getSessionUser($errors)["description"])){echo $app->getSessionUser($errors)["description"];}?></span>
-				</span>
+		<span id="logoContainer" class='<?php if (time() > strtotime("-7day", strtotime("2018-10-31")) && time() < strtotime("2018-11-01")){echo "halloween";}?>'>
+			<a href="list.php">
+				<span id="discuss">discuss</span><span id="it">IT</span>
 			</a>
+			<span id="title"><?php if (isset($app->getSessionUser($errors)["description"])){echo $app->getSessionUser($errors)["description"];}?>
+		</span>		
+
 </header>

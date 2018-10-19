@@ -1,4 +1,7 @@
 <?php
+	
+//set currentPage
+$currentPage = "navCal";	
 
 function endsWith($haystack, $needle)
 {
@@ -134,17 +137,23 @@ if (sizeof($things) > 0) {
 <body>
 	<?php include 'include/header.php'; ?>
 	<div id="barba-wrapper">
-	<div class="barba-container">
+	<div class="barba-container" data-id="navCal">
 	<main id="wrapper">
-		<h2>Calendar</h2>
+		<h2>
+			Calendar
+			<a href="calendarFeed.php?regcode=<?php echo $loggedinuserregistrationcode; ?>&v=<?php echo $app->getVersion(); ?>" class="note no-barba">
+				<i class="fa fa-download menuIcons" style="margin-top: 2px; font-size:27px"></i>
+			</a>
+			<a id="navHelp" href="fileviewer.php?file=include/ical.txt" class="ical screenMenu <?php if ($currentPage == "navHelp"){echo "navActive";}?>">what is this?</a>
+		</h2>
 		<?php include('include/messages.php'); ?>
 		<?php if (sizeof($things) > 0) { ?>
 		<table class="agenda">
 			<tr>
-				<th>Name</th>
+				<th>Topic</th>
 				<th>Opens</th>
-				<th>Comments due</th>
-				<th>Critiques due</th>
+				<th>Comments Due</th>
+				<th>Critiques Due</th>
 			</tr>
 			<?php foreach ($things as $thing) { ?>
 			<tr class="<?php if ($thing['notopen']) { echo "notopen"; } else if ($thing['critiquesclosed']) { echo "critiquesclosed"; }  else if ($thing['commentsclosed']) { echo "commentsclosed"; } else { echo "open"; } ?>">

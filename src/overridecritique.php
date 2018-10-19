@@ -17,6 +17,10 @@ $app->protectPage($errors, TRUE);
 $critiqueid = $_GET['id'];
 $action = $_GET['action'];
 
+if (!isset($critiqueid) || empty($critiqueid) || !isset($action) || empty($action)) {
+	http_response_code(400);
+}
+
 if ($action == 'override') {
 	// Override the negative critique
 	$result = $app->overrideCritique($critiqueid, $errors);

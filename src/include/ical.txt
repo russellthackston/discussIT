@@ -1,0 +1,6 @@
+<h3>Calendar Content Download</h3>
+This is a link to download the contents of the agenda so it can be uploaded to Google Calendar.
+<br>
+<br>
+<a id="snarky" href="http://lmgtfy.com/?q=how+do+I+upload+a+ical+file+to+google+calendar">How do I upload an iCal file to Google calendar?</a>
+<br>
