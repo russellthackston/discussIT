@@ -544,6 +544,9 @@ class Application {
 
         $this->auditlog("addRegistrationCode", "attempt: $userid, $registrationcode");
 
+        // Trim user input
+        $registrationcode = trim($registrationcode);
+
         // Validate the user input
         if (empty($registrationcode)) {
             $errors[] = "Missing registration code";
@@ -733,6 +736,9 @@ class Application {
         public function updatePassword($password, $passwordresetid, &$errors) {
 
             $this->auditlog("updatePassword", "request received: $passwordresetid");
+
+            // Trim user input
+            $password = trim($password);
 
             // Check for a valid username/email
             $this->validatePassword($password, $errors);
@@ -1986,6 +1992,10 @@ class Application {
                 $user = $this->getSessionUser($errors);
                 $userid = $user["userid"];
 
+                // Trim user input
+                $name = trim($name);
+                $description = trim($description);
+
                 // Validate the user input and that user is an admin/instructor
                 if (empty($userid)) {
                     $errors[] = "Missing user ID. Not logged in?";
@@ -2070,6 +2080,10 @@ class Application {
                 // Get the user id from the session
                 $user = $this->getSessionUser($errors);
                 $userid = $user["userid"];
+
+                // Trim user input
+                $name = trim($name);
+                $description = trim($description);
 
                 // Validate the user input
                 if (empty($userid)) {
@@ -2181,6 +2195,9 @@ class Application {
                 // Get the user id from the session
                 $user = $this->getSessionUser($errors);
                 $userid = $user["userid"];
+                
+                // Trim user input
+                $text = trim($text);
 
                 // Get the associated thing and closure date/times
                 $thing = $this->getThing($thingid, $errors);
@@ -2261,6 +2278,9 @@ class Application {
                 // Get the user id from the session
                 $user = $this->getSessionUser($errors);
                 $userid = $user["userid"];
+
+                // Trim user input
+                $text = trim($text);
 
                 // Validate the user input
                 if (empty($userid)) {
@@ -2447,11 +2467,13 @@ class Application {
                 // Assume no user exists for this user id
                 $user = NULL;
 
+	            // Trim user input
+	            $username = trim($username);
+	            $password = trim($password);
+	
                 // Validate the user input
                 if (empty($userid)) {
-
                     $errors[] = "Missing userid";
-
                 }
 
                 if(sizeof($errors) == 0) {
@@ -2545,6 +2567,9 @@ class Application {
             // Updates a single user in the database and will return the $errors array listing any errors encountered
             public function updateUserPassword($userid, $password, &$errors) {
 
+	            // Trim user input
+	            $password = trim($password);
+	
                 // Validate the user input
                 if (empty($userid)) {
                     $errors[] = "Missing userid";
@@ -3699,6 +3724,10 @@ class Application {
 
                 $user = NULL;
 
+	            // Trim user input
+	            $studentid = trim($studentid);
+	            $studentname = trim($studentname);
+
                 if (empty($studentid)) {
                     $errors[] = "Missing userid";
                 }
@@ -3740,6 +3769,11 @@ class Application {
             public function addStudent($studentid, $studentname, $registrationcode, &$errors) {
 
                 $user = NULL;
+
+                 // Trim user input
+                $studentid = trim($studentid);
+                $studentname = trim($studentname);
+                $registrationcode = trim($registrationcode);
 
                 if (empty($studentid)) {
                     $errors[] = "Missing userid";
