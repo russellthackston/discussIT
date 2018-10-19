@@ -2,6 +2,7 @@
 <h3>Current Release</h3>
 <ul>
 	<li>Trim user input to remove leading and trailing whitespace</li>
+	<li>Switching courses now stays on the same page</li>
 	<li>Added admin dashboard</li>
 </ul>
 <h3>October 15, 2018</h3>
