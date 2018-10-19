@@ -166,7 +166,7 @@ if ($user != NULL) {
 			<a href="list.php">
 				<span id="discuss">discuss</span><span id="it">IT</span>
 			</a>
-			<span id="title"><?php if (isset($app->getSessionUser($errors)["description"])){echo $app->getSessionUser($errors)["description"];}?>
+			<span id="title"><?php if (isset($app->getSessionUser($errors)["description"])){echo $app->getSessionUser($errors)["description"];}?></span>
 		</span>		
 
 </header>
