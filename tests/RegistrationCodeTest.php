@@ -131,6 +131,23 @@ final class RegistrationCodeTest extends TestCase {
 		$this->assertEquals('end1', $regcode->endtime);
 
 	}
+	
+	/*
+		Test justCodes()
+	*/
+	public function testJustCodes() : void {
+		$regcodes = RegistrationCode::listFromArray([
+			["registrationcode"=>"code1","starttime"=>"start1","endtime"=>"end1"],
+			["registrationcode"=>"code2","starttime"=>"start2","endtime"=>"end2"],
+			["registrationcode"=>"code3","starttime"=>"start3","endtime"=>"end3"]
+		]);
+		$codes = RegistrationCode::justCodes($regcodes);
+		$this->assertEquals(3, sizeof($codes));
+		$this->assertEquals("code1", $codes[0]);
+		$this->assertEquals("code2", $codes[1]);
+		$this->assertEquals("code3", $codes[2]);
+		
+	}
 
 }
 
