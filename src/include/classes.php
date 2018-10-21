@@ -7,7 +7,9 @@
 /** @var Type $serverusername */
 /** @var Type $serverpassword */
 
-require_once 'include/classes/registrationcode.php';
+spl_autoload_register(function ($class_name) {
+    include "include/classes/" . $class_name . '.php';
+});
 
 class Application {
 
@@ -216,7 +218,7 @@ class Application {
         }
 
         // Return the codes
-        return $codes;
+        return RegistrationCode::listFromArray($codes);
     }
 
     protected function validateUsername($username, &$errors) {
