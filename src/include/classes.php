@@ -2380,7 +2380,6 @@ class Application {
 
         } else {
 
-
             $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $this->auditlog("getusers", "success");
 
@@ -2571,7 +2570,6 @@ class Application {
         }
     }
 
-
     // Updates a single user in the database and will return the $errors array listing any errors encountered
     public function updateUserPassword($userid, $password, &$errors) {
 
@@ -2641,7 +2639,6 @@ class Application {
 
         // Connect to the database
         $dbh = $this->getConnection();
-
 
         $sql = "SELECT attachmenttypeid, name, extension FROM attachmenttypes ORDER BY name";
 
