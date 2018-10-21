@@ -258,7 +258,7 @@ if ($tab == 'rollcall') {
                     <select name="regcodefilter" id="regcodefilter" onchange="filterByRegCode()" autocomplete="off">
                         <option value="nofilter">All members</option>
                         <?php foreach ($regcodes as $regcode) { ?>
-                            <option value="<?php echo $regcode['registrationcode']; ?>"><?php echo $regcode['registrationcode']; ?></option>
+                            <option value="<?php echo $regcode->registrationcode; ?>"><?php echo $regcode->registrationcode; ?></option>
                         <?php } ?>
                     </select>
 

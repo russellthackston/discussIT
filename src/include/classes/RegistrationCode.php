@@ -31,6 +31,14 @@ class RegistrationCode {
 		}
 		return $list;
     }
+    
+    public static function justCodes($regcodes) {
+	    $codes = array();
+	    for ($i = 0; $i < sizeof($regcodes); $i++) {
+		    $codes[] = $regcodes[$i]->registrationcode;
+		}
+		return $codes;
+    }
 
 }
 
