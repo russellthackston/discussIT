@@ -1820,7 +1820,11 @@ class Application {
                 // If the query ran successfully, then return true
             } else {
 
-				$result = TRUE;
+				if ($stmt->rowCount() == 0) {
+					$result = FALSE;
+				} else {
+					$result = TRUE;
+				}
 
             }
 

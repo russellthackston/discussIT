@@ -17,8 +17,10 @@ $app->protectPage($errors, TRUE);
 $critiqueid = $_GET['id'];
 $action = $_GET['action'];
 
-if (!isset($critiqueid) || empty($critiqueid) || !isset($action) || empty($action)) {
+if (!isset($_GET['id']) || !isset($critiqueid) || empty($critiqueid) || $critiqueid == "null" || !isset($action) || empty($action)) {
 	http_response_code(400);
+	echo "Failure";
+	exit();
 }
 
 if ($action == 'override') {
@@ -32,6 +34,7 @@ if ($action == 'override') {
 if ($result) {
 	echo "Success";
 } else {
+	http_response_code(400);
 	echo "Failure";
 }
 

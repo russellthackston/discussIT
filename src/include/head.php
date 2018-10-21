@@ -8,6 +8,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>DiscussIT : <?php if (isset($app->getSessionUser($errors)["description"])){echo $app->getSessionUser($errors)["description"];}?></title>
+	<link rel="icon" type="image/png" href="css/images/favicon.png" sizes="16x16">
 	<meta name="description" content="DiscussIT - A discussion site for <?php if (isset($app->getSessionUser($errors)["description"])){echo $app->getSessionUser($errors)["description"];}?> class">
 	<meta name="author" content="Russell Thackston">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
