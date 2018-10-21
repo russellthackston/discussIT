@@ -63,11 +63,11 @@ $endhour = date("H");
 $endminute = date("i");
 
 foreach ($allCodes as $code) {
-	if ($code['registrationcode'] == $myCode) {
-		$starthour = date("H", strtotime($code['starttime']));
-		$startminute = date("i", strtotime($code['starttime']));
-		$endhour = date("H", strtotime($code['endtime']));
-		$endminute = date("i", strtotime($code['endtime']));
+	if ($code->registrationcode == $myCode) {
+		$starthour = date("H", strtotime($code->starttime));
+		$startminute = date("i", strtotime($code->starttime));
+		$endhour = date("H", strtotime($code->endtime));
+		$endminute = date("i", strtotime($code->endtime));
 		break;
 	}
 }
