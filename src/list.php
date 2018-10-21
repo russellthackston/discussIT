@@ -55,7 +55,7 @@ if (isset($_GET["newthing"]) && $_GET["newthing"] == "success") {
 // Get the my registration code and the full list
 $myCode = $loggedInUser['registrationcode'];
 $allCodes = $app->getRegistrationCodes($errors);
-$justCodes = array_column($allCodes, 'registrationcode');
+$justCodes = RegistrationCode::justCodes($allCodes);
 
 $starthour = date("H");
 $startminute = date("i");
@@ -63,11 +63,11 @@ $endhour = date("H");
 $endminute = date("i");
 
 foreach ($allCodes as $code) {
-	if ($code['registrationcode'] == $myCode) {
-		$starthour = date("H", strtotime($code['starttime']));
-		$startminute = date("i", strtotime($code['starttime']));
-		$endhour = date("H", strtotime($code['endtime']));
-		$endminute = date("i", strtotime($code['endtime']));
+	if ($code->registrationcode == $myCode) {
+		$starthour = date("H", strtotime($code->starttime));
+		$startminute = date("i", strtotime($code->starttime));
+		$endhour = date("H", strtotime($code->endtime));
+		$endminute = date("i", strtotime($code->endtime));
 		break;
 	}
 }

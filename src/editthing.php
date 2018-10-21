@@ -35,7 +35,7 @@ $includeingrading = FALSE;
 // Get the my registration code and the full list
 $myCode = $loggedInUser['registrationcode'];
 $allCodes = $app->getRegistrationCodes($errors);
-$justCodes = array_column($allCodes, 'registrationcode');
+$justCodes = RegistrationCode::justCodes($allCodes);
 
 // When loading the page, get the thing ID from the request
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {

@@ -7,6 +7,10 @@
 /** @var Type $serverusername */
 /** @var Type $serverpassword */
 
+spl_autoload_register(function ($class_name) {
+    include "include/classes/" . $class_name . '.php';
+});
+
 class Application {
 
     private $codeversion = 8;
@@ -214,7 +218,7 @@ class Application {
         }
 
         // Return the codes
-        return $codes;
+        return RegistrationCode::listFromArray($codes);
     }
 
     protected function validateUsername($username, &$errors) {
