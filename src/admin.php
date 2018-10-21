@@ -18,32 +18,45 @@ $errors = array();
 // NOTE: passing optional parameter TRUE which indicates the user must be an admin
 $app->protectPage($errors, TRUE);
 
-$tabs = array("userreports", "rollcall", "reports", "userlist", "studentlist", "attachmenttypes");
+// List of tabs on this page
+$tabs = array("dashboard", "userreports", "rollcall", "reports", "userlist", "studentlist", "attachmenttypes");
 $loggedInUser = $app->getSessionUser($errors);
 $regcodes = $app->getRegistrationCodes($errors);
 
-if (isset($_GET['hijack'])) {
-    $userid = $_GET['hijack'];
-    if ($app->impersonate($userid, $errors) == FALSE) {
-	    $message = "No active session";
-    }
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+
+	// Process the impersonate student request
+	if (isset($_GET['hijack'])) {
+	    $userid = $_GET['hijack'];
+	    if ($app->impersonate($userid, $errors) == FALSE) {
+		    $message = "No active session";
+	    }
+	}
+
+	// Process the download progress report request
+	if (isset($_GET['downloadprogress'])) {
+	    $progressReports = $app->getAllProgressReports($errors);
+	
+	    $app->outputCSV($progressReports);
+	    exit();
+	
+	}
+
+	// Process the capture snapshot request
+	if (isset($_GET['snapshot']) && $_GET['snapshot'] == 'roll') {
+	    $app->snapshotRollcall($loggedInUser['registrationcode'], $errors);
+	    $message = "Snapshot recorded";
+	}
+	
 }
 
-if (isset($_GET['downloadprogress'])) {
-    $progressReports = $app->getAllProgressReports($errors);
-
-    $app->outputCSV($progressReports);
-    exit();
-
-}
-
-// If someone is adding a new attachment type
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['tab']) && in_array($_POST['tab'], $tabs)) {
         $tab = $_POST['tab'];
     }
 
+	// Process the download attendance request
     if (isset($_POST['tabaction']) && $_POST['tabaction'] == 'downloadattendance') {
         $attendancedate = $_POST['attendancedate'];
         $attendancedata = $app->getAttendanceData($attendancedate, $errors);
@@ -51,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
+	// Process the add new attachment type request
     if (isset($_POST['attachmenttype']) && $_POST['attachmenttype'] == "add") {
 
         $name = $_POST['name'];
@@ -66,17 +80,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
-if (isset($_GET['snapshot']) && $_GET['snapshot'] == 'roll') {
-    $app->snapshotRollcall($loggedInUser['registrationcode'], $errors);
-    $message = "Snapshot recorded";
-}
-
+// If no tab selection has been set, default to the dashboard
 if (!isset($tab) && isset($_GET['tab']) && in_array($_GET['tab'], $tabs)) {
     $tab = $_GET['tab'];
 } else {
-    $tab = "userreports";
+    $tab = "dashboard";
 }
 
+
+if ($tab == 'dashboard') {
+    $histograms = $app->getGradeCharts($errors);
+}
 
 if ($tab == 'userlist') {
     $users = $app->getUsers($errors);
@@ -92,7 +106,6 @@ if ($tab == 'userreports') {
 
 if ($tab == 'reports') {
     $attendancedates = $app->getAttendanceDates($errors);
-    $histograms = $app->getGradeCharts($errors);
 }
 
 if ($tab == 'studentlist') {
@@ -128,6 +141,7 @@ if ($tab == 'rollcall') {
                 <?php include 'include/messages.php'; ?>
                 <div id="tabs">
                     <ul>
+                        <li <?php if ($tab == 'dashboard') { ?>class="active"<?php } ?>><a href="admin.php?tab=dashboard">Dashboard</a></li>
                         <li <?php if ($tab == 'userreports') { ?>class="active"<?php } ?>><a href="admin.php?tab=userreports">User Reports</a></li>
                         <li <?php if ($tab == 'rollcall') { ?>class="active"<?php } ?>><a href="admin.php?tab=rollcall">Roll call</a></li>
                         <li <?php if ($tab == 'reports') { ?>class="active"<?php } ?>><a href="admin.php?tab=reports">Reports</a></li>
@@ -136,9 +150,17 @@ if ($tab == 'rollcall') {
                         <li <?php if ($tab == 'attachmenttypes') { ?>class="active"<?php } ?>><a href="admin.php?tab=attachmenttypes">Attachment Types</a></li>
                     </ul>
                 </div>
+                <?php if ($tab == 'dashboard') { ?>
+                <div id="dashboard">
+					<?php
+						renderHistogram($histograms['commentinggradedecimal'], 'Commenting');
+						renderHistogram($histograms['critiquinggradedecimal'], 'Critiquing');
+						renderHistogram($histograms['commentqualitydecimal'], 'Commenting Quality');
+ 					?>
+                </div>
+                <?php } ?>
                 <?php if ($tab == 'userreports') { ?>
                 <div id="userreports">
-                    <h3>User Reports</h3>
                     <ul class="reports">
                         <?php foreach($reports as $report) { ?>
                             <?php $comment = $app->getComment($report['userreportcommentid'], $errors); ?>
@@ -182,18 +204,10 @@ if ($tab == 'rollcall') {
                         <input type="submit" name="attendance" value="Download attendance" id="attendance">
                     </form>
                     </div>
-
-					<?php
-						renderHistogram($histograms['commentinggradedecimal'], 'Commenting');
-						renderHistogram($histograms['critiquinggradedecimal'], 'Critiquing');
-						renderHistogram($histograms['commentqualitydecimal'], 'Commenting Quality');
- 					?>
-
                 </div>
                 <?php } ?>
                 <?php if ($tab == 'studentlist') { ?>
                 <div id="studentlist">
-                    <h3>Student List</h3>
                     <table class="students">
                         <tr>
                             <th>Delete</th>
@@ -240,7 +254,6 @@ if ($tab == 'rollcall') {
                 <?php } ?>
                 <?php if ($tab == 'userlist') { ?>
                 <div id="userlist">
-                    <h3>User List</h3>
                     <label for="regcodefilter">Filter:</label>
                     <select name="regcodefilter" id="regcodefilter" onchange="filterByRegCode()" autocomplete="off">
                         <option value="nofilter">All members</option>
@@ -266,7 +279,6 @@ if ($tab == 'rollcall') {
                 <?php } ?>
                 <?php if ($tab == 'attachmenttypes') { ?>
                 <div id="attachmenttypes">
-                    <h3>Valid Attachment Types</h3>
                     <ul class="attachmenttypes">
                         <?php foreach($attachmentTypes as $attachmentType) { ?>
                             <li><?php echo $attachmentType['name']; ?> [<?php echo $attachmentType['extension']; ?>]</li>

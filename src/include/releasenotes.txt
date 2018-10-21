@@ -1,0 +1,24 @@
+<h2>Release Notes</h2>
+<h3>Current Release</h3>
+<ul>
+	<li>UI overhaul (various changes)</li>
+	<li>Added iCal usage instructions</li>
+	<li>Trim user input to remove leading and trailing whitespace</li>
+	<li>Fixed site title</li>
+	<li>Switching courses now stays on the same page</li>
+	<li>Added admin dashboard</li>
+	<li>Style instructor critiques differently from students</li>
+</ul>
+<h3>October 15, 2018</h3>
+<ul>
+	<li>Added instructor critiquing (does not impact grade)</li>
+	<li>Added instructor override of "bad" critiques</li>
+</ul>
+<h3>October 10, 2018</h3>
+<ul>
+	<li>Updated Color Scheme</li>
+	<li>Created responsive menu icons</li>
+	<li>Moved Rollcall to menu</li>
+	<li>Moved switch class to menu</li>
+	<li>Changed icons for comments and critiques</li>
+</ul>

@@ -46,7 +46,7 @@ nav ul li:active, nav ul li:hover {
 	background: rgb(237,244,217);
 }
 
-nav a:link, a:visited {
+nav a:link, nav a:visited, #logoContainer a {
 	text-decoration: none;
 }
 
@@ -79,29 +79,56 @@ li.critiquesAlert {
 	color: darkgrey;
 }
 
-
-
 .phoneMenu{
 	display: none;
 }
 
-#logo{
-	padding-top: 25px;
-	width: 250px;
-}
 
 #logoContainer{
+	margin-top: 10px;
 	position: relative;
+	display: inline-block;
+	
+}
+
+#discuss{
+ 	font-family: 'Covered By Your Grace', cursive;
+	margin-top: 50px;
+	margin-left: 15px;
+	width: 250px;
+	font-size: 60px;
+	text-decoration: none;
+	color:#404052;
+}
+
+.halloween #discuss{
+	font-family: 'Nosifer', cursive;
+	font-size: 40px;
+}
+
+#it{
+/* 	font-family: 'Cormorant Unicase', serif; */
+	font-family: 'Nixie One', cursive;
+	font-size: 60px;
+	font-weight: bold;
+	color: #26697F;
+	text-decoration: none;
+}
+
+.halloween #it{
+	font-family: 'Nosifer', cursive;
+/* 	font-family: 'Creepster', cursive; */
+	color: red;
+
 }
 
 #title{
 	color: #9C6208;
     position: absolute;
-    bottom: -5px;
+    bottom: 6px;
     right: 5px;
     font-size: 1em;
 }
-
 
 
 ul.things {
@@ -355,11 +382,6 @@ div.newattachmenttype, div.newthing, div.profile, div.register, div.thingcontain
 	border: 1px solid #55C1E6;
 }
 
-div.calendar a{
-	padding-bottom: 20px;
-	font-style: italic;
-}
-
 .newattachmenttype h4{
 	margin-top: 0;
 }
@@ -433,6 +455,10 @@ span.critiqueoverride {
 	font-size: .75em;
 }
 
+ul.critiques li.critique.instructor, ul.critiques li.critique.instructor{
+	color: #c07608;
+}
+
 .overridden {
 	text-decoration: line-through;
 }
@@ -482,7 +508,7 @@ span.note, div.note {
 	padding-top: 4px;
 }
 
-.uncommented a:visited, a:link{
+.uncommented a:visited, .uncommented a:link{
 	text-decoration: none;
 }
 
@@ -490,6 +516,26 @@ table.agenda, table.agenda tr, table.agenda td, table.agenda th {
 	border: solid black 1px;
 }
 
+.agenda{
+	border-collapse: collapse;
+	width: 98%;
+}
+
+.agenda th{
+	background-color: #5DD4FD;
+}
+
+.agenda td{
+	padding: 1px 5px 1px 5px;
+}
+
+.agenda td:nth-of-type(2), .agenda td:nth-of-type(3), .agenda td:nth-of-type(4){
+	text-align: center;
+}
+
+.agenda tr:hover{
+		background-color: #D1D5DB;
+}
 
 table.calendar {
 	border-left:1px solid #999;
@@ -589,7 +635,7 @@ div#tabs ul li.active {
 	background: white;
 }
 
-div#tabs ul li a:visited, a:link{
+div#tabs ul li a:visited, div#tabs ul li a:link{
 	color: #404052;
 }
 
@@ -630,6 +676,20 @@ span.chart h4 {
 .here{
 	color: red;
 }
+
+.download{
+	text-decoration: none;
+}
+
+.ical{
+	font-size: 10px;
+}
+
+#snarky{
+	font-family: 'Mali', cursive;
+}
+
+
 
 
 @media screen and (min-width: 601px){

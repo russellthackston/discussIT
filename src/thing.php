@@ -154,6 +154,7 @@ foreach ($comments as $comment) {
                         }
                         ?>
                         <li data-index="<?php echo $index; ?>" data-contents="comment" id="comment-<?php echo $comment['commentid']; ?>">
+                        	<a name="comment-<?php echo $comment['commentid']; ?>"></a>
                             <div class="comment">
                                 <?php echo nl2br(htmlentities($comment['commenttext'])); ?>
                             </div>

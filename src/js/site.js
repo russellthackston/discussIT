@@ -482,46 +482,23 @@ function toggleHotdog(){
 	}
 }
 
-function undoOverride(elem) {
-	console.log(elem); /*data-href*/
+function override(btn) {
+	var action = (btn.getAttribute("data-state") == "overridden") ? "undo" : "override";
 	var href = replacePage(window.location.href, "overridecritique.php") + 
-		"?action=undo&id=" + elem.getAttribute('data-id');
+		"?action="+action+"&id=" + btn.getAttribute('data-critique-id');
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			console.log(this.responseText);
-			if (this.responseText == "Success") {
-				console.log(elem.parentElement);
-				console.log(elem.parentElement.parentElement);
-				console.log(elem.parentElement.parentElement.getElementsByTagName("span")[0]);
-				elem.parentElement.parentElement.getElementsByTagName("span")[0].classList.remove('overridden')
-			} else {
-				alert("Error. See console.");
-			}
-		} else {
-			console.log(this);
-		}
-	};
-	xhttp.open("get", href, true);
-	xhttp.send();
-}
-
-function override(elem) {
-	console.log(elem); /*data-href*/
-	var href = replacePage(window.location.href, "overridecritique.php") + 
-		"?action=override&id=" + elem.getAttribute('data-id');
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			console.log(this.responseText);
-			if (this.responseText == "Success") {
-				console.log(elem.parentElement);
-				console.log(elem.parentElement.parentElement);
-				console.log(elem.parentElement.parentElement.getElementsByTagName("span")[0]);
-				elem.parentElement.parentElement.getElementsByTagName("span")[0].classList.add('overridden')
-			} else {
-				alert("Error. See console.");
-			}
+		if (this.readyState == 4 && this.status == 200 && this.responseText == "Success") {
+				if (action == "undo") {
+					btn.parentElement.parentElement.getElementsByTagName("span")[0].classList.remove('overridden')
+					btn.setAttribute("data-state", "override");
+					btn.value = "Override";
+				} else {
+					btn.parentElement.parentElement.getElementsByTagName("span")[0].classList.add('overridden')
+					btn.setAttribute("data-state", "overridden");
+					btn.value = "Undo Override";
+				}
+				console.log(this);
 		} else {
 			console.log(this);
 		}
