@@ -7,6 +7,8 @@
 /** @var Type $serverusername */
 /** @var Type $serverpassword */
 
+require_once 'include/classes/registrationcode.php';
+
 class Application {
 
     private $codeversion = 8;
