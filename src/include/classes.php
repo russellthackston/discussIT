@@ -1778,6 +1778,68 @@ class Application {
 
     }
     
+    // Get a specific critique from the database
+    public function getCritique($critiqueid, &$errors) {
+
+        // Assume an empty list of comments
+        $critique = null;
+
+        // Figure out who's currently logged in
+        $loggedinuser = $this->getSessionUser($errors);
+        $loggedinusername = $loggedinuser["username"];
+
+        // Check for a valid thing ID
+        if (empty($critiqueid)) {
+
+            // Add an appropriate error message to the list
+            $errors[] = "Missing critique ID";
+            $this->auditlog("getCritique validation error", $errors);
+
+        } else {
+
+            // Connect to the database
+            $dbh = $this->getConnection();
+
+
+            $sql = "SELECT * " .
+            "FROM critiques " .
+            "WHERE critiqueid = :critiqueid";
+
+
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(":critiqueid", $critiqueid);
+            $result = $stmt->execute();
+
+            // If the query did not run successfully, add an error message to the list
+            if ($result === FALSE) {
+
+                $errors[] = "An unexpected error occurred loading the critique.";
+                $this->debug($stmt->errorInfo());
+                $this->auditlog("getCritique error", $stmt->errorInfo());
+
+                // If the query ran successfully, then get the critique
+            } else {
+
+                // TODO: Enforce authorization rules on data
+                $critique = $stmt->fetch(PDO::FETCH_ASSOC);
+                if ($critique['isadmin'] == 1) { 
+                    $critique['publicusername'] = "Instructor";
+                } else {
+                   	$critique['publicusername'] = "Student" . $counter;
+                }
+
+            }
+
+            // Close the connection
+            $dbh = NULL;
+
+        }
+
+        // Return the critique
+        return $critique;
+
+    }
+    
     // Override a negative critique
     public function overrideCritique($critiqueid, &$errors) {
         
@@ -1830,6 +1892,35 @@ class Application {
 
             // Close the connection
             $dbh = NULL;
+
+        }
+        
+        // If the override was successful, email the commenter and critiquer
+        if ($result) {
+	        $critique = $this->getCritique($critiqueid, $errors);
+	        $comment = $this->getComment($critique['critiquecommentid'], $errors);
+	        $critiquer = $this->getUser($critique['critiqueuserid'], $errors);
+	        $commenter = $this->getUser($comment['commentuserid'], $errors);
+
+            // Send email to critiquer
+            // TODO: Removed hardcode email
+	        $pageLink = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+            $pageLink = preg_replace("~(\w+)\.php~", "thing.php", $pageLink);
+			// Remove URL parameters and add parameters to take the user straight to the thing and critique
+            $pageLink = explode("?", $pageLink)[0];
+            $pageLink = $pageLink . "?thingid=" . $comment['commentthingid'];
+            $pageLink = $pageLink . "#critique-" . $critique['critiqueid'];
+            $to       = $critiquer['email'];
+            $subject  = '[DiscussIT] Critique override';
+            $message  = "An instructor has overridden one of your critiques.\n\n".
+            	"Critique Text: ".$critique['critiquetext']."\n".
+				"Link to critique: ".$pageLink."\n";
+            $headers = 'From: webmaster@russellthackston.me' . "\r\n" .
+            	'Reply-To: webmaster@russellthackston.me' . "\r\n";
+
+            mail($to, $subject, $message, $headers);
+            
+            $this->auditlog("overrideCritique", "Email notification sent to critiquer: " . $critiquer['email'], "1", $this->getSessionUser($errors, TRUE));
 
         }
 
