@@ -309,7 +309,6 @@ if ($tab == 'rollcall') {
                 <?php } ?>
                 <?php if ($tab == 'notes') { ?>
                 <div id="notes">
-                	<div><?php echo $notesmessage; ?></div>
         			<?php foreach($notes as $note) { ?>
         				<div class="note">
         					<?php echo $note->text; ?>

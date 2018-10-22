@@ -3972,7 +3972,7 @@ class Application {
     }
 
     public function addNote(Note $note, &$errors) {
-	    $result = FALSE:
+	    $result = FALSE;
 		$noteid = bin2hex(random_bytes(16));
 
         // Connect to the database and read from the notes table
@@ -3997,7 +3997,7 @@ class Application {
     }
 
     public function deleteNote($noteid, &$errors) {
-	    $result = FALSE:
+	    $result = FALSE;
 
         // Connect to the database and read from the notes table
         $dbh = $this->getConnection();
@@ -4018,7 +4018,7 @@ class Application {
     }
 
     public function updateNote(Note $note, &$errors) {
-	    $result = FALSE:
+	    $result = FALSE;
 
         // Connect to the database and read from the notes table
         $dbh = $this->getConnection();
