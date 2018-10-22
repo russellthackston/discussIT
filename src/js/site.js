@@ -542,3 +542,24 @@ function copyToClipboard(text) {
     }
 }
 
+function addNote(btn) {
+	var text = document.getElementById("notetext").value;
+	var order = document.getElementById("addnote").getAttribute("data-order");
+	var href = replacePage(window.location.href, "addnote.php");
+	var data = {
+		"text" : text,
+		"order" : order
+	};
+	console.log(data);
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById('notes').innerHTML = this.responseText;
+			document.getElementById("addnote").setAttribute("data-order", parseInt(order) + 1);
+		}
+	};
+	xhttp.open("post", href, true);
+	xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	xhttp.send(JSON.stringify(data));
+}

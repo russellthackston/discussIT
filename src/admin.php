@@ -309,11 +309,12 @@ if ($tab == 'rollcall') {
                 <?php } ?>
                 <?php if ($tab == 'notes') { ?>
                 <div id="notes">
-        			<?php foreach($notes as $note) { ?>
-        				<div class="instructornote">
-        					<a href="#" onclick="return doCopyToClipboard(this);" data-text="<?php echo htmlentities($note->text); ?>">[Copy]</a> <?php echo $note->text; ?>
-        				</div>
-        			<?php } ?>
+	                <?php require('include/noteslist.php') ?>
+                </div>
+                <div id="addnote" data-order="<?php echo $index++; ?>">
+	                <textarea name="notetext" id="notetext" placeholder="Enter new note text here." cols="100" rows="10"></textarea>
+	                <br>
+	                <button type="button" name="btnAddNote" onclick="return addNote(this);" value="Add note">Add note</button>
                 </div>
                 <?php } ?>
             </main>

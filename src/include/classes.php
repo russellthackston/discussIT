@@ -3953,7 +3953,7 @@ class Application {
 
         // Connect to the database and read from the notes table
         $dbh = $this->getConnection();
-        $sql = 	"SELECT * FROM notes WHERE registrationcode = :regcode";
+        $sql = 	"SELECT * FROM notes WHERE registrationcode = :regcode ORDER BY noteorder";
         $stmt = $dbh->prepare($sql);
         $stmt->bindParam(":regcode", $registrationcode);
         $result = $stmt->execute();
@@ -3971,18 +3971,19 @@ class Application {
 	    return $notesList;
     }
 
-    public function addNote(Note $note, &$errors) {
+    public function addNote($notetext, $noteorder, &$errors) {
 	    $result = FALSE;
 		$noteid = bin2hex(random_bytes(16));
+		$noteregistrationcode = $this->getSessionUser($errors)['registrationcode'];
 
         // Connect to the database and read from the notes table
         $dbh = $this->getConnection();
-        $sql = 	"INSERT INTO notes (noteid, notetext, registrationcode, noteorder) VAUES (:noteid, :notetext, :regcode, :noteorder)";
+        $sql = 	"INSERT INTO notes (noteid, notetext, registrationcode, noteorder) VALUES (:noteid, :notetext, :regcode, :noteorder)";
         $stmt = $dbh->prepare($sql);
-        $stmt->bindParam(":noteid", $note->id);
-        $stmt->bindParam(":notetext", $note->text);
-        $stmt->bindParam(":regcode", $note->registrationcode);
-        $stmt->bindParam(":noteorder", $not->eorder);
+        $stmt->bindParam(":noteid", $noteid);
+        $stmt->bindParam(":notetext", $notetext);
+        $stmt->bindParam(":regcode", $noteregistrationcode);
+        $stmt->bindParam(":noteorder", $noteorder);
         $result = $stmt->execute();
         if ($result === FALSE) {
             $errors[] = "An unexpected error occurred adding the new note.";
