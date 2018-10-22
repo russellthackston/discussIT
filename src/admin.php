@@ -311,7 +311,7 @@ if ($tab == 'rollcall') {
                 <div id="notes">
         			<?php foreach($notes as $note) { ?>
         				<div class="instructornote">
-        					<?php echo $note->text; ?>
+        					<a href="#" onclick="return doCopyToClipboard(this);" data-text="<?php echo htmlentities($note->text); ?>">[Copy]</a> <?php echo $note->text; ?>
         				</div>
         			<?php } ?>
                 </div>
