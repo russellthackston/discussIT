@@ -310,7 +310,7 @@ if ($tab == 'rollcall') {
                 <?php if ($tab == 'notes') { ?>
                 <div id="notes">
         			<?php foreach($notes as $note) { ?>
-        				<div class="note">
+        				<div class="instructornote">
         					<?php echo $note->text; ?>
         				</div>
         			<?php } ?>
