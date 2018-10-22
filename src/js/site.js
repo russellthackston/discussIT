@@ -550,7 +550,6 @@ function addNote(btn) {
 		"text" : text,
 		"order" : order
 	};
-	console.log(data);
 
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
