@@ -19,7 +19,7 @@ $errors = array();
 $app->protectPage($errors, TRUE);
 
 // List of tabs on this page
-$tabs = array("dashboard", "userreports", "rollcall", "reports", "userlist", "studentlist", "attachmenttypes");
+$tabs = array("dashboard", "userreports", "rollcall", "reports", "userlist", "studentlist", "attachmenttypes", "notes");
 $loggedInUser = $app->getSessionUser($errors);
 $regcodes = $app->getRegistrationCodes($errors);
 
@@ -112,6 +112,10 @@ if ($tab == 'studentlist') {
     $students = $app->getStudents($errors);
 }
 
+if ($tab == 'notes') {
+    $notes = $app->getNotes($loggedInUser['registrationcode'], $errors);
+}
+
 if ($tab == 'rollcall') {
 
     $roll = $app->getRollcall($loggedInUser['registrationcode'], $errors);
@@ -145,9 +149,10 @@ if ($tab == 'rollcall') {
                         <li <?php if ($tab == 'userreports') { ?>class="active"<?php } ?>><a href="admin.php?tab=userreports">User Reports</a></li>
                         <li <?php if ($tab == 'rollcall') { ?>class="active"<?php } ?>><a href="admin.php?tab=rollcall">Roll call</a></li>
                         <li <?php if ($tab == 'reports') { ?>class="active"<?php } ?>><a href="admin.php?tab=reports">Reports</a></li>
-                        <li <?php if ($tab == 'userlist') { ?>class="active"<?php } ?>><a href="admin.php?tab=userlist">User List</a></li>
-                        <li <?php if ($tab == 'studentlist') { ?>class="active"<?php } ?>><a href="admin.php?tab=studentlist">Student List</a></li>
-                        <li <?php if ($tab == 'attachmenttypes') { ?>class="active"<?php } ?>><a href="admin.php?tab=attachmenttypes">Attachment Types</a></li>
+                        <li <?php if ($tab == 'userlist') { ?>class="active"<?php } ?>><a href="admin.php?tab=userlist">Users</a></li>
+                        <li <?php if ($tab == 'studentlist') { ?>class="active"<?php } ?>><a href="admin.php?tab=studentlist">Students</a></li>
+                        <li <?php if ($tab == 'attachmenttypes') { ?>class="active"<?php } ?>><a href="admin.php?tab=attachmenttypes">Attachments</a></li>
+                        <li <?php if ($tab == 'notes') { ?>class="active"<?php } ?>><a href="admin.php?tab=notes">Notes</a></li>
                     </ul>
                 </div>
                 <?php if ($tab == 'dashboard') { ?>
@@ -300,6 +305,16 @@ if ($tab == 'rollcall') {
                             <input type="submit" name="addattachmenttype" value="Add type" />
                         </form>
                     </div>
+                </div>
+                <?php } ?>
+                <?php if ($tab == 'notes') { ?>
+                <div id="notes">
+                	<div><?php echo $notesmessage; ?></div>
+        			<?php foreach($notes as $note) { ?>
+        				<div class="note">
+        					<?php echo $note->text; ?>
+        				</div>
+        			<?php } ?>
                 </div>
                 <?php } ?>
             </main>

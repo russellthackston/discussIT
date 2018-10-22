@@ -13,7 +13,7 @@ spl_autoload_register(function ($class_name) {
 
 class Application {
 
-    private $codeversion = 8;
+    private $codeversion = 9;
     private $user = null;
 
     public function setup() {
@@ -3947,6 +3947,100 @@ class Application {
             return FALSE;
         }
     }
+    
+    public function getNotes($registrationcode, &$errors) {
+	    $notes = array();
+
+        // Connect to the database and read from the notes table
+        $dbh = $this->getConnection();
+        $sql = 	"SELECT * FROM notes WHERE registrationcode = :regcode";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindParam(":regcode", $registrationcode);
+        $result = $stmt->execute();
+        if ($result === FALSE) {
+            $errors[] = "An unexpected error occurred getting the list of notes.";
+            $this->debug($stmt->errorInfo());
+            $this->auditlog("getNotes error", $stmt->errorInfo());
+        } else {
+			$notes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        $dbh = NULL;
+
+        // Convert to list of note objects and return
+        $notesList = Note::listFromArray($notes);
+	    return $notesList;
+    }
+
+    public function addNote(Note $note, &$errors) {
+	    $result = FALSE:
+		$noteid = bin2hex(random_bytes(16));
+
+        // Connect to the database and read from the notes table
+        $dbh = $this->getConnection();
+        $sql = 	"INSERT INTO notes (noteid, notetext, registrationcode, noteorder) VAUES (:noteid, :notetext, :regcode, :noteorder)";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindParam(":noteid", $note->id);
+        $stmt->bindParam(":notetext", $note->text);
+        $stmt->bindParam(":regcode", $note->registrationcode);
+        $stmt->bindParam(":noteorder", $not->eorder);
+        $result = $stmt->execute();
+        if ($result === FALSE) {
+            $errors[] = "An unexpected error occurred adding the new note.";
+            $this->debug($stmt->errorInfo());
+            $this->auditlog("addNote error", $stmt->errorInfo());
+        } else {
+			$this->auditlog("addNote", "success");
+			$result = $noteid;
+        }
+        $dbh = NULL;
+	    return $result;
+    }
+
+    public function deleteNote($noteid, &$errors) {
+	    $result = FALSE:
+
+        // Connect to the database and read from the notes table
+        $dbh = $this->getConnection();
+        $sql = 	"DELETE notes WHERE noteid = :noteid";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindParam(":noteid", $noteid);
+        $result = $stmt->execute();
+        if ($result === FALSE) {
+            $errors[] = "An unexpected error occurred deleting the note.";
+            $this->debug($stmt->errorInfo());
+            $this->auditlog("deleteNote error", $stmt->errorInfo());
+        } else {
+			$this->auditlog("deleteNote", "success");
+			$result = TRUE;
+        }
+        $dbh = NULL;
+	    return $result;
+    }
+
+    public function updateNote(Note $note, &$errors) {
+	    $result = FALSE:
+
+        // Connect to the database and read from the notes table
+        $dbh = $this->getConnection();
+        $sql = 	"UPDATE notes SET notetext = :notetext, registrationcode = :regcode, noteorder = :noteorder WHERE noteid = :noteid";
+        $stmt = $dbh->prepare($sql);
+        $stmt->bindParam(":notetext", $note->notetext);
+        $stmt->bindParam(":regcode", $note->registrationcode);
+        $stmt->bindParam(":noteorder", $note->noteorder);
+        $stmt->bindParam(":noteid", $note->noteid);
+        $result = $stmt->execute();
+        if ($result === FALSE) {
+            $errors[] = "An unexpected error occurred deleting the note.";
+            $this->debug($stmt->errorInfo());
+            $this->auditlog("updateNote error", $stmt->errorInfo());
+        } else {
+			$this->auditlog("updateNote", "success");
+			$result = TRUE;
+        }
+        $dbh = NULL;
+	    return $result;
+    }
+
 }
 
 ?>
