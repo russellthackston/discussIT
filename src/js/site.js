@@ -557,6 +557,7 @@ function addNote(btn) {
 		if (this.readyState == 4 && this.status == 200) {
 			document.getElementById('notes').innerHTML = this.responseText;
 			document.getElementById("addnote").setAttribute("data-order", parseInt(order) + 1);
+			document.getElementById("notetext").value = "";
 		}
 	};
 	xhttp.open("post", href, true);
