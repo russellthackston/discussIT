@@ -17,12 +17,26 @@ $app->protectPage($errors, TRUE);
 $entityBody = file_get_contents('php://input');
 $data = json_decode($entityBody);
 
-// Get the individual attributes
-$notetext = $data->text;
-$noteorder = $data->order;
+if ($data->action == "add") {
 
-// Add the critique to the database
-$result = $app->addNote($notetext, $noteorder, $errors);
+	// Get the individual attributes
+	$notetext = $data->text;
+	$noteorder = $data->order;
+	
+	// Add the critique to the database
+	$result = $app->addNote($notetext, $noteorder, $errors);
+	
+}
+
+if ($data->action == "delete") {
+
+	// Get the individual attributes
+	$noteid = $data->id;
+
+	// Add the critique to the database
+	$result = $app->deleteNote($noteid, $errors);
+
+}
 
 if ($result) {
 	$notes = $app->getNotes($app->getSessionUser($errors)['registrationcode'], $errors);

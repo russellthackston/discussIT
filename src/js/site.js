@@ -545,8 +545,9 @@ function copyToClipboard(text) {
 function addNote(btn) {
 	var text = document.getElementById("notetext").value;
 	var order = document.getElementById("addnote").getAttribute("data-order");
-	var href = replacePage(window.location.href, "addnote.php");
+	var href = replacePage(window.location.href, "note.php");
 	var data = {
+		"action" : "add",
 		"text" : text,
 		"order" : order
 	};
@@ -563,3 +564,23 @@ function addNote(btn) {
 	xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 	xhttp.send(JSON.stringify(data));
 }
+
+function deleteNote(btn) {
+	var noteid = btn.getAttribute("data-noteid");
+	var href = replacePage(window.location.href, "note.php");
+	var data = {
+		"action" : "delete",
+		"id" : noteid
+	};
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById('notes').innerHTML = this.responseText;
+		}
+	};
+	xhttp.open("post", href, true);
+	xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	xhttp.send(JSON.stringify(data));
+}
+

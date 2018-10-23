@@ -4002,7 +4002,7 @@ class Application {
 
         // Connect to the database and read from the notes table
         $dbh = $this->getConnection();
-        $sql = 	"DELETE notes WHERE noteid = :noteid";
+        $sql = 	"DELETE FROM notes WHERE noteid = :noteid";
         $stmt = $dbh->prepare($sql);
         $stmt->bindParam(":noteid", $noteid);
         $result = $stmt->execute();
