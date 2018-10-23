@@ -114,6 +114,7 @@ if ($tab == 'studentlist') {
 
 if ($tab == 'notes') {
     $notes = $app->getNotes($loggedInUser['registrationcode'], $errors);
+    $index = 1;
 }
 
 if ($tab == 'rollcall') {
