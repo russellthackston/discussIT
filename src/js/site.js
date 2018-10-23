@@ -566,6 +566,9 @@ function addNote(btn) {
 }
 
 function deleteNote(btn) {
+	if (!confirm("Press OK to delete")) {
+		return;
+	}
 	var noteid = btn.getAttribute("data-noteid");
 	var href = replacePage(window.location.href, "note.php");
 	var data = {
