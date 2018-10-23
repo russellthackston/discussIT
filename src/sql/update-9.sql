@@ -1,4 +1,4 @@
-CREATE TABLE `discussion-dev`.`notes` ( 
+CREATE TABLE `notes` ( 
 	`noteid` VARCHAR(32) NOT NULL , 
 	`notetext` TEXT NOT NULL , 
 	`registrationcode` VARCHAR(32) NOT NULL , 
